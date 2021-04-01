@@ -1,21 +1,21 @@
+
 <table>
- <tr  class=sysbar>
-  <td width=25> HH </td>
-  <th colspan=3 >&nbsp;&nbsp;<b>TASK LIST</b> - All tasks</th>
-</tr>
-</table>
-<table>
-  <tr class=header>
-    <td width=25>Stat</td>
-    <td width=80>Name</td>
-    <td width=80>Owner</td>
+
+<tr class=header>
+    <td width=25>Don</td>
+    <td width=90>Name</td>
+    <td width=90>Owner</td>
+    <td width=90>Created</td>
     <td>Description</td>
-  </tr>
-  <tr>
-    <td width=25><input type="checkbox"></td>
-    <td>{{name}}</td>
-    <td>{{owner}}</td>
-    <td>{{desc}}</td>
-  </tr>
+</tr>
+<tr *ngFor="let task of task_l"  class=taskitem>
+    <td><input type="checkbox"></td>
+    <td>{{task.name}}</td>
+    <td>{{task.owner}}</td>
+    <td>{{task.created | date: 'dd/MM/y'}}
+    <td>{{task.description}}</td>
+</tr>
+
+
 </table>
 

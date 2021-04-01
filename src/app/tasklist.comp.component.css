@@ -4,20 +4,17 @@ table {
   table-layout: fixed;
   font-family: Lato;
   font-size: small;
-}
-th {
-  background-color: #f0d1c7;
-  text-align: left;
-}
-tr.sysbar{
-  background-color: #f0d1c7;
+  border: 1px solid black;
 }
 tr.header {
   background-color: #dddddd;
   font-weight: bold;
-}
-table,
-th {
   border: 1px solid black;
 }
+tr.taskitem:hover {
+  background-color: #8888FF;
+  font-weight: bold;
+  //border: 1px solid black;
+}
+
 
