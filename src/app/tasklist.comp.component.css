@@ -14,7 +14,6 @@ tr.header {
 tr.taskitem:hover {
   background-color: #8888FF;
   font-weight: bold;
-  //border: 1px solid black;
 }
 tr.selected {
   color: #0000FF;
