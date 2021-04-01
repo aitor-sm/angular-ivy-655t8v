@@ -16,5 +16,11 @@ tr.taskitem:hover {
   font-weight: bold;
   //border: 1px solid black;
 }
-
+tr.selected {
+  color: #0000FF;
+  font-weight: bold;
+}
+input.input_desc {
+  font-size: small;
+}
 

@@ -14,10 +14,23 @@ export class TaskList_comp implements OnInit {
   @Input() desc: string;
 
   task_l = TASKS;
+  focus: TaskObj;
   
   ngOnInit() {
     this.task_l [0].name = this.name;
     this.task_l [0].owner = this.owner;
     this.task_l [0].description = this.desc;
+  }
+
+  onMouseOver(t: TaskObj): void {
+    this.focus = t;
+  }
+
+  onMouseOut(t: TaskObj): void {
+    this.focus = null;
+  }
+
+  onSelectBox(t: TaskObj): void {
+    t.selected = ! t.selected;
   }
 }

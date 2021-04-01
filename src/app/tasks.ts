@@ -6,4 +6,6 @@ export interface TaskObj {
   created: Date;
   description: string;
   filter: Boolean;
+  selected: Boolean;
+  status: string;
 }

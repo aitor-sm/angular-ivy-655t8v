@@ -4,18 +4,40 @@
 <tr class=header>
     <td width=25>Don</td>
     <td width=90>Name</td>
-    <td width=90>Owner</td>
+    <td width=80>Owner</td>
+    <td width=40>Status</td>
     <td width=90>Created</td>
     <td>Description</td>
 </tr>
-<tr *ngFor="let task of task_l"  class=taskitem>
-    <td><input type="checkbox"></td>
+
+
+<ng-container *ngFor="let task of task_l">
+<tr *ngIf="task.filter" class=taskitem (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)" [class.selected]="task.selected">
+    <td><input type="checkbox" (change)="onSelectBox(task)"></td>
     <td>{{task.name}}</td>
     <td>{{task.owner}}</td>
-    <td>{{task.created | date: 'dd/MM/y'}}
-    <td>{{task.description}}</td>
-</tr>
+    <td>{{task.status}}</td>
+    <td>{{task.created | date: 'dd/MM/y'}}</td>
+    <td *ngIf="task==focus"><input class=input_desc id="desc" [(ngModel)]="task.description" placeholder="Edit your description here"></td>
+    <td *ngIf="task!=focus">{{task.description}}</td>
 
+
+<!--
+    <td *ngIf="task!=focus; else editDescription">
+      {{task.description}}</td>
+-->
+</tr>
+</ng-container>
+
+<!--
+<ng-template #SimpleDesc>
+  <td>{{task.description}}</td>
+</ng-template>
+
+<ng-template #editDescription>
+<input id="desc" [(ngModel)]="task.description" placeholder="Edit your description here">
+</ng-template>
+--> 
 
 </table>
 
