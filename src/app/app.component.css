@@ -1,0 +1,20 @@
+p {
+  font-family: Lato;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: Lato;
+  font-size: small;
+}
+
+tr{
+  background-color: #f0d1c7;
+}
+
+th, td {
+  border: 1px solid black;
+  text-align: left;
+}
