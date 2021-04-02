@@ -24,6 +24,10 @@ tr.selected {
   color: #0000FF;
   font-weight: bold;
 }
+tr.due {
+  color: #FF0000;
+  font-weight: bold;
+}
 input.input_desc {
   font-size: small;
 }

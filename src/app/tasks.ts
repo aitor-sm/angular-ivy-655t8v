@@ -8,4 +8,6 @@ export interface TaskObj {
   filter: Boolean;
   selected: Boolean;
   status: string;
+  creator: string;
+  dueDate: Date;
 }

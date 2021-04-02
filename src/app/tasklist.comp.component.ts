@@ -16,6 +16,7 @@ export class TaskList_comp implements OnInit {
 
   task_l = TASKS;
   focus: TaskObj;
+  today: Date = new Date();  // shouldn't be constant!! (TO-DO)
   
   ngOnInit() {
 //    this.task_l [0].name = this.name;

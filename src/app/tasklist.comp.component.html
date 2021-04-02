@@ -11,18 +11,22 @@
     <td width=25><input type="checkbox" (change)="onSelectAll($event)"></td>
     <td width=100>Name</td>
     <td width=80>Owner</td>
-    <td width=40>Status</td>
+    <td width=80>Reporter</td>
+    <td width=60>Status</td>
     <td width=90>Created</td>
+    <td width=90>Due by</td>
     <td>Description</td>
 </tr>
 
 <ng-container *ngFor="let task of task_l">
-<tr *ngIf="task.filter" class=taskitem (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)" [class.selected]="task.selected">
+<tr *ngIf="task.filter" class=taskitem (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)"  [class.due]="task.dueDate < today" [class.selected]="task.selected">
     <td><input type="checkbox" [(ngModel)]="task.selected"></td>
     <td>{{task.name}}</td>
     <td>{{task.owner}}</td>
+    <td>{{task.creator}}</td>
     <td>{{task.status}}</td>
     <td>{{task.created | date: 'dd/MM/y'}}</td>
+    <td>{{task.dueDate | date: 'dd/MM/y'}}</td>
     <td *ngIf="task==focus"><input class=input_desc id="desc" 
     [(ngModel)]="task.description" placeholder="Edit your description here"></td>
     <td *ngIf="task!=focus">{{task.description}}</td>
