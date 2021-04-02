@@ -9,19 +9,6 @@
 <button type="button" [disabled]="areSelectedTasks()" (click)="deleteTasks()">Delete</button>
 </td></tr></table>
 
-<ng-template #selectedbuttons>
-<button type="button" disabled>Reassign</button>
-<button type="button" disabled>Change status</button>
-<button type="button" disabled (click)="deleteTasks()">Delete</button>
-</ng-template>
-
-
-<ng-template #notaskbuttons>
-<button type="button" disabled>Reassign</button>
-<button type="button" disabled>Change status</button>
-<button type="button" disabled (click)="deleteTasks()">Delete</button>
-</ng-template>
-
 
 <table size=100%>
 
@@ -38,13 +25,18 @@
 
 <tr class=newtask>
     <td><button type="button"  class=inlined>New</button></td>
-    <td>Name</td>
-    <td>Owner</td>
-    <td>{{this.currentUser}}</td>
-    <td>Status</td>
-    <td>--Now--</td>
-    <td>Due by</td>
-    <td>Description</td>
+    <td><input class=input_inlined id="newdesc" 
+    [(ngModel)]="newTask.name" placeholder="New task name" size="10"></td>
+    <td><select required [(ngModel)]='newTask.owner'>
+      <option *ngFor="let item of [].constructor(users.length); let i = index" [value]="i">{{users[i]}}</option>
+      </select></td>
+    <td><i>{{newTask.creator}}</i></td>
+    <td><i>{{newTask.status}}</i></td>
+    <td><i>--Now--</i></td>
+    <td><input type="date" class=input_inlined size=8
+        [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"></td>
+    <td><input class=input_inlined id="newdesc" 
+    [(ngModel)]="newTask.description" placeholder="Enter the task description" size="100%"></td>
 </tr>
 
 <ng-container *ngIf="task_l.length > 0; then task_tableelements else no_elements"> 
@@ -59,8 +51,16 @@
     [(ngModel)]="task.name" placeholder="Edit your name here" size="10"></td>
     <td *ngIf="task!=focus">{{task.name}}</td>
 
-    <td>{{task.owner}}</td>
-    <td>{{task.creator}}</td>
+    <td>{{users[task.owner]}}</td>
+<!-- DOES NOT WORK WELL
+    <td *ngIf="task==focus"><select required [(ngModel)]='task.owner'>
+      <option *ngFor="let item of [].constructor(users.length); let i = index" [value]="i">{{users[i]}}</option>
+      </select>
+      </td>
+    <td *ngIf="task!=focus">{{users[task.owner]}}</td>
+-->
+
+    <td>{{users[task.creator]}}</td>
     <td>{{task.status}}</td>
     <td>{{task.created | date: 'dd/MM/y'}}</td>
     <td>{{task.dueDate | date: 'dd/MM/y'}}</td>

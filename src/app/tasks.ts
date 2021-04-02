@@ -2,12 +2,12 @@ export interface TaskObj {
   id: number;
   name: string;
   done: Boolean;
-  owner: string;
+  owner: number;
   created: Date;
   description: string;
   filter: Boolean;
   selected: Boolean;
   status: string;
-  creator: string;
+  creator: number;
   dueDate: Date;
 }
