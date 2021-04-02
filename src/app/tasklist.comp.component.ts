@@ -38,4 +38,18 @@ export class TaskList_comp implements OnInit {
     this.focus = null;
   }
 
+  onSelectAll(e: Event): void {
+    const checkbox = e.target as HTMLInputElement;
+    for (let i=this.task_l.length-1; i>=0; i--) {
+      this.task_l[i].selected = checkbox.checked;
+    }
+  }
+
+  deleteTasks (): void {
+    console.log (this.task_l.length);
+    for (let i=this.task_l.length-1; i>=0; i--)
+      if (this.task_l[i].selected)
+        this.task_l.splice(i,1);
+    console.log (this.task_l.length);
+  }
 }

@@ -1,8 +1,14 @@
 
+
+<table><tr class=toolbar><td>
+<button type="button" >New Task</button>
+<button type="button" >Delete task(s)</button>
+</td></tr></table>
+
 <table>
 
 <tr class=header>
-    <td width=25>Don</td>
+    <td width=25><input type="checkbox" (change)="onSelectAll($event)"></td>
     <td width=100>Name</td>
     <td width=80>Owner</td>
     <td width=40>Status</td>
