@@ -11,6 +11,10 @@ tr.toolbar {
   font-weight: bold;
   border: 1px solid black;
 }
+tr.newtask {
+  border: 1px solid black;
+  color: #666666
+}
 tr.header {
   background-color: #dddddd;
   font-weight: bold;
@@ -31,4 +35,12 @@ tr.due {
 input.input_desc {
   font-size: small;
 }
+button {
+  font-size: 12px;
+}
+button.inlined {
+  font-size: 10px;
+  padding: 0 0 0 0;
+}
+
 
