@@ -9,16 +9,14 @@ import { TASKS } from './mock-tasks'
 })
 
 export class TaskList_comp implements OnInit {
-  @Input() name: string;
-  @Input() owner: string;
-  @Input() desc: string;
+//  @Input() name: string;
+//  @Input() owner: string;
+//  @Input() desc: string;
   @Input() initSelect: string;
 
-  task_l = TASKS;
+  task_l: TaskObj[];
   focus: TaskObj;
-  today: Date = new Date();  // shouldn't be constant!! (TO-DO)
   currentUser : string = "Aitor";
-
 
 
   ngOnInit() {
@@ -26,7 +24,10 @@ export class TaskList_comp implements OnInit {
 //    this.task_l [0].owner = this.owner;
 //    this.task_l [0].description = this.desc;
   
-//    console.log (this.initSelect);
+    // Retrieve tasks
+    this.task_l = TASKS;
+
+    // Parse the initially selected tasks
     for (let i of this.initSelect.split(",",100)){
       let n = parseInt(i,10);
       if (n<=this.task_l.length)
@@ -60,6 +61,10 @@ export class TaskList_comp implements OnInit {
 
   areSelectedTasks (): Boolean {
     return this.task_l.filter(x => x.selected).length == 0;
+  }
+
+  dueTask (task: TaskObj): Boolean {
+    return (task.dueDate < new Date() ) && (task.status != "done");
   }
 
 }

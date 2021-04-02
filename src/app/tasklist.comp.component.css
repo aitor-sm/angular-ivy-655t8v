@@ -32,7 +32,7 @@ tr.due {
   color: #FF0000;
   font-weight: bold;
 }
-input.input_desc {
+input.input_inlined {
   font-size: small;
 }
 button {

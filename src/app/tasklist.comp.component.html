@@ -52,17 +52,23 @@
 
 <ng-template #task_tableelements>
 <ng-container *ngFor="let task of task_l">
-<tr *ngIf="task.filter" class=taskitem (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)"  [class.due]="task.dueDate < today" [class.selected]="task.selected">
+<tr *ngIf="task.filter" class=taskitem (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)"  [class.due]="dueTask(task)" [class.selected]="task.selected">
     <td><input type="checkbox" [(ngModel)]="task.selected"></td>
-    <td>{{task.name}}</td>
+
+    <td *ngIf="task==focus"><input class=input_inlined id="name" 
+    [(ngModel)]="task.name" placeholder="Edit your name here" size="10"></td>
+    <td *ngIf="task!=focus">{{task.name}}</td>
+
     <td>{{task.owner}}</td>
     <td>{{task.creator}}</td>
     <td>{{task.status}}</td>
     <td>{{task.created | date: 'dd/MM/y'}}</td>
     <td>{{task.dueDate | date: 'dd/MM/y'}}</td>
-    <td *ngIf="task==focus"><input class=input_desc id="desc" 
+
+    <td *ngIf="task==focus"><input class=input_inlined id="desc" 
     [(ngModel)]="task.description" placeholder="Edit your description here" size="100%"></td>
     <td *ngIf="task!=focus">{{task.description}}</td>
+
 </tr>
 </ng-container>
 </ng-template>
