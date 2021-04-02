@@ -56,4 +56,10 @@ export class TaskList_comp implements OnInit {
         this.task_l.splice(i,1);
     console.log (this.task_l.length);
   }
+
+
+  areSelectedTasks (): Boolean {
+    return this.task_l.filter(x => x.selected).length == 0;
+  }
+
 }
