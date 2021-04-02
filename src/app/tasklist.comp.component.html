@@ -19,22 +19,26 @@
     <td width=80>Reporter</td>
     <td width=80>Status</td>
     <td width=90>Created</td>
-    <td width=90>Due by</td>
+    <td width=120>Due by</td>
     <td>Description</td>
 </tr>
 
 <tr class=newtask>
-    <td><button type="button"  class=inlined>New</button></td>
+    <td><button type="button"  class=inlined [disabled]="!isValidNewTask()" (click)="addNewTask(newTask)">New</button></td>
     <td><input class=input_inlined id="newdesc" 
     [(ngModel)]="newTask.name" placeholder="New task name" size="10"></td>
     <td><select required [(ngModel)]='newTask.owner'>
       <option *ngFor="let item of [].constructor(users.length); let i = index" [value]="i">{{users[i]}}</option>
       </select></td>
-    <td><i>{{newTask.creator}}</i></td>
+    <td><i>{{users[newTask.creator]}}</i></td>
     <td><i>{{newTask.status}}</i></td>
     <td><i>--Now--</i></td>
-    <td><input type="date" class=input_inlined size=8
-        [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"></td>
+
+    <td><input type="date" class=input_inlined style="width:115px"
+        [(ngModel)]="newTask.dueDate"></td> 
+<!--    <td><input type="date" class=input_inlined style="width:115px"
+        [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"></td>  -->
+    
     <td><input class=input_inlined id="newdesc" 
     [(ngModel)]="newTask.description" placeholder="Enter the task description" size="100%"></td>
 </tr>

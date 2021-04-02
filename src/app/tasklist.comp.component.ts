@@ -34,10 +34,10 @@ export class TaskList_comp implements OnInit {
     dueDate: new Date("2020-01-01")
   };
 
-  newAssignedUser: number = 0;
-  newName: string;
-  newDescription: string;
-  newDueDate: Date;
+//  newAssignedUser: number = 0;
+//  newName: string;
+//  newDescription: string;
+//  newDueDate: Date;
 
 
   ngOnInit() {
@@ -84,4 +84,16 @@ export class TaskList_comp implements OnInit {
   dueTask(task: TaskObj): Boolean {
     return task.dueDate < new Date() && task.status != "done";
   }
+
+  isValidNewTask (): Boolean {
+    return (this.newTask.name != "") && (this.newTask.description != "");
+  }
+
+  addNewTask (task: TaskObj) {
+    task.id = this.task_l.length;
+    task.created = new Date();
+
+    this.task_l.push (Object.assign({}, task));
+  }
+
 }
