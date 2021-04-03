@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { TaskObj } from "./tasks";
+import { TaskObj, FlowStatusObj } from "./tasks";
 import { TASKS } from "./mock-tasks";
 
 @Component({
@@ -21,7 +21,89 @@ export class TaskList_comp implements OnInit {
   users: string[] = ["Aitor", "Andreas", "Jaime"];
   reassignTo : number = 0;
 
-  statuses: string[] = ["to-do", "in progress", "blocked", "verify", "done"];
+//  statuses: string[] = ["to-do", "in progress", "blocked", "verify", "done", "cancelled"];
+
+  basicFlow : FlowStatusObj[] = [
+    {
+      name: "to-do",
+      terminal: false,
+      actions: [
+        {
+          nextStatus: 1,
+          name: "Start"
+        },
+        {
+          nextStatus: 5,
+          name: "Cancel"
+        }
+      ]
+    },
+    {
+      name: "in progress",
+      terminal: false,
+      actions: [
+        {
+          nextStatus: 2,
+          name: "Block"
+        },
+        {
+          nextStatus: 3,
+          name: "Resolve"
+        },
+        {
+          nextStatus: 5,
+          name: "Cancel"
+        }
+      ]
+    },
+    {
+      name: "blocked",
+      terminal: false,
+      actions: [
+        {
+          nextStatus: 1,
+          name: "Resume"
+        },
+        {
+          nextStatus: 5,
+          name: "Cancel"
+        }
+      ]
+    },
+    {
+      name: "resolved",
+      terminal: false,
+      actions: [
+        {
+          nextStatus: 1,
+          name: "Reject"
+        },
+        {
+          nextStatus: 4,
+          name: "Verify"
+        }
+      ]
+    },
+    {
+      name: "done",
+      terminal: true,
+      actions: [
+      ]
+    },
+    {
+      name: "cancelled",
+      terminal: true,
+      actions: [
+      ]
+    }
+  ]
+
+
+
+  newTaskToggle: boolean = false;
+
+
+
 
   newTask: TaskObj = {
     id: 0,
@@ -32,23 +114,13 @@ export class TaskList_comp implements OnInit {
     created: new Date(),
     filter: true,
     selected: false,
-    status: this.statuses[0],
+    status: 0,
     creator: this.currentUser,
     dueDate: new Date("2020-01-01")
   };
 
-  newTaskToggle: boolean = false;
-
-//  newAssignedUser: number = 0;
-//  newName: string;
-//  newDescription: string;
-//  newDueDate: Date;
-
 
   ngOnInit() {
-    //    this.task_l [0].name = this.name;
-    //    this.task_l [0].owner = this.owner;
-    //    this.task_l [0].description = this.desc;
 
     // Retrieve tasks
     this.task_l = TASKS;
@@ -76,7 +148,7 @@ export class TaskList_comp implements OnInit {
     }
   }
 
-  deleteTasks(): void {
+  deleteSelectedTasks(): void {
 //    console.log(this.task_l.length);
     for (let i = this.task_l.length - 1; i >= 0; i--)
       if (this.task_l[i].selected) this.task_l.splice(i, 1);
@@ -88,7 +160,7 @@ export class TaskList_comp implements OnInit {
   }
 
   dueTask(task: TaskObj): Boolean {
-    return task.dueDate < new Date() && task.status != "done";
+    return task.dueDate < new Date() && this.basicFlow[task.status].terminal;
   }
 
   isValidNewTask (): Boolean {
@@ -100,7 +172,7 @@ export class TaskList_comp implements OnInit {
     task.created = new Date();
 
     this.task_l.push (Object.assign({}, task));
-    console.log ("Created task with ID: ",this.idSequence);
+//    console.log ("Created task with ID: ",this.idSequence);
 
     this.idSequence++;
   }
@@ -113,6 +185,15 @@ export class TaskList_comp implements OnInit {
 
   toggleNewTaskBar () {
     this.newTaskToggle = !this.newTaskToggle;
+  }
+
+  changeStatus (task: TaskObj, newStatus: number) {
+    task.status = newStatus;
+  }
+
+  deleteTask (t: TaskObj) {
+    for (let i = this.task_l.length - 1; i >= 0; i--)
+      if (this.task_l[i]==t) this.task_l.splice(i, 1);
   }
 
 }

@@ -10,7 +10,7 @@
       </select>
 <!--button type="button" disabled>Change status</button-->
 &nbsp;
-<button type="button" [disabled]="areSelectedTasks()" (click)="deleteTasks()">Delete</button>
+<button type="button" [disabled]="areSelectedTasks()" (click)="deleteSelectedTasks()">Delete</button>
 </td></tr></table>
 
 
@@ -26,6 +26,7 @@
     <td width=90>Created</td>
     <td width=120>Due by</td>
     <td>Description</td>
+    <td>Actions</td>
 </tr>
 
 <tr class=newtask *ngIf="newTaskToggle">
@@ -36,7 +37,7 @@
       <option *ngFor="let item of [].constructor(users.length); let i = index" [value]="i">{{users[i]}}</option>
       </select></td>
     <td><i>{{users[newTask.creator]}}</i></td>
-    <td><i>{{newTask.status}}</i></td>
+    <td><i>{{basicFlow[newTask.status].name}}</i></td>
     <td><i>--Now--</i></td>
 
     <td><input type="date" class=input_inlined style="width:115px"
@@ -45,7 +46,8 @@
         [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"></td>  -->
     
     <td><input class=input_inlined id="newdesc" 
-    [(ngModel)]="newTask.description" placeholder="Enter the task description" size="100%"></td>
+    [(ngModel)]="newTask.description" placeholder="Enter the task description" size="50%"></td>
+    <td></td>
 </tr>
 
 <ng-container *ngIf="task_l.length > 0; then task_tableelements else no_elements"> 
@@ -70,13 +72,21 @@
 -->
 
     <td>{{users[task.creator]}}</td>
-    <td>{{task.status}}</td>
+    <td>{{basicFlow[task.status].name}}</td>
     <td>{{task.created | date: 'dd/MM/y'}}</td>
     <td>{{task.dueDate | date: 'dd/MM/y'}}</td>
 
     <td *ngIf="task==focus"><input class=input_inlined id="desc" 
-    [(ngModel)]="task.description" placeholder="Edit your description here" size="100%"></td>
+    [(ngModel)]="task.description" placeholder="Edit your description here" size="50%"></td>
     <td *ngIf="task!=focus">&nbsp;{{task.description}}</td>
+
+    <td> 
+      <button type="button"(click)="deleteTask(task)">Delete</button>
+      <ng-container *ngFor="let action of basicFlow[task.status].actions">
+      &nbsp;
+      <button type="button" (click)="changeStatus(task,action.nextStatus)">{{action.name}}</button>
+      </ng-container>
+    </td>
 
 </tr>
 </ng-container>

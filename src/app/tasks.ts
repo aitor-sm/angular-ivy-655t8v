@@ -7,7 +7,18 @@ export interface TaskObj {
   description: string;
   filter: Boolean;
   selected: Boolean;
-  status: string;
+  status: number;
   creator: number;
   dueDate: Date;
+}
+
+export interface FlowActionObj {
+  nextStatus: number;
+  name: string;
+}
+
+export interface FlowStatusObj {
+  name: string;
+  terminal: Boolean;
+  actions: FlowActionObj[];
 }
