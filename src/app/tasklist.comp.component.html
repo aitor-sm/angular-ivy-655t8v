@@ -31,7 +31,7 @@
 <tr class=newtask *ngIf="newTaskToggle">
     <td><button type="button"  class=inlined [disabled]="!isValidNewTask()" (click)="addNewTask(newTask)" style="font-size=18">&nbsp;&nbsp;&#x21E9;&nbsp;&nbsp; </button></td>
     <td><input class=input_inlined id="newdesc" 
-    [(ngModel)]="newTask.name" placeholder="New task name" size="10"></td>
+    [(ngModel)]="newTask.name" placeholder="New task name" size="12"></td>
     <td><select required [(ngModel)]='newTask.owner'>
       <option *ngFor="let item of [].constructor(users.length); let i = index" [value]="i">{{users[i]}}</option>
       </select></td>
@@ -57,8 +57,8 @@
     <td><input type="checkbox" [(ngModel)]="task.selected"></td>
 
     <td *ngIf="task==focus"><input class=input_inlined id="name" 
-    [(ngModel)]="task.name" placeholder="Edit your name here" size="10"></td>
-    <td *ngIf="task!=focus">{{task.name}}</td>
+    [(ngModel)]="task.name" placeholder="Edit your name here" size="12"></td>
+    <td *ngIf="task!=focus">&nbsp;{{task.name}}</td>
 
     <td>{{users[task.owner]}}</td>
 <!-- DOES NOT WORK WELL
@@ -76,7 +76,7 @@
 
     <td *ngIf="task==focus"><input class=input_inlined id="desc" 
     [(ngModel)]="task.description" placeholder="Edit your description here" size="100%"></td>
-    <td *ngIf="task!=focus">{{task.description}}</td>
+    <td *ngIf="task!=focus">&nbsp;{{task.description}}</td>
 
 </tr>
 </ng-container>

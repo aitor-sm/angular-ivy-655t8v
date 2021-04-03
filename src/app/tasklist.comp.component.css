@@ -21,8 +21,7 @@ tr.header {
   border: 1px solid black;
 }
 tr.taskitem:hover {
-  background-color: #8888FF;
-  font-weight: bold;
+  background-color: #ddddff;
 }
 tr.selected {
   color: #0000FF;
@@ -33,7 +32,9 @@ tr.due {
   font-weight: bold;
 }
 input.input_inlined {
+  height: 14px;
   font-size: small;
+  font-family: Lato;
 }
 button {
   font-size: 12px;
@@ -44,7 +45,7 @@ button.inlined {
 }
 
 button.toggleOff {
-  background-color: #ddeffe; 
+  background-color: #ddddff; 
   color: black; 
   border: 2px solid #008CBA; 
 }
