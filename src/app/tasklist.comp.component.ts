@@ -18,8 +18,9 @@ export class TaskList_comp implements OnInit {
   idSequence: number;
 
   currentUser: number = 0;
-  users: string[] = ["Aitor", "Andreas", "Jaime"];
+  users: string[] = ["Aitor", "Andrés", "Jaime"];
   reassignTo : number = 0;
+  toDueDate : Date = new Date();
 
 //  statuses: string[] = ["to-do", "in progress", "blocked", "verify", "done", "cancelled"];
 
@@ -110,7 +111,6 @@ export class TaskList_comp implements OnInit {
     name: "",
     owner: 0,
     description: "",
-    done: false,
     created: new Date(),
     filter: true,
     selected: false,
@@ -131,6 +131,8 @@ export class TaskList_comp implements OnInit {
       let n = parseInt(i, 10);
       if (n <= this.task_l.length) this.task_l[n - 1].selected = true;
     }
+
+    this.clearNewTaskFields();
   }
 
   onMouseOver(t: TaskObj): void {
@@ -160,7 +162,7 @@ export class TaskList_comp implements OnInit {
   }
 
   dueTask(task: TaskObj): Boolean {
-    return task.dueDate < new Date() && this.basicFlow[task.status].terminal;
+    return task.dueDate < new Date() && !this.basicFlow[task.status].terminal;
   }
 
   isValidNewTask (): Boolean {
@@ -180,7 +182,6 @@ export class TaskList_comp implements OnInit {
   reassignSelectedTasks (assignee) {
     for (let i = this.task_l.length - 1; i >= 0; i--)
       if (this.task_l[i].selected) this.task_l[i].owner = assignee;
-
   }
 
   toggleNewTaskBar () {
@@ -196,4 +197,21 @@ export class TaskList_comp implements OnInit {
       if (this.task_l[i]==t) this.task_l.splice(i, 1);
   }
 
+  changeDueDateOnSelectedTasks (d: Date) {
+    for (let i = this.task_l.length - 1; i >= 0; i--)
+      if (this.task_l[i].selected) this.task_l[i].dueDate = d;
+      // this.toDueDate;
+    console.log (this.toDueDate);
+  }
+
+  clearNewTaskFields () {
+    this.newTask.name = "";
+    this.newTask.owner = 0;
+    this.newTask.description = "";
+    this.newTask.filter = true;
+    this.newTask.selected = false;
+    this.newTask.status = 0;
+    this.newTask.creator = this.currentUser;
+    this.newTask.dueDate = new Date("2020-01-01");
+  }
 }

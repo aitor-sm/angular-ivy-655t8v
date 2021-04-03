@@ -38,6 +38,7 @@ input.input_inlined {
 }
 button {
   font-size: 12px;
+//  background-color: #ddddff; 
 }
 button.inlined {
   font-size: 10px;

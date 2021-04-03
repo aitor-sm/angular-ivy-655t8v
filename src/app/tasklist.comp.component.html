@@ -8,8 +8,12 @@
 <select required [(ngModel)]='reassignTo'>
       <option *ngFor="let item of [].constructor(users.length); let i = index" [value]="i">{{users[i]}}</option>
       </select>
-<!--button type="button" disabled>Change status</button-->
 &nbsp;
+<button type="button" [disabled]="areSelectedTasks()" (click)="changeDueDateOnSelectedTasks (toDueDate)">Change Due date to:</button>
+<input type="date" class=input_inlined style="width:120px"
+        [ngModel]="toDueDate | date:'yyyy-MM-dd'"  (ngModelChange)="toDueDate=$event">
+&nbsp;
+
 <button type="button" [disabled]="areSelectedTasks()" (click)="deleteSelectedTasks()">Delete</button>
 </td></tr></table>
 
@@ -24,13 +28,13 @@
     <td width=80>Reporter</td>
     <td width=80>Status</td>
     <td width=90>Created</td>
-    <td width=120>Due by</td>
+    <td width=125>Due by</td>
     <td>Description</td>
     <td>Actions</td>
 </tr>
 
 <tr class=newtask *ngIf="newTaskToggle">
-    <td><button type="button"  class=inlined [disabled]="!isValidNewTask()" (click)="addNewTask(newTask)" style="font-size=18">&nbsp;&nbsp;&#x21E9;&nbsp;&nbsp; </button></td>
+    <td></td>
     <td><input class=input_inlined id="newdesc" 
     [(ngModel)]="newTask.name" placeholder="New task name" size="12"></td>
     <td><select required [(ngModel)]='newTask.owner'>
@@ -40,15 +44,21 @@
     <td><i>{{basicFlow[newTask.status].name}}</i></td>
     <td><i>--Now--</i></td>
 
-    <td><input type="date" class=input_inlined style="width:115px"
-        [(ngModel)]="newTask.dueDate"></td> 
+    <td><input type="date" class=input_inlined style="width:120px"
+        [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"  (ngModelChange)="newTask.dueDate = $event"></td> 
+<!--        [ngModel]="newTask.dueDate | date:'yyyy-MM-dd' : 'UTC'"  (ngModelChange)="newTask.dueDate = $event"></td>  -->
 <!--    <td><input type="date" class=input_inlined style="width:115px"
         [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"></td>  -->
     
     <td><input class=input_inlined id="newdesc" 
     [(ngModel)]="newTask.description" placeholder="Enter the task description" size="50%"></td>
-    <td></td>
+    <td><button type="button"  [disabled]="!isValidNewTask()" (click)="addNewTask(newTask)" class=inlined >Create task</button>
+    &nbsp;
+    <button type="button"  (click)="clearNewTaskFields()" class=inlined >Clear fields</button>
+    </td>
 </tr>
+
+<!-- &nbsp;&nbsp;&#x21E9;&nbsp;&nbsp; -->
 
 <ng-container *ngIf="task_l.length > 0; then task_tableelements else no_elements"> 
 </ng-container>
@@ -74,19 +84,26 @@
     <td>{{users[task.creator]}}</td>
     <td>{{basicFlow[task.status].name}}</td>
     <td>{{task.created | date: 'dd/MM/y'}}</td>
+
     <td>{{task.dueDate | date: 'dd/MM/y'}}</td>
+<!-- DOES NOT WORK WELL
+    <td *ngIf="task==focus"><input type="date" class=input_inlined style="width:120px"
+        [ngModel]="task.dueDate | date:'yyyy-MM-dd' : 'UTC'"  (ngModelChange)="task.dueDate = $event" ></td>
+    <td *ngIf="task!=focus">{{task.dueDate | date: 'dd/MM/y'}}</td>
+-->
 
     <td *ngIf="task==focus"><input class=input_inlined id="desc" 
     [(ngModel)]="task.description" placeholder="Edit your description here" size="50%"></td>
     <td *ngIf="task!=focus">&nbsp;{{task.description}}</td>
 
-    <td> 
-      <button type="button"(click)="deleteTask(task)">Delete</button>
+    <td *ngIf="task==focus"> 
+      <button type="button"(click)="deleteTask(task)" class=inlined >Delete</button>
       <ng-container *ngFor="let action of basicFlow[task.status].actions">
       &nbsp;
-      <button type="button" (click)="changeStatus(task,action.nextStatus)">{{action.name}}</button>
+      <button type="button" (click)="changeStatus(task,action.nextStatus)" class=inlined >{{action.name}}</button>
       </ng-container>
     </td>
+    <td *ngIf="task!=focus"></td>
 
 </tr>
 </ng-container>
