@@ -28,6 +28,7 @@ export class TaskList_comp implements OnInit {
     {
       name: "to-do",
       terminal: false,
+      resolutive: false,
       actions: [
         {
           nextStatus: 1,
@@ -42,6 +43,7 @@ export class TaskList_comp implements OnInit {
     {
       name: "in progress",
       terminal: false,
+      resolutive: false,
       actions: [
         {
           nextStatus: 2,
@@ -60,6 +62,7 @@ export class TaskList_comp implements OnInit {
     {
       name: "blocked",
       terminal: false,
+      resolutive: false,
       actions: [
         {
           nextStatus: 1,
@@ -73,6 +76,7 @@ export class TaskList_comp implements OnInit {
     },
     {
       name: "resolved",
+      resolutive: true,
       terminal: false,
       actions: [
         {
@@ -88,12 +92,14 @@ export class TaskList_comp implements OnInit {
     {
       name: "done",
       terminal: true,
+      resolutive: true,
       actions: [
       ]
     },
     {
       name: "cancelled",
       terminal: true,
+      resolutive: true,
       actions: [
       ]
     }
@@ -116,7 +122,9 @@ export class TaskList_comp implements OnInit {
     selected: false,
     status: 0,
     creator: this.currentUser,
-    dueDate: new Date("2020-01-01")
+    dueDate: new Date("2020-01-01"),
+    resolvedT: null,
+    closedT: null
   };
 
 
@@ -189,6 +197,12 @@ export class TaskList_comp implements OnInit {
   }
 
   changeStatus (task: TaskObj, newStatus: number) {
+    if (this.basicFlow[newStatus].resolutive && ! this.basicFlow[task.status].resolutive)
+      task.resolvedT = new Date();
+    
+    if (this.basicFlow[newStatus].terminal)
+      task.closedT = new Date();
+
     task.status = newStatus;
   }
 

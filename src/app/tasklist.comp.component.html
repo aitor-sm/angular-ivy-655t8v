@@ -1,6 +1,6 @@
 
 
-<table><tr class=toolbar><td>
+<table class=mainTable><tr class=toolbar><td>
 <button type="button" class=toggleOff [class.toggleOn]="newTaskToggle" (click)="toggleNewTaskBar()">New Task</button>
 <button type="button" disabled>Search</button>
 |
@@ -28,6 +28,7 @@
     <td width=80>Reporter</td>
     <td width=80>Status</td>
     <td width=90>Created</td>
+    <td width=90>Resolved</td>
     <td width=125>Due by</td>
     <td>Description</td>
     <td>Actions</td>
@@ -43,6 +44,7 @@
     <td><i>{{users[newTask.creator]}}</i></td>
     <td><i>{{basicFlow[newTask.status].name}}</i></td>
     <td><i>--Now--</i></td>
+    <td><i>Empty</i></td>
 
     <td><input type="date" class=input_inlined style="width:120px"
         [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"  (ngModelChange)="newTask.dueDate = $event"></td> 
@@ -51,7 +53,7 @@
         [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"></td>  -->
     
     <td><input class=input_inlined id="newdesc" 
-    [(ngModel)]="newTask.description" placeholder="Enter the task description" size="50%"></td>
+    [(ngModel)]="newTask.description" placeholder="Enter the task description" size="45%"></td>
     <td><button type="button"  [disabled]="!isValidNewTask()" (click)="addNewTask(newTask)" class=inlined >Create task</button>
     &nbsp;
     <button type="button"  (click)="clearNewTaskFields()" class=inlined >Clear fields</button>
@@ -84,6 +86,7 @@
     <td>{{users[task.creator]}}</td>
     <td>{{basicFlow[task.status].name}}</td>
     <td>{{task.created | date: 'dd/MM/y'}}</td>
+    <td>{{task.resolvedT | date: 'dd/MM/y'}}</td>
 
     <td>{{task.dueDate | date: 'dd/MM/y'}}</td>
 <!-- DOES NOT WORK WELL
@@ -93,7 +96,7 @@
 -->
 
     <td *ngIf="task==focus"><input class=input_inlined id="desc" 
-    [(ngModel)]="task.description" placeholder="Edit your description here" size="50%"></td>
+    [(ngModel)]="task.description" placeholder="Edit your description here" size="45%"></td>
     <td *ngIf="task!=focus">&nbsp;{{task.description}}</td>
 
     <td *ngIf="task==focus"> 
@@ -110,7 +113,7 @@
 </ng-template>
 
 <ng-template #no_elements>
-<tr><td></td><td colspan=7><i>No tasks to show </i></td></tr>
+<tr><td></td><td colspan=9><i>No tasks to show </i></td></tr>
 </ng-template>
 
 </table>

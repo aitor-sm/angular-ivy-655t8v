@@ -9,6 +9,8 @@ export interface TaskObj {
   status: number;
   creator: number;
   dueDate: Date;
+  resolvedT: Date;
+  closedT: Date;
 }
 
 export interface FlowActionObj {
@@ -18,6 +20,7 @@ export interface FlowActionObj {
 
 export interface FlowStatusObj {
   name: string;
+  resolutive: Boolean;
   terminal: Boolean;
   actions: FlowActionObj[];
 }

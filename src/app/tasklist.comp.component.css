@@ -6,6 +6,12 @@ table {
   font-size: small;
   border: 1px solid black;
 }
+table.mainTable {
+  height: 100%;
+}
+tr.expand {
+  height: 100%;
+}
 tr.toolbar {
   background-color: #bbbbbb;
   font-weight: bold;
