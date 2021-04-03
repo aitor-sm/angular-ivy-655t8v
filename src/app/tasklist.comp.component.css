@@ -43,4 +43,15 @@ button.inlined {
   padding: 0 0 0 0;
 }
 
+button.toggleOff {
+  background-color: #ddeffe; 
+  color: black; 
+  border: 2px solid #008CBA; 
+}
+
+button.toggleOn {
+  background-color: #008CBA;
+  color: white;
+}
+
 

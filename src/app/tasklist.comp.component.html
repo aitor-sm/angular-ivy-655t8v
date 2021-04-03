@@ -1,13 +1,18 @@
 
 
 <table><tr class=toolbar><td>
-<button type="button" >New Task</button>
+<button type="button" class=toggleOff [class.toggleOn]="newTaskToggle" (click)="toggleNewTaskBar()">New Task</button>
 <button type="button" disabled>Search</button>
 |
-<button type="button" disabled>Reassign</button>
-<button type="button" disabled>Change status</button>
+<button type="button" [disabled]="areSelectedTasks()" (click)="reassignSelectedTasks (reassignTo )">Reassign to:</button>
+<select required [(ngModel)]='reassignTo'>
+      <option *ngFor="let item of [].constructor(users.length); let i = index" [value]="i">{{users[i]}}</option>
+      </select>
+<!--button type="button" disabled>Change status</button-->
+&nbsp;
 <button type="button" [disabled]="areSelectedTasks()" (click)="deleteTasks()">Delete</button>
 </td></tr></table>
+
 
 
 <table size=100%>
@@ -23,8 +28,8 @@
     <td>Description</td>
 </tr>
 
-<tr class=newtask>
-    <td><button type="button"  class=inlined [disabled]="!isValidNewTask()" (click)="addNewTask(newTask)">New</button></td>
+<tr class=newtask *ngIf="newTaskToggle">
+    <td><button type="button"  class=inlined [disabled]="!isValidNewTask()" (click)="addNewTask(newTask)" style="font-size=18">&nbsp;&nbsp;&#x21E9;&nbsp;&nbsp; </button></td>
     <td><input class=input_inlined id="newdesc" 
     [(ngModel)]="newTask.name" placeholder="New task name" size="10"></td>
     <td><select required [(ngModel)]='newTask.owner'>

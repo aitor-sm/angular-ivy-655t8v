@@ -15,9 +15,12 @@ export class TaskList_comp implements OnInit {
 
   task_l: TaskObj[];
   focus: TaskObj;
-  currentUser: number = 0;
+  idSequence: number;
 
+  currentUser: number = 0;
   users: string[] = ["Aitor", "Andreas", "Jaime"];
+  reassignTo : number = 0;
+
   statuses: string[] = ["to-do", "in progress", "blocked", "verify", "done"];
 
   newTask: TaskObj = {
@@ -34,6 +37,8 @@ export class TaskList_comp implements OnInit {
     dueDate: new Date("2020-01-01")
   };
 
+  newTaskToggle: boolean = false;
+
 //  newAssignedUser: number = 0;
 //  newName: string;
 //  newDescription: string;
@@ -47,6 +52,7 @@ export class TaskList_comp implements OnInit {
 
     // Retrieve tasks
     this.task_l = TASKS;
+    this.idSequence = this.task_l.length;
 
     // Parse the initially selected tasks
     for (let i of this.initSelect.split(",", 100)) {
@@ -71,10 +77,10 @@ export class TaskList_comp implements OnInit {
   }
 
   deleteTasks(): void {
-    console.log(this.task_l.length);
+//    console.log(this.task_l.length);
     for (let i = this.task_l.length - 1; i >= 0; i--)
       if (this.task_l[i].selected) this.task_l.splice(i, 1);
-    console.log(this.task_l.length);
+//    console.log(this.task_l.length);
   }
 
   areSelectedTasks(): Boolean {
@@ -90,10 +96,23 @@ export class TaskList_comp implements OnInit {
   }
 
   addNewTask (task: TaskObj) {
-    task.id = this.task_l.length;
+    task.id = this.idSequence;
     task.created = new Date();
 
     this.task_l.push (Object.assign({}, task));
+    console.log ("Created task with ID: ",this.idSequence);
+
+    this.idSequence++;
+  }
+
+  reassignSelectedTasks (assignee) {
+    for (let i = this.task_l.length - 1; i >= 0; i--)
+      if (this.task_l[i].selected) this.task_l[i].owner = assignee;
+
+  }
+
+  toggleNewTaskBar () {
+    this.newTaskToggle = !this.newTaskToggle;
   }
 
 }
