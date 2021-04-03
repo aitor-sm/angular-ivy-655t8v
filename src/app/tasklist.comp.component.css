@@ -4,7 +4,7 @@ table {
   table-layout: fixed;
   font-family: Lato;
   font-size: small;
-  border: 1px solid black;
+//  border: 1px solid black;
 }
 table.mainTable {
   height: 100%;
