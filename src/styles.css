@@ -1,5 +1,6 @@
 /* Add application styles & imports to this file! */
-body {
+html, body {
   margin: 0;
   padding: 0;
+  height: 100%
 }

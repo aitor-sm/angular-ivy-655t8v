@@ -1,26 +1,27 @@
 
+<div class="box">
+   <div class="row header">
 
-<table class=mainTable><tr class=toolbar><td>
+
+<table><tr class=toolbar><td colspan=10>
 <button type="button" class=toggleOff [class.toggleOn]="newTaskToggle" (click)="toggleNewTaskBar()">New Task</button>
 <button type="button" disabled>Search</button>
 |
-<button type="button" [disabled]="areSelectedTasks()" (click)="reassignSelectedTasks (reassignTo )">Reassign to:</button>
+<button type="button" [disabled]="numSelectedTasks()==0" (click)="reassignSelectedTasks (reassignTo )">Reassign to:</button>
 <select required [(ngModel)]='reassignTo'>
       <option *ngFor="let item of [].constructor(users.length); let i = index" [value]="i">{{users[i]}}</option>
       </select>
 &nbsp;
-<button type="button" [disabled]="areSelectedTasks()" (click)="changeDueDateOnSelectedTasks (toDueDate)">Change Due date to:</button>
+<button type="button" [disabled]="numSelectedTasks()==0" (click)="changeDueDateOnSelectedTasks (toDueDate)">Change Due date to:</button>
 <input type="date" class=input_inlined style="width:120px"
         [ngModel]="toDueDate | date:'yyyy-MM-dd'"  (ngModelChange)="toDueDate=$event">
 &nbsp;
 
-<button type="button" [disabled]="areSelectedTasks()" (click)="deleteSelectedTasks()">Delete</button>
+<button type="button" [disabled]="numSelectedTasks()==0" (click)="deleteSelectedTasks()">Delete</button>
 </td></tr></table>
 
 
-
-<table size=100%>
-
+<table >
 <tr class=header>
     <td width=25><input type="checkbox" (change)="onSelectAll($event)"></td>
     <td width=100>Name</td>
@@ -42,7 +43,7 @@
       <option *ngFor="let item of [].constructor(users.length); let i = index" [value]="i">{{users[i]}}</option>
       </select></td>
     <td><i>{{users[newTask.creator]}}</i></td>
-    <td><i>{{basicFlow[newTask.status].name}}</i></td>
+    <td><i>{{taskStatusName(newTask)}}</i></td>
     <td><i>--Now--</i></td>
     <td><i>Empty</i></td>
 
@@ -84,7 +85,7 @@
 -->
 
     <td>{{users[task.creator]}}</td>
-    <td>{{basicFlow[task.status].name}}</td>
+    <td>{{taskStatusName(task)}}</td>
     <td>{{task.created | date: 'dd/MM/y'}}</td>
     <td>{{task.resolvedT | date: 'dd/MM/y'}}</td>
 
@@ -101,7 +102,7 @@
 
     <td *ngIf="task==focus"> 
       <button type="button"(click)="deleteTask(task)" class=inlined >Delete</button>
-      <ng-container *ngFor="let action of basicFlow[task.status].actions">
+      <ng-container *ngFor="let action of availableActions(task)">
       &nbsp;
       <button type="button" (click)="changeStatus(task,action.nextStatus)" class=inlined >{{action.name}}</button>
       </ng-container>
@@ -118,3 +119,13 @@
 
 </table>
 
+</div>
+ <div class="row content">
+   
+ </div>
+ <div class="row footer">
+   <table><tr class=toolbar height=25px><td>
+     Total: {{numTotalTasks()}} tasks, ({{numSelectedTasks()}} selected), {{numDueTasks()}} are due
+   </td></tr></table>
+ </div>
+</div>

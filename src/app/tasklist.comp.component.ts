@@ -1,30 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { TaskObj, FlowStatusObj } from "./tasks";
+import { TaskObj, FlowStatusObj, FlowActionObj } from "./tasks";
 import { TASKS } from "./mock-tasks";
 
-@Component({
-  selector: "tasklist_comp",
-  templateUrl: "./tasklist.comp.component.html",
-  styleUrls: ["./tasklist.comp.component.css"]
-})
-export class TaskList_comp implements OnInit {
-  //  @Input() name: string;
-  //  @Input() owner: string;
-  //  @Input() desc: string;
-  @Input() initSelect: string;
-
-  task_l: TaskObj[];
-  focus: TaskObj;
-  idSequence: number;
-
-  currentUser: number = 0;
-  users: string[] = ["Aitor", "Andrés", "Jaime"];
-  reassignTo : number = 0;
-  toDueDate : Date = new Date();
-
-//  statuses: string[] = ["to-do", "in progress", "blocked", "verify", "done", "cancelled"];
-
-  basicFlow : FlowStatusObj[] = [
+  var basicFlow : FlowStatusObj[] = [
     {
       name: "to-do",
       terminal: false,
@@ -107,6 +85,32 @@ export class TaskList_comp implements OnInit {
 
 
 
+@Component({
+  selector: "tasklist_comp",
+  templateUrl: "./tasklist.comp.component.html",
+  styleUrls: ["./tasklist.comp.component.css"]
+})
+
+
+export class TaskList_comp implements OnInit {
+  //  @Input() name: string;
+  //  @Input() owner: string;
+  //  @Input() desc: string;
+  @Input() initSelect: string;
+
+  task_l: TaskObj[];
+  focus: TaskObj;
+  idSequence: number;
+
+  currentUser: number = 0;
+  users: string[] = ["Aitor", "Andrés", "Jaime"];
+  reassignTo : number = 0;
+  toDueDate : Date = new Date();
+
+//  statuses: string[] = ["to-do", "in progress", "blocked", "verify", "done", "cancelled"];
+
+
+
   newTaskToggle: boolean = false;
 
 
@@ -165,12 +169,13 @@ export class TaskList_comp implements OnInit {
 //    console.log(this.task_l.length);
   }
 
-  areSelectedTasks(): Boolean {
-    return this.task_l.filter(x => x.selected).length == 0;
+  numSelectedTasks(): number {
+    return (this.task_l.filter(x => (x.selected && x.filter))).length;
   }
 
   dueTask(task: TaskObj): Boolean {
-    return task.dueDate < new Date() && !this.basicFlow[task.status].terminal;
+//    console.log ("Due: "+ task.dueDate);
+    return (task.dueDate < new Date()) && ! (basicFlow[task.status].terminal);
   }
 
   isValidNewTask (): Boolean {
@@ -197,10 +202,10 @@ export class TaskList_comp implements OnInit {
   }
 
   changeStatus (task: TaskObj, newStatus: number) {
-    if (this.basicFlow[newStatus].resolutive && ! this.basicFlow[task.status].resolutive)
+    if (basicFlow[newStatus].resolutive && ! basicFlow[task.status].resolutive)
       task.resolvedT = new Date();
     
-    if (this.basicFlow[newStatus].terminal)
+    if (basicFlow[newStatus].terminal)
       task.closedT = new Date();
 
     task.status = newStatus;
@@ -213,9 +218,10 @@ export class TaskList_comp implements OnInit {
 
   changeDueDateOnSelectedTasks (d: Date) {
     for (let i = this.task_l.length - 1; i >= 0; i--)
-      if (this.task_l[i].selected) this.task_l[i].dueDate = d;
-      // this.toDueDate;
-    console.log (this.toDueDate);
+      if (this.task_l[i].selected) this.task_l[i].dueDate = new Date (this.toDueDate);
+//    console.log (this.toDueDate);
+//    for (let i = this.task_l.length - 1; i >= 0; i--)
+//      console.log (i+"|"+this.task_l[i].selected + "|" + this.task_l[i].dueDate+"|"+typeof(this.task_l[i].dueDate));
   }
 
   clearNewTaskFields () {
@@ -228,4 +234,24 @@ export class TaskList_comp implements OnInit {
     this.newTask.creator = this.currentUser;
     this.newTask.dueDate = new Date("2020-01-01");
   }
+
+  numTotalTasks(): number {
+    return (this.task_l.filter(x => (x.filter))).length;
+  }
+
+  numDueTasks(): number {
+//    return 0;
+    return (this.task_l.filter(this.dueTask)).length;
+  }
+
+  taskStatusName (t: TaskObj): string {
+    return basicFlow[t.status].name;
+  }
+
+  availableActions (t: TaskObj): FlowActionObj[] {
+    return basicFlow[t.status].actions;
+  }
+
 }
+
+

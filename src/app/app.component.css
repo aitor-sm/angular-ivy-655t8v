@@ -4,17 +4,24 @@ p {
 
 table {
   width: 100%;
+  height: 99.92%;
   border-collapse: collapse;
   table-layout: fixed;
   font-family: Lato;
   font-size: 16px;
 }
 
-tr{
+tr.mainbar{
   background-color: #5cb3a7;
+  height: 30px;
+}
+
+tr.appspace {
+  height: 100%;
 }
 
 th, td {
   border: 1px solid black;
   text-align: left;
 }
+

@@ -14,7 +14,6 @@ tr.expand {
 }
 tr.toolbar {
   background-color: #bbbbbb;
-  font-weight: bold;
   border: 1px solid black;
 }
 tr.newtask {
@@ -62,4 +61,17 @@ button.toggleOn {
   color: white;
 }
 
-
+.box {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+.box .row.header {
+  flex: 0 1 auto;
+}
+.box .row.content {
+  flex: 1 1 auto;
+}
+.box .row.footer {
+  flex: 0 1 20px;
+}
