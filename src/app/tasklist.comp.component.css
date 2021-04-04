@@ -65,6 +65,7 @@ button.toggleOn {
   display: flex;
   flex-flow: column;
   height: 100%;
+  border: 1px solid black;
 }
 .box .row.header {
   flex: 0 1 auto;

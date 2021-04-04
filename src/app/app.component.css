@@ -9,6 +9,7 @@ table {
   table-layout: fixed;
   font-family: Lato;
   font-size: 16px;
+  border: 1px solid black;
 }
 
 tr.mainbar{
@@ -21,7 +22,6 @@ tr.appspace {
 }
 
 th, td {
-  border: 1px solid black;
   text-align: left;
 }
 
