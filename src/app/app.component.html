@@ -1,7 +1,7 @@
 <table>
  <tr class=mainbar>
 <!--  <td width=25> <div align=center> &#x21BA; /div> </td> -->
-  <td onclick="alert('TASKs ver 0.0.2\n\nWhat is new:\n- Ticket flow status, inlined change buttons\n- Resolution and closing time\n- Status bar\n- Several fixes')">&nbsp;&nbsp;<b>TASKS</b> - All tasks</td>
+  <td onclick="alert('TASKs ver 0.0.2\n\n- Ticket flow status, inlined change buttons\n- Resolution and closing time\n- Status bar\n- Several fixes\n\nTASKs ver 0.0.3\n- Component tasklist gets an object as parameter')">&nbsp;&nbsp;<b>TASKS</b> - All tasks</td>
   <td [width]="100">
   <!--
   <div ng-controller='TimeCtrl'>
@@ -12,7 +12,7 @@
 </tr>
 
 <tr class=appspace><td colspan=2>
-<tasklist_comp initSelect="4,5"></tasklist_comp>
+<tasklist_comp [Parameters]="params"></tasklist_comp>
 </td></tr>
 
 </table>

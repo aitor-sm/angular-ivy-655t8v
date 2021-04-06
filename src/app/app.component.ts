@@ -22,5 +22,10 @@ function TimeCtrl($scope, $timeout) {
 export class AppComponent {
   name = "Angular " + VERSION.major;
 
+  params = { 
+    initSelect: [3,4]
+
+ }
+
 }
 
