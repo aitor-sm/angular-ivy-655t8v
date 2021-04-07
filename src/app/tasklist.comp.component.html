@@ -1,81 +1,96 @@
+<div class="vbox">
 
-<div class="box">
-   <div class="row header">
+  <!--------- TABLE WITH TOOLBARS AND ELEMENTS  ---->
 
+  <div class="row header">
 
-<table><tr class=toolbar><td colspan=10>
-<button type="button" class=toggleOff [class.toggleOn]="newTaskToggle" (click)="toggleNewTaskBar()">New Task</button>
-<button type="button" disabled>Search</button>
-|
-<button type="button" [disabled]="numSelectedTasks()==0" (click)="reassignSelectedTasks (reassignTo )">Reassign to:</button>
-<select required [(ngModel)]='reassignTo'>
+  <!--------- TOOLBAR  ---->
+
+  <table class=toolbar>
+      <tr>
+        <td>
+          <button type="button" class=toggleOff [class.toggleOn]="newTaskToggle" (click)="toggleNewTaskBar()">New Task</button>
+          <button type="button" class=toolbar disabled>Search</button>
+          |
+          <button type="button"  class=toolbar [disabled]="numSelectedTasks()==0" (click)="reassignSelectedTasks (reassignTo )">Reassign to:</button>
+          <select required [(ngModel)]='reassignTo'>
       <option *ngFor="let item of [].constructor(users.length); let i = index" [value]="i">{{users[i]}}</option>
       </select>
-&nbsp;
-<button type="button" [disabled]="numSelectedTasks()==0" (click)="changeDueDateOnSelectedTasks (toDueDate)">Change Due date to:</button>
-<input type="date" class=input_inlined style="width:120px"
+          &nbsp;
+          <button type="button"  class=toolbar [disabled]="numSelectedTasks()==0" (click)="changeDueDateOnSelectedTasks (toDueDate)">Change Due date to:</button>
+          <input type="date" class=input_inlined style="width:120px"
         [ngModel]="toDueDate | date:'yyyy-MM-dd'"  (ngModelChange)="toDueDate=$event">
-&nbsp;
+          &nbsp;
+          <button type="button"  class=toolbar [disabled]="numSelectedTasks()==0" (click)="deleteSelectedTasks()">Delete</button>
+        </td>
+      </tr>
+    </table>
 
-<button type="button" [disabled]="numSelectedTasks()==0" (click)="deleteSelectedTasks()">Delete</button>
-</td></tr></table>
+<!--------- ELEMENTS TABLE  ---->
 
-<table >
-<tr class=header>
-    <td width=25><input type="checkbox" (change)="onSelectAll($event)"></td>
-    <td width=100>Name</td>
-    <td width=80>Owner</td>
-    <td width=80>Reporter</td>
-    <td width=80>Status</td>
-    <td width=90>Created</td>
-    <td width=90>Resolved</td>
-    <td width=125>Due by</td>
-    <td>Description</td>
-    <td>Actions</td>
-</tr>
+    <table>
 
-<tr class=newtask *ngIf="newTaskToggle">
-    <td></td>
-    <td><input class=input_inlined id="newdesc" 
+      <!--------- FIELDS NAME  ---->
+
+      <tr class=header>
+        <td width=25><input type="checkbox" (change)="onSelectAll($event)"></td>
+        <td width=100>Name</td>
+        <td width=80>Owner</td>
+        <td width=80>Reporter</td>
+        <td width=80>Status</td>
+        <td width=90>Created</td>
+        <td width=90>Resolved</td>
+        <td width=125>Due by</td>
+        <td>Description</td>
+        <td>Actions</td>
+      </tr>
+
+      <!--------- New Task ROW  ---->
+
+      <tr class=newitem *ngIf="newTaskToggle">
+        <td></td>
+        <td><input class=input_inlined id="newdesc"
     [(ngModel)]="newTask.name" placeholder="New task name" size="12"></td>
-    <td><select required [(ngModel)]='newTask.owner'>
+        <td><select required [(ngModel)]='newTask.owner'>
       <option *ngFor="let item of [].constructor(users.length); let i = index" [value]="i">{{users[i]}}</option>
       </select></td>
-    <td><i>{{users[newTask.creator]}}</i></td>
-    <td><i>{{taskStatusName(newTask)}}</i></td>
-    <td><i>--Now--</i></td>
-    <td><i>Empty</i></td>
+        <td><i>{{users[newTask.creator]}}</i></td>
+        <td><i>{{taskStatusName(newTask)}}</i></td>
+        <td><i>--Now--</i></td>
+        <td><i>Empty</i></td>
 
-    <td><input type="date" class=input_inlined style="width:120px"
-        [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"  (ngModelChange)="newTask.dueDate = $event"></td> 
-<!--        [ngModel]="newTask.dueDate | date:'yyyy-MM-dd' : 'UTC'"  (ngModelChange)="newTask.dueDate = $event"></td>  -->
-<!--    <td><input type="date" class=input_inlined style="width:115px"
+        <td><input type="date" class=input_inlined style="width:120px"
+        [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"  (ngModelChange)="newTask.dueDate = $event"></td>
+        <!--        [ngModel]="newTask.dueDate | date:'yyyy-MM-dd' : 'UTC'"  (ngModelChange)="newTask.dueDate = $event"></td>  -->
+        <!--    <td><input type="date" class=input_inlined style="width:115px"
         [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"></td>  -->
-    
-    <td><input class=input_inlined id="newdesc" 
+
+        <td><input class=input_inlined id="newdesc"
     [(ngModel)]="newTask.description" placeholder="Enter the task description" size="45%"></td>
-    <td><button type="button"  [disabled]="!isValidNewTask()" (click)="addNewTask(newTask)" class=inlined >Create task</button>
-    &nbsp;
-    <button type="button"  (click)="clearNewTaskFields()" class=inlined >Clear fields</button>
-    </td>
-</tr>
+        <td>
+          <button type="button"  [disabled]="!isValidNewTask()" (click)="addNewTask(newTask)" class=inlined >Create task</button>
+          &nbsp;
+          <button type="button"  (click)="clearNewTaskFields()" class=inlined >Clear fields</button>
+        </td>
+      </tr>
 
-<!-- &nbsp;&nbsp;&#x21E9;&nbsp;&nbsp; -->
+      <!--------- TABLE ELEMENTS  ---->
 
-<ng-container *ngIf="task_l.length > 0; then task_tableelements else no_elements"> 
-</ng-container>
+      <ng-container *ngIf="task_l.length > 0; then task_tableelements else no_elements">
+      </ng-container>
 
-<ng-template #task_tableelements>
-<ng-container *ngFor="let task of task_l">
-<tr *ngIf="task.filter" class=taskitem (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)"  [class.due]="dueTask(task)" [class.selected]="task.selected">
-    <td><input type="checkbox" [(ngModel)]="task.selected"></td>
+      <ng-template #task_tableelements>
+        <ng-container *ngFor="let task of task_l">
+          <tr *ngIf="task.filter" class=record (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)" [class.highlight]="dueTask(task)" [class.selected]="task.selected">
 
-    <td *ngIf="task==focus"><input class=input_inlined id="name" 
+            <td><input type="checkbox" [(ngModel)]="task.selected"></td>
+
+            <td *ngIf="task==focus"><input class=input_inlined id="name"
     [(ngModel)]="task.name" placeholder="Edit your name here" size="12"></td>
-    <td *ngIf="task!=focus">&nbsp;{{task.name}}</td>
+            <td *ngIf="task!=focus">&nbsp;{{task.name}}</td>
 
-    <td>{{users[task.owner]}}</td>
-<!-- DOES NOT WORK WELL
+            <td>{{users[task.owner]}}</td>
+            <!-- DOES NOT WORK WELL
     <td *ngIf="task==focus"><select required [(ngModel)]='task.owner'>
       <option *ngFor="let item of [].constructor(users.length); let i = index" [value]="i">{{users[i]}}</option>
       </select>
@@ -83,49 +98,65 @@
     <td *ngIf="task!=focus">{{users[task.owner]}}</td>
 -->
 
-    <td>{{users[task.creator]}}</td>
-    <td>{{taskStatusName(task)}}</td>
-    <td>{{task.created | date: 'dd/MM/y'}}</td>
-    <td>{{task.resolvedT | date: 'dd/MM/y'}}</td>
+            <td>{{users[task.creator]}}</td>
+            <td>{{taskStatusName(task)}}</td>
+            <td>{{task.created | date: 'dd/MM/y'}}</td>
+            <td>{{task.resolvedT | date: 'dd/MM/y'}}</td>
 
-    <td>{{task.dueDate | date: 'dd/MM/y'}}</td>
-<!-- DOES NOT WORK WELL
+            <td>{{task.dueDate | date: 'dd/MM/y'}}</td>
+            <!-- DOES NOT WORK WELL
     <td *ngIf="task==focus"><input type="date" class=input_inlined style="width:120px"
         [ngModel]="task.dueDate | date:'yyyy-MM-dd' : 'UTC'"  (ngModelChange)="task.dueDate = $event" ></td>
     <td *ngIf="task!=focus">{{task.dueDate | date: 'dd/MM/y'}}</td>
 -->
 
-    <td *ngIf="task==focus"><input class=input_inlined id="desc" 
+            <td *ngIf="task==focus"><input class=input_inlined id="desc"
     [(ngModel)]="task.description" placeholder="Edit your description here" size="45%"></td>
-    <td *ngIf="task!=focus">&nbsp;{{task.description}}</td>
+            <td *ngIf="task!=focus">&nbsp;{{task.description}}</td>
 
-    <td *ngIf="task==focus"> 
-      <button type="button"(click)="deleteTask(task)" class=inlined >Delete</button>
-      <ng-container *ngFor="let action of availableActions(task)">
-      &nbsp;
-      <button type="button" (click)="changeStatus(task,action.nextStatus)" class=inlined >{{action.name}}</button>
-      </ng-container>
-    </td>
-    <td *ngIf="task!=focus"></td>
+            <td *ngIf="task==focus">
+              <button type="button"(click)="deleteTask(task)" class=inlined >Delete</button>
+              <ng-container *ngFor="let action of availableActions(task)">
+                &nbsp;
+                <button type="button" (click)="changeStatus(task,action.nextStatus)" class=inlined >{{action.name}}</button>
+              </ng-container>
+            </td>
+            <td *ngIf="task!=focus"></td>
 
-</tr>
-</ng-container>
-</ng-template>
+          </tr>
+        </ng-container>
+      </ng-template>
 
-<ng-template #no_elements>
-<tr><td></td><td colspan=9><i>No tasks to show </i></td></tr>
-</ng-template>
+      <ng-template #no_elements>
+        <tr>
+          <td></td>
+          <td colspan=9><i>No tasks to show </i></td>
+        </tr>
+      </ng-template>
+    </table>
+  </div>
 
-</table>
+
+  <!--------- VERTICAL FILLER  ---->
 
 
-</div>
- <div class="row content">
-   
- </div>
- <div class="row footer">
-   <table><tr class=toolbar height=25px><td>
-     Total: {{numTotalTasks()}} tasks, ({{numSelectedTasks()}} selected), {{numDueTasks()}} are due
-   </td></tr></table>
- </div>
+  <div class="row content">
+  </div>
+
+
+  <!--------- STATUS BAR  ---->
+
+  <div class="row footer">
+
+    <table class=toolbar>
+      <tr height=20px>
+        <td>
+          Total: {{numTotalTasks()}} tasks, ({{numSelectedTasks()}} selected), {{numDueTasks()}} are due
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!--------- END  ---->
+
 </div>

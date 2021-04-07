@@ -1,78 +1,91 @@
+/* Vertical filler */
+.vbox {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  border: 1px solid black;
+}
+.vbox .row.header {
+  flex: 0 1 auto;
+}
+.vbox .row.content {
+  flex: 1 1 auto;
+}
+.vbox .row.footer {
+  flex: 0 1 20px;
+}
+
+
+/* Basic */
 table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
   font-family: Lato;
   font-size: small;
-//  border: 1px solid black;
 }
-table.mainTable {
-  height: 100%;
-}
-tr.expand {
-  height: 100%;
-}
-tr.toolbar {
-  background-color: #bbbbbb;
+
+
+/* General styles - TOOLBAR  */
+table.toolbar {
+  background-color: #cccccc;
   border: 1px solid black;
 }
-tr.newtask {
-  border: 1px solid black;
-  color: #666666
-}
-tr.header {
-  background-color: #dddddd;
-  font-weight: bold;
-  border: 1px solid black;
-}
-tr.taskitem:hover {
-  background-color: #ddddff;
-}
-tr.selected {
-  color: #0000FF;
-  font-weight: bold;
-}
-tr.due {
-  color: #FF0000;
-  font-weight: bold;
-}
-input.input_inlined {
-  height: 14px;
-  font-size: small;
-  font-family: Lato;
-}
-button {
+
+button.toolbar {
   font-size: 12px;
-//  background-color: #ddddff; 
-}
-button.inlined {
-  font-size: 10px;
-  padding: 0 0 0 0;
 }
 
 button.toggleOff {
+  font-size: 12px;
   background-color: #ddddff; 
   color: black; 
   border: 2px solid #008CBA; 
 }
 
 button.toggleOn {
+  font-size: 12px;
   background-color: #008CBA;
   color: white;
 }
 
-.box {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
+
+
+/* DBView - rows */
+tr.newitem {
+  border: 1px solid black;
+  color: #666666
+}
+tr.header {
+  background-color: #dedede;
+  font-weight: bold;
   border: 1px solid black;
 }
-.box .row.header {
-  flex: 0 1 auto;
+tr.record:hover {
+  background-color: #ddddff;
 }
-.box .row.content {
-  flex: 1 1 auto;
+tr.selected {
+  color: #0000FF;
+  font-weight: bold;
 }
-.box .row.footer {
-  flex: 0 1 20px;
+tr.highlight {
+  color: #FF0000;
+  font-weight: bold;
 }
+
+
+/* DBView - inlined controls */
+input.input_inlined {
+  height: 14px;
+  font-size: small;
+  font-family: Lato;
+}
+
+button.inlined {
+  font-size: 10px;
+  padding: 0 0 0 0;
+}
+
+
+
+
