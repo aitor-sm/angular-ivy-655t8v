@@ -7,3 +7,22 @@ html, body {
   height: 100%
 }
 
+
+.mat-dialog-container {
+    padding: 5px !important;
+    overflow-x: hidden !important;
+/*    background: #ffcccc;  */
+}
+
+.mat-dialog-title {
+    color: blue;
+    background-color: #ffcccc;
+    width: 100%;
+    font-size: 16px;
+    padding: 1px 0px !important;
+}
+
+.mat-checkbox {
+    font-size: 14px;
+    height: 40px;
+}

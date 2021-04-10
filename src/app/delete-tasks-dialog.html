@@ -1,8 +1,7 @@
-<h2 mat-dialog-title>Delete {{data.numberOfTasks}} task(s)</h2>
-<div mat-dialog-content width="100%">
+<h2 mat-dialog-title>&nbsp;{{data.numberOfTasks}} task(s) will be deleted. Are you sure that you don't want to cancel them instead?</h2>
+<div mat-dialog-content >
   <div>
-    <p>{{data.numberOfTasks}} task(s) will be deleted. Are you sure that you don't want to cancel them instead?</p>
-    <mat-checkbox  [checked]="data.confirmation"> Show this confirmation next time</mat-checkbox>
+    <mat-checkbox  [(ngModel)]="data.confirmation"  style="margin-left: 40px"> Show this confirmation next time</mat-checkbox>
   </div> 
 </div>
 <div mat-dialog-actions>

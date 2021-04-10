@@ -21,7 +21,7 @@
           <input type="date" class=input_inlined style="width:120px"
         [ngModel]="toDueDate | date:'yyyy-MM-dd'"  (ngModelChange)="toDueDate=$event">
           &nbsp;
-          <button type="button"  class=toolbar [disabled]="numSelectedTasks()==0" (click)="deleteSelectedTasks()">Delete</button>
+          <button type="button"  class=toolbar [disabled]="numSelectedTasks()==0" (click)="deleteSelectedTasksButton()">Delete</button>
         </td>
       </tr>
     </table>

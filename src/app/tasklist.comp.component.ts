@@ -148,27 +148,39 @@ export class TaskList_comp implements OnInit {
   }
 
   deleteSelectedTasks(): void {
+      for (let i = this.task_l.length - 1; i >= 0; i--)
+        if (this.task_l[i].selected) this.task_l.splice(i, 1);
+  }
+
+  deleteSelectedTasksButton(): void {
+    
+    if (this.showDeleteAlert) {
+    
     let dialogRef = this.DeleteTasksDialog.open(DialogDeleteTasks, {
-      height: "250px",
+      height: "200px",
       width: "100%",
       data: {
         numberOfTasks: this.numSelectedTasks(),
         confirmation: true,
         doIt: true
-      }
+      },
+      panelClass: 'custom-modalbox-error'
     } 
     );
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result.confirmation);
+      
+      if (typeof(result) != "undefined") {
+//      console.log(result);
       this.showDeleteAlert = result.confirmation;
 
       if (result.doIt)
-      for (let i = this.task_l.length - 1; i >= 0; i--)
-        if (this.task_l[i].selected) this.task_l.splice(i, 1);
-
+        this.deleteSelectedTasks();
+      }
     });
-
+    }
+    else
+        this.deleteSelectedTasks();
   }
 
   numSelectedTasks(): number {
@@ -207,6 +219,8 @@ export class TaskList_comp implements OnInit {
         this.task_l[i].dueDate = new Date(this.toDueDate);
   }
 }
+
+
 
 @Component({
   selector: "DialogDeleteTasks",
