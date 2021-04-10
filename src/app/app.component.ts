@@ -24,7 +24,6 @@ export class AppComponent {
 
   params = { 
     initSelect: [3,4]
-
  }
 
 }

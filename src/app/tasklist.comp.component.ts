@@ -1,7 +1,20 @@
-import { Component, Input, OnInit } from "@angular/core";
-//import {MatDialogModule} from '@angular/material/dialog';
+import { Component, Input, OnInit, Inject } from "@angular/core";
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA
+} from "@angular/material/dialog";
+//import { MatInputModule } from "@angular/material/input";
+//import { MatFormFieldModule } from "@angular/material/form-field";
 import { TaskObj, FlowActionObj, basicFlow } from "./tasks";
 import { TASKS } from "./mock-tasks";
+
+export interface DeleteDialogData {
+  numberOfTasks: number;
+  confirmation: boolean;
+  doIt: boolean;
+}
+
 
 @Component({
   selector: "tasklist_comp",
@@ -46,6 +59,9 @@ export class TaskList_comp implements OnInit {
     closedT: null
   };
 
+//  DeleteTasksDialog: MatDialog;
+  showDeleteAlert: boolean = true;
+
   ///////////////// CONSTRUCTOR
 
   ngOnInit() {
@@ -61,6 +77,8 @@ export class TaskList_comp implements OnInit {
     // Template for new tasks
     this.clearNewTaskFields();
   }
+
+  constructor (public DeleteTasksDialog: MatDialog) {}
 
   ///////////////// TASK-OBJ METHODS
 
@@ -84,7 +102,6 @@ export class TaskList_comp implements OnInit {
   availableActions(t: TaskObj): FlowActionObj[] {
     return basicFlow[t.status].actions;
   }
-
 
   ///////////////// TASK-LIST METHODS
 
@@ -131,8 +148,27 @@ export class TaskList_comp implements OnInit {
   }
 
   deleteSelectedTasks(): void {
-    for (let i = this.task_l.length - 1; i >= 0; i--)
-      if (this.task_l[i].selected) this.task_l.splice(i, 1);
+    let dialogRef = this.DeleteTasksDialog.open(DialogDeleteTasks, {
+      height: "250px",
+      width: "100%",
+      data: {
+        numberOfTasks: this.numSelectedTasks(),
+        confirmation: true,
+        doIt: true
+      }
+    } 
+    );
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result.confirmation);
+      this.showDeleteAlert = result.confirmation;
+
+      if (result.doIt)
+      for (let i = this.task_l.length - 1; i >= 0; i--)
+        if (this.task_l[i].selected) this.task_l.splice(i, 1);
+
+    });
+
   }
 
   numSelectedTasks(): number {
@@ -169,5 +205,29 @@ export class TaskList_comp implements OnInit {
     for (let i = this.task_l.length - 1; i >= 0; i--)
       if (this.task_l[i].selected)
         this.task_l[i].dueDate = new Date(this.toDueDate);
+  }
+}
+
+@Component({
+  selector: "DialogDeleteTasks",
+  templateUrl: "./delete-tasks-dialog.html"
+})
+export class DialogDeleteTasks {
+  constructor(
+    public dialogRef: MatDialogRef<DialogDeleteTasks>,
+    @Inject(MAT_DIALOG_DATA) public data: DeleteDialogData
+  ) {
+    this.data.confirmation = true;
+  }
+
+  showAgain: boolean;
+
+  toggelSwitchAgain(event) {
+    this.showAgain = event.target.checked;
+  }
+
+  onNoClick(): void {
+    this.data.doIt = false;
+    this.dialogRef.close();
   }
 }
