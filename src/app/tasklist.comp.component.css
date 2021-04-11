@@ -16,10 +16,12 @@
 }
 
 
+
 /* Basic */
 table {
   width: 100%;
   border-collapse: collapse;
+  border: 0px;
   table-layout: fixed;
   font-family: Lato;
   font-size: small;

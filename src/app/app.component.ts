@@ -1,4 +1,6 @@
-import { Component, VERSION } from "@angular/core";
+import { Component, VERSION, OnInit } from "@angular/core";
+
+
 
 function TimeCtrl($scope, $timeout) {
     $scope.clock = "loading clock..."; // initialise the time variable
@@ -19,12 +21,36 @@ function TimeCtrl($scope, $timeout) {
   styleUrls: ["./app.component.css"]
 })
 
-export class AppComponent {
+export class AppComponent  implements OnInit {
   name = "Angular " + VERSION.major;
 
-  params = { 
+  MainAppName: string = "TASKS";
+  MainViewName: string = "All tasks";
+
+  TaskAppParams = { 
     initSelect: [3,4]
- }
+  };
+
+
+  ngOnInit() {
+    document.getElementById("defaultOpen").click();
+  }
+
+openTab (evt, tabName) {
+  var i, tabcontent, tablinks;
+
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
 
 }
 
