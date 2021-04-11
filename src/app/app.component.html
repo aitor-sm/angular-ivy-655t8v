@@ -2,7 +2,9 @@
 
 <div id="sysbar" >
 <table class="mainbar"> <tr>
-  <td onclick="alert('TASKs ver 0.0.2\n\n- Ticket flow status, inlined change buttons\n- Resolution and closing time\n- Status bar\n- Several fixes\n\nTASKs ver 0.0.3\n- Component tasklist gets an object as parameter\n- Tidy up code\n- Warning on delete modal')">&nbsp;&nbsp;
+ <!--  <td onclick="alert('TASKs ver 0.0.2\n\n- Ticket flow status, inlined change buttons\n- Resolution and closing time\n- Status bar\n- Several fixes\n\nTASKs ver 0.0.3\n- Component tasklist gets an object as parameter\n- Tidy up code\n- Warning on delete modal')">--> 
+  <td> 
+   &nbsp;&nbsp;
   <b>{{MainAppName}}</b> - {{MainViewName}}</td>
   <!--  <td [width]="100">
     <div ng-controller='TimeCtrl'>
@@ -16,9 +18,9 @@
 
 <div class="appsbar">
 
-    <button class="tablinks" (click)="openTab($event, 'TASKS-App')">T</button>
-    <button class="tablinks" (click)="openTab($event, 'Task-All')" id="defaultOpen">All</button>
-    <button class="tablinks" (click)="openTab($event, 'TASKS-Cfg')" >CFG</button>
+    <button class="tablinks" (click)="openTab($event, '100')">T</button>
+    <button class="tablinks" (click)="openTab($event, '110')" id="defaultOpen">All</button>
+    <button class="tablinks" (click)="openTab($event, '101')" >CFG</button>
 
 </div>
 
@@ -33,16 +35,28 @@
       -->
 </div>
 
-<div id="TASKS-App" class="tabcontent"  style="display:none">
+<div id="TASKS-App" class="tabcontent"  style="display:none; padding: 20px">
 
-      TASKS application 
-
+      <h3>TASKS application</h3> 
+      Welcome to the tasks management application.<br>
+      Current version is: {{TaskVersion}}.<br><br>
+      
+      <h4>TASKs ver 0.0.3</h4>
+      - Component tasklist gets an object as parameter<br>
+      - Tidy up code<br>
+      - Warning on delete modal<br>
+      - Main apps vertical bar<br>
+      <h4>TASKs ver 0.0.2</h4>
+      - Ticket flow status, inlined change buttons<br>
+      - Resolution and closing time<br>
+      - Status bar<br>
+      - Several fixes<br><br>
 </div>
 
 
 <div id="TASKS-Cfg" class="tabcontent"  style="display:none">
 
-      TASKS Configure
+      TASKS Settings
 
 </div>
 -->

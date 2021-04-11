@@ -15,6 +15,20 @@ function TimeCtrl($scope, $timeout) {
     $timeout(tick, $scope.tickInterval);
 }
 
+interface TabObj {
+  id: string;
+  divname: string;
+  caption: string;
+}
+
+const TABS: TabObj[] = [
+  { id: "100", divname:"TASKS-App", caption: "Start page"},
+  { id: "101", divname:"TASKS-Cfg", caption: "Settings"},
+  { id: "110", divname:"Task-All", caption: "All task"}
+];
+
+
+
 @Component({
   selector: "my-app",
   templateUrl: "./app.component.html",
@@ -27,6 +41,8 @@ export class AppComponent  implements OnInit {
   MainAppName: string = "TASKS";
   MainViewName: string = "All tasks";
 
+  TaskVersion: string = "0.0.3";
+
   TaskAppParams = { 
     initSelect: [3,4]
   };
@@ -36,7 +52,13 @@ export class AppComponent  implements OnInit {
     document.getElementById("defaultOpen").click();
   }
 
-openTab (evt, tabName) {
+  findTabByID (findid: string): TabObj {
+    let i: number;
+    for (i=0; i<TABS.length; i++)
+      if (TABS[i].id==findid)  return TABS[i];
+  }
+
+openTab (evt, tabId) {
   var i, tabcontent, tablinks;
 
   tabcontent = document.getElementsByClassName("tabcontent");
@@ -47,8 +69,11 @@ openTab (evt, tabName) {
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
-  document.getElementById(tabName).style.display = "block";
+  
+  let T = this.findTabByID(tabId);
+  document.getElementById(T.divname).style.display = "block";
   evt.currentTarget.className += " active";
+  this.MainViewName = T.caption;
 }
 
 

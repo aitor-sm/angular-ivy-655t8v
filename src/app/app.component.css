@@ -1,4 +1,4 @@
-p {
+div {
   font-family: Lato;
 }
 
@@ -25,20 +25,21 @@ table.mainbar {
         border-bottom: 1px solid black;
         border-right: none;
         position: absolute;
-        top: 30px;
+        top: 33px;
         bottom: 0;
         width: 45px;
-        height: calc(100% - 31px);
+        height: calc(100% - 33px);
       }
 
       .tabcontent {
         background-color: #ffffff;
+        border-top: 2px solid black;
         position: absolute;
-        top: 30px;
+        top: 33px;
         left: 45px;
         bottom: 0;
         width: calc(100% - 45px);
-        height: calc(100% - 31px);
+        height: calc(100% - 33px);
         border-left: none;
 
       }
@@ -75,14 +76,4 @@ table.mainbar {
 /* Create an active/current "tab button" class */
 .appsbar button.active {
   background-color: #ffffff;
-}
-
-/* Style the tab content */
-.tabcontent-2 {
-  float: left;
-  padding: 0px 12px;
-  /* border: 1px solid #ccc; */
-  width: 85%;
-  border-left: none;
-  height: 300px;
 }
