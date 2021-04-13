@@ -55,7 +55,7 @@
       <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i">{{Parameters['users'][i]}}</option>
       </select></td>
         <td><i>{{Parameters['users'][newTask.creator]}}</i></td>
-        <td><i>{{taskStatusName(newTask)}}</i></td>
+        <td><i>{{newTask.taskStatusName()}}</i></td>
         <td><i>--Now--</i></td>
         <td><i>Empty</i></td>
 
@@ -81,7 +81,7 @@
 
       <ng-template #task_tableelements>
         <ng-container *ngFor="let task of task_l">
-          <tr *ngIf="task.filter" class=record (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)" [class.highlight]="dueTask(task)" [class.selected]="task.selected">
+          <tr *ngIf="task.filter" class=record (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)" [class.highlight]="task.dueTask()" [class.selected]="task.selected">
 
             <td><input type="checkbox" [(ngModel)]="task.selected"></td>
 
@@ -99,7 +99,7 @@
 -->
 
             <td>{{Parameters['users'][task.creator]}}</td>
-            <td>{{taskStatusName(task)}}</td>
+            <td>{{task.taskStatusName()}}</td>
             <td>{{task.created | date: 'dd/MM/y'}}</td>
             <td>{{task.resolvedT | date: 'dd/MM/y'}}</td>
 
@@ -116,9 +116,9 @@
 
             <td *ngIf="task==focus">
               <button type="button"(click)="deleteTask(task)" class=inlined >Delete</button>
-              <ng-container *ngFor="let action of availableActions(task)">
+              <ng-container *ngFor="let action of task.availableActions()">
                 &nbsp;
-                <button type="button" (click)="changeStatus(task,action.nextStatus)" class=inlined >{{action.name}}</button>
+                <button type="button" (click)="task.changeStatus(action.nextStatus)" class=inlined >{{action.name}}</button>
               </ng-container>
             </td>
             <td *ngIf="task!=focus"></td>

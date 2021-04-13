@@ -1,5 +1,6 @@
 import { Component, VERSION, OnInit } from "@angular/core";
-import { MCField, TasksCfg } from "./tasks";
+import { MCField } from "./MC.core"
+import { TasksCfg } from "./tasks";
 
 
 function TimeCtrl($scope, $timeout) {

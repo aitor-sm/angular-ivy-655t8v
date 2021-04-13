@@ -1,11 +1,9 @@
 import { Component, Input, OnInit, Inject } from "@angular/core";
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA
-} from "@angular/material/dialog";
-import { TaskObj, FlowActionObj, basicFlow, TasksCfg } from "./tasks";
-import { TASKS } from "./mock-tasks";
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
+import { TaskObj, TasksCfg } from "./tasks";
+import { FlowActionObj, basicFlow } from "./flows";
+
+//import { TASKS } from "./mock-tasks";
 
 export interface DeleteDialogData {
   numberOfTasks: number;
@@ -26,11 +24,9 @@ export class TaskList_comp implements OnInit {
 
   ///////////////// PROPERTIES
 
-  // To TaskOBJ
-  idSequence: number;
-
   // To TaskList
-  task_l: TaskObj[];
+  idSequence: number;
+  task_l: TaskObj[] =[];
 
   // From this class
   focus: TaskObj;
@@ -40,36 +36,18 @@ export class TaskList_comp implements OnInit {
 
   newTaskToggle: boolean = false;
 
-  newTask: TaskObj = {
-    id: 0,
-    name: "",
-    owner: 0,
-    description: "",
-    created: new Date(),
-    filter: true,
-    selected: false,
-    status: 0,
-    creator: 0,
-    dueDate: new Date("2020-01-01"),
-    resolvedT: null,
-    closedT: null
-  };
-
-//  showDeleteAlert: boolean = true;
-
+  newTask: TaskObj = new TaskObj();
+ 
   ///////////////// CONSTRUCTOR
 
   ngOnInit() {
     // Retrieve tasks
-    this.task_l = TASKS;
-    this.idSequence = this.task_l.length;
+    this.retrieveTasks();
 
     // Parse the initially selected tasks
     this.Parameters["initSelect"].forEach((n: number) => {
       if (n <= this.task_l.length) this.task_l[n - 1].selected = true;
     });
-
-//    console.log (TasksCfg.find(a => a.FName=="WarnOnDelete").FValue);
 
     // Template for new tasks
     this.clearNewTaskFields();
@@ -79,6 +57,7 @@ export class TaskList_comp implements OnInit {
 
   ///////////////// TASK-OBJ METHODS
 
+/*
   dueTask(task: TaskObj): Boolean {
     return task.dueDate < new Date() && !basicFlow[task.status].terminal;
   }
@@ -99,8 +78,61 @@ export class TaskList_comp implements OnInit {
   availableActions(t: TaskObj): FlowActionObj[] {
     return basicFlow[t.status].actions;
   }
+*/
 
   ///////////////// TASK-LIST METHODS
+
+  retrieveTasks ()  {
+    
+    let t: TaskObj = new TaskObj();
+      t.id = 1;
+      t.name = "Programa tasks";
+      t.owner = 0;
+      t.description = "Crear la versión 0.4";
+      t.created = new Date();
+      t.filter = true;
+      t.selected = false;
+      t.status = 0;
+      t.creator = 0;
+      t.dueDate = new Date('2021-04-21');
+      t.resolvedT = null;
+      t.closedT = null;
+    this.task_l.push (t);
+
+    t = new TaskObj();
+      t.id = 2;
+      t.name = "Clase Alemán";
+      t.owner = 1;
+      t.description = "Clase por la tarde";
+      t.created = new Date();
+      t.filter = true;
+      t.selected = false;
+      t.status = 1;
+      t.creator = 0;
+      t.dueDate = new Date('2021-04-21');
+      t.resolvedT = null;
+      t.closedT = null;
+    this.task_l.push (t);
+    
+    t = new TaskObj();
+      t.id = 3;
+      t.name = "Deberes";
+      t.owner = 0;
+      t.description = "Descripción 3";
+      t.created = new Date();
+      t.filter = true;
+      t.selected = false;
+      t.status = 2;
+      t.creator = 0;
+      t.dueDate = new Date('2021-04-21');
+      t.resolvedT = null;
+      t.closedT = null;
+    this.task_l.push (t);
+
+    this.idSequence = this.task_l.length;
+
+  }
+
 
   deleteTask(t: TaskObj) {
     for (let i = this.task_l.length - 1; i >= 0; i--)
@@ -115,12 +147,14 @@ export class TaskList_comp implements OnInit {
   }
 
   numDueTasks(): number {
-    return this.task_l.filter(this.dueTask).length;
+    return this.task_l.filter(t => t.dueTask()).length;
   }
 
   addNewTask(task: TaskObj) {
     task.id = this.idSequence;
     task.created = new Date();
+    task.resolvedT = null;
+    task.closedT = null;
 
     this.task_l.push(Object.assign({}, task));
 
@@ -202,6 +236,7 @@ export class TaskList_comp implements OnInit {
     this.newTask.creator = this.Parameters["currentUser"];
     this.newTask.dueDate = new Date("2020-01-01");
   }
+
 
   ///////////////// OWN METHODS
 

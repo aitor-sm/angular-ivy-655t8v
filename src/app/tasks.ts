@@ -1,4 +1,8 @@
-export interface TaskObj {
+import { MCField } from "./MC.core"
+import { FlowActionObj, basicFlow } from "./flows";
+
+
+export class TaskObj {
   // Object fields
   id: number;
   name: string;
@@ -14,114 +18,62 @@ export interface TaskObj {
   // DB.Viewer fields
   filter: Boolean;
   selected: Boolean;
+
+
+  public dueTask(): Boolean {
+    return this.dueDate < new Date() && !basicFlow[this.status].terminal;
+  }
+
+  public changeStatus(newStatus: number) {
+    if (basicFlow[newStatus].resolutive && !basicFlow[this.status].resolutive)
+      this.resolvedT = new Date();
+
+    if (basicFlow[newStatus].terminal) this.closedT = new Date();
+
+    this.status = newStatus;
+  }
+
+  public taskStatusName(): string {
+    return basicFlow[this.status].name;
+  }
+
+  public availableActions(): FlowActionObj[] {
+    return basicFlow[this.status].actions;
+  }
+
 }
 
-export interface FlowActionObj {
-  nextStatus: number;
-  name: string;
+export class TaskList {
+
+  private task_l    : TaskObj[] = [];
+  private idSequence: number = 0;
+
+  deleteTask(t: TaskObj) {
+    for (let i = this.task_l.length - 1; i >= 0; i--)
+      if (this.task_l[i] == t) {
+        this.task_l.splice(i, 1);
+        break;
+      }
+  }
+
+  numTotalTasks(): number {
+    return this.task_l.filter(x => x.filter).length;
+  }
+
+
+  numDueTasks(): number {
+    return this.task_l.filter(t => t.dueTask()).length;
+  }
+ 
+
 }
 
-export interface FlowStatusObj {
-  name: string;
-  resolutive: Boolean;
-  terminal: Boolean;
-  actions: FlowActionObj[];
-}
-
-export var basicFlow : FlowStatusObj[] = [
-    {
-      name: "to-do",
-      terminal: false,
-      resolutive: false,
-      actions: [
-        {
-          nextStatus: 1,
-          name: "Start"
-        },
-        {
-          nextStatus: 5,
-          name: "Cancel"
-        }
-      ]
-    },
-    {
-      name: "in progress",
-      terminal: false,
-      resolutive: false,
-      actions: [
-        {
-          nextStatus: 2,
-          name: "Block"
-        },
-        {
-          nextStatus: 3,
-          name: "Resolve"
-        },
-        {
-          nextStatus: 5,
-          name: "Cancel"
-        }
-      ]
-    },
-    {
-      name: "blocked",
-      terminal: false,
-      resolutive: false,
-      actions: [
-        {
-          nextStatus: 1,
-          name: "Resume"
-        },
-        {
-          nextStatus: 5,
-          name: "Cancel"
-        }
-      ]
-    },
-    {
-      name: "resolved",
-      resolutive: true,
-      terminal: false,
-      actions: [
-        {
-          nextStatus: 1,
-          name: "Reject"
-        },
-        {
-          nextStatus: 4,
-          name: "Verify"
-        }
-      ]
-    },
-    {
-      name: "done",
-      terminal: true,
-      resolutive: true,
-      actions: [
-      ]
-    },
-    {
-      name: "cancelled",
-      terminal: true,
-      resolutive: true,
-      actions: [
-      ]
-    }
-  ]
-
-
-export interface MCField {
-  FName: string;
-  FCaption: string;
-  FType: any;
-  FValue: any;
-}
 
 export var TasksCfg : MCField[] = [
-    {
-      FName: "WarnOnDelete",
-      FCaption: "Alert me before deleting a task",
-      FType: "boolean",
-      FValue: true
-    }
+  {
+    FName: "WarnOnDelete",
+    FCaption: "Alert me before deleting a task",
+    FType: "boolean",
+    FValue: true
+  }
 ]
