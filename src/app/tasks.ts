@@ -45,8 +45,8 @@ export class TaskObj {
 
 export class TaskList {
 
-  private task_l    : TaskObj[] = [];
-  private idSequence: number = 0;
+  protected task_l    : TaskObj[] = [];
+  protected idSequence: number = 0;
 
   deleteTask(t: TaskObj) {
     for (let i = this.task_l.length - 1; i >= 0; i--)

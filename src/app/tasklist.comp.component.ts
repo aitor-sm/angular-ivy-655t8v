@@ -55,30 +55,6 @@ export class TaskList_comp implements OnInit {
 
   constructor (public DeleteTasksDialog: MatDialog) {}
 
-  ///////////////// TASK-OBJ METHODS
-
-/*
-  dueTask(task: TaskObj): Boolean {
-    return task.dueDate < new Date() && !basicFlow[task.status].terminal;
-  }
-
-  changeStatus(task: TaskObj, newStatus: number) {
-    if (basicFlow[newStatus].resolutive && !basicFlow[task.status].resolutive)
-      task.resolvedT = new Date();
-
-    if (basicFlow[newStatus].terminal) task.closedT = new Date();
-
-    task.status = newStatus;
-  }
-
-  taskStatusName(t: TaskObj): string {
-    return basicFlow[t.status].name;
-  }
-
-  availableActions(t: TaskObj): FlowActionObj[] {
-    return basicFlow[t.status].actions;
-  }
-*/
 
   ///////////////// TASK-LIST METHODS
 
