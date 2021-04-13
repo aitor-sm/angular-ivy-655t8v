@@ -26,10 +26,6 @@ export class TaskList_comp implements OnInit {
 
   ///////////////// PROPERTIES
 
-  // Globals
-  currentUser: number = 0;
-  users: string[] = ["Aitor", "Andrés", "Jaime"];
-
   // To TaskOBJ
   idSequence: number;
 
@@ -53,7 +49,7 @@ export class TaskList_comp implements OnInit {
     filter: true,
     selected: false,
     status: 0,
-    creator: this.currentUser,
+    creator: 0,
     dueDate: new Date("2020-01-01"),
     resolvedT: null,
     closedT: null
@@ -203,7 +199,7 @@ export class TaskList_comp implements OnInit {
     this.newTask.filter = true;
     this.newTask.selected = false;
     this.newTask.status = 0;
-    this.newTask.creator = this.currentUser;
+    this.newTask.creator = this.Parameters["currentUser"];
     this.newTask.dueDate = new Date("2020-01-01");
   }
 

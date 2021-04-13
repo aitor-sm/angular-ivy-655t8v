@@ -43,10 +43,12 @@ export class AppComponent  implements OnInit {
 
   cfg : MCField[] = TasksCfg;
 
-  TaskVersion: string = "0.0.3";
+  TaskVersion: string = "0.0.4";
 
   TaskAppParams = { 
-    initSelect: [3,4]
+    initSelect: [3,4],
+    currentUser: 0,
+    users: ["Aitor", "Andrés", "Jaime"]
   };
 
 

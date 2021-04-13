@@ -14,7 +14,7 @@
           |
           <button type="button"  class=toolbar [disabled]="numSelectedTasks()==0" (click)="reassignSelectedTasks (reassignTo )">Reassign to:</button>
           <select required [(ngModel)]='reassignTo'>
-      <option *ngFor="let item of [].constructor(users.length); let i = index" [value]="i">{{users[i]}}</option>
+      <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i">{{Parameters['users'][i]}}</option>
       </select>
           &nbsp;
           <button type="button"  class=toolbar [disabled]="numSelectedTasks()==0" (click)="changeDueDateOnSelectedTasks (toDueDate)">Change Due date to:</button>
@@ -52,9 +52,9 @@
         <td><input class=input_inlined id="newdesc"
     [(ngModel)]="newTask.name" placeholder="New task name" size="12"></td>
         <td><select required [(ngModel)]='newTask.owner'>
-      <option *ngFor="let item of [].constructor(users.length); let i = index" [value]="i">{{users[i]}}</option>
+      <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i">{{Parameters['users'][i]}}</option>
       </select></td>
-        <td><i>{{users[newTask.creator]}}</i></td>
+        <td><i>{{Parameters['users'][newTask.creator]}}</i></td>
         <td><i>{{taskStatusName(newTask)}}</i></td>
         <td><i>--Now--</i></td>
         <td><i>Empty</i></td>
@@ -89,7 +89,7 @@
     [(ngModel)]="task.name" placeholder="Edit your name here" size="12"></td>
             <td *ngIf="task!=focus">&nbsp;{{task.name}}</td>
 
-            <td>{{users[task.owner]}}</td>
+            <td>{{Parameters['users'][task.owner]}}</td>
             <!-- DOES NOT WORK WELL
     <td *ngIf="task==focus"><select required [(ngModel)]='task.owner'>
       <option *ngFor="let item of [].constructor(users.length); let i = index" [value]="i">{{users[i]}}</option>
@@ -98,7 +98,7 @@
     <td *ngIf="task!=focus">{{users[task.owner]}}</td>
 -->
 
-            <td>{{users[task.creator]}}</td>
+            <td>{{Parameters['users'][task.creator]}}</td>
             <td>{{taskStatusName(task)}}</td>
             <td>{{task.created | date: 'dd/MM/y'}}</td>
             <td>{{task.resolvedT | date: 'dd/MM/y'}}</td>
