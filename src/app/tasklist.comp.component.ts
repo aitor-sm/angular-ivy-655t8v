@@ -4,7 +4,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA
 } from "@angular/material/dialog";
-import { TaskObj, FlowActionObj, basicFlow } from "./tasks";
+import { TaskObj, FlowActionObj, basicFlow, TasksCfg } from "./tasks";
 import { TASKS } from "./mock-tasks";
 
 export interface DeleteDialogData {
@@ -59,8 +59,7 @@ export class TaskList_comp implements OnInit {
     closedT: null
   };
 
-//  DeleteTasksDialog: MatDialog;
-  showDeleteAlert: boolean = true;
+//  showDeleteAlert: boolean = true;
 
   ///////////////// CONSTRUCTOR
 
@@ -73,6 +72,8 @@ export class TaskList_comp implements OnInit {
     this.Parameters["initSelect"].forEach((n: number) => {
       if (n <= this.task_l.length) this.task_l[n - 1].selected = true;
     });
+
+//    console.log (TasksCfg.find(a => a.FName=="WarnOnDelete").FValue);
 
     // Template for new tasks
     this.clearNewTaskFields();
@@ -154,7 +155,7 @@ export class TaskList_comp implements OnInit {
 
   deleteSelectedTasksButton(): void {
     
-    if (this.showDeleteAlert) {
+    if (TasksCfg.find(a => a.FName=="WarnOnDelete").FValue) {
     
     let dialogRef = this.DeleteTasksDialog.open(DialogDeleteTasks, {
       height: "200px",
@@ -172,7 +173,7 @@ export class TaskList_comp implements OnInit {
       
       if (typeof(result) != "undefined") {
 //      console.log(result);
-      this.showDeleteAlert = result.confirmation;
+      TasksCfg.find(a => a.FName=="WarnOnDelete").FValue = result.confirmation;
 
       if (result.doIt)
         this.deleteSelectedTasks();

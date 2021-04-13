@@ -1,5 +1,5 @@
 import { Component, VERSION, OnInit } from "@angular/core";
-
+import { MCField, TasksCfg } from "./tasks";
 
 
 function TimeCtrl($scope, $timeout) {
@@ -40,6 +40,8 @@ export class AppComponent  implements OnInit {
 
   MainAppName: string = "TASKS";
   MainViewName: string = "All tasks";
+
+  cfg : MCField[] = TasksCfg;
 
   TaskVersion: string = "0.0.3";
 

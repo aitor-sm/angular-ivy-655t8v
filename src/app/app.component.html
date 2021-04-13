@@ -35,8 +35,8 @@
       -->
 </div>
 
-<div id="TASKS-App" class="tabcontent"  style="display:none; padding: 20px">
-
+<div id="TASKS-App" class="tabcontent"  style="display:none">
+<table style="padding:20px" ><tr><td >
       <h3>TASKS application</h3> 
       Welcome to the tasks management application.<br>
       Current version is: {{TaskVersion}}.<br><br>
@@ -46,20 +46,34 @@
       - Tidy up code<br>
       - Warning on delete modal<br>
       - Main apps vertical bar<br>
+      - About page for tasks<br>
+      - Configuration page for tasks<br>
       <h4>TASKs ver 0.0.2</h4>
       - Ticket flow status, inlined change buttons<br>
       - Resolution and closing time<br>
       - Status bar<br>
       - Several fixes<br><br>
+</td></tr></table>
 </div>
 
 
 <div id="TASKS-Cfg" class="tabcontent"  style="display:none">
+<table style="padding:20px" ><tr><td >
 
-      TASKS Settings
+      <h3>TASKS Settings</h3>
+      
+      <ng-container *ngFor="let cfgItem of cfg;let i=index">
+
+        <ng-container *ngIf="cfgItem.FType=='boolean'">
+          <input type="checkbox" id="name-{{i}}" [(ngModel)]="cfgItem.FValue">
+          <label for="name-{{i}}">{{cfgItem.FCaption}}</label>
+        </ng-container>
+           
+      </ng-container>
+</td></tr></table>
 
 </div>
--->
+
 
 
 

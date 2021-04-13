@@ -109,3 +109,19 @@ export var basicFlow : FlowStatusObj[] = [
     }
   ]
 
+
+export interface MCField {
+  FName: string;
+  FCaption: string;
+  FType: any;
+  FValue: any;
+}
+
+export var TasksCfg : MCField[] = [
+    {
+      FName: "WarnOnDelete",
+      FCaption: "Alert me before deleting a task",
+      FType: "boolean",
+      FValue: true
+    }
+]

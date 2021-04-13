@@ -3,7 +3,7 @@
   display: flex;
   flex-flow: column;
   height: 100%;
-  border: 1px solid black;
+  /*border: 1px solid black;*/
 }
 .vbox .row.header {
   flex: 0 1 auto;
