@@ -14,14 +14,15 @@ export class TaskObj {
   // Temporarily object specific fields
   resolvedT: Date;
   closedT: Date;
-  // TaskObj fields
+  // TaskObj fields (X-Field)
   dueDate: Date;
+  
   // DB.Viewer fields
-  filter: Boolean;
-  selected: Boolean;
+  filter: boolean;
+  selected: boolean;
 
 
-  public dueTask(): Boolean {
+  public dueTask(): boolean {
     return this.dueDate < new Date() && !basicFlow[this.status].terminal;
   };
 
