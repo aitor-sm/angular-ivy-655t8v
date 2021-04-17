@@ -16,39 +16,70 @@ export const Classes: string[] = [
 ];
 
 export const UserList : string[] = ["Aitor", "Andrés", "Jaime", "Pedro"];
+export var currentUser : number = 0;
+
 
 export class MCObject {
+
+  // Inmutable automatic fields
   private _id: number;
-  private _class: number;
-  private _name: string;
-  private _owner: number;
   private _creator: number;
   private _createdT: Date;
+  // Inmutable fields
+  private _class: number;
+
+  // Mutable fields
+  private _name: string;
+  private _owner: number;
   private _description: string;
-  private _status: number;
   // FLOW RELATED FIELDS: temporarily part of BASE
+  private _status: number;
   public resolvedT: Date;
   public closedT: Date;
 
+  // Static members
+  static sequence: number = 0; // there should be one per class
+
   private _XFields : {[key: string]: any} = [];
 
-  public get id () {
+  constructor (ClassId: number, Name: string, Owner: number, Desc: string, Status: number) {
+    this._id = MCObject.sequence;
+    MCObject.sequence ++;
+    
+    this._createdT = new Date();
+    this._creator = currentUser;
+
+    this._class = ClassId;
+
+    // accessor properties
+    this.name = Name;
+    this.owner = Owner;
+    this.description = Desc;
+    this.status = Status;
+
+  }
+
+  // READONLY GETTERS
+
+  public get id (): string {
     return this.getClassName() + this._id.toString().padStart(12,"0");
   };
 
-  public getClassName () {
-    return Classes[this._class];
+  public get created (): Date {
+    return this._createdT;
   }
 
-  public getOwnerName () {
-    return UserList[this._owner];
+  public get creator (): number {
+    return this._creator;
   }
 
-  public getCreatorName () {
-    return UserList[this._creator];
+  public get classId (): number {
+    return this._class;
   }
-  
-  public get name () {
+
+
+  // ACCESSORS FOR BASIC PROPERTIES 
+  public get name (): string {
     return this._name;
   }
 
@@ -56,8 +87,12 @@ export class MCObject {
     this._name = n;
   }
 
-  public get created () {
-    return this._createdT;
+  public get ownner (): number {
+    return this._owner;
+  }
+
+  public set owner (newOwner: number) {
+    this._owner = newOwner;
   }
 
   public get description () {
@@ -68,6 +103,8 @@ export class MCObject {
     this._description = d;
   }
 
+
+  // X-Fields
   public getXField (s: string) {
     return this._XFields[s];
   }
@@ -80,14 +117,30 @@ export class MCObject {
     this._XFields[name] = value;
   }
 
+  public getClassName (): string {
+    return Classes[this._class];
+  }
+
+  // TEXTUAL DESCRIPTIONS
+  public getOwnerName (): string {
+    return UserList[this._owner];
+  }
+
+  public getCreatorName (): string {
+    return UserList[this._creator];
+  }
+  
   // This shouldn't be relative to basicFlow, but to the flow of the type
-  public taskStatusName(): string {
+  public getStatusName(): string {
     return basicFlow[this._status].name;
   }
 
-
   // FLOW RELATED METHODS: temporarily part of BASE
-  public changeStatus(newStatus: number) {
+  public get status (): number {
+    return this._status;
+  }
+
+  public set status (newStatus: number) {
     if (basicFlow[newStatus].resolutive && !basicFlow[this._status].resolutive)
       this.resolvedT = new Date();
 

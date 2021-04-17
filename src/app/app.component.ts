@@ -1,8 +1,8 @@
 import { Component, VERSION, OnInit } from "@angular/core";
-import { MCField, UserList } from "./MC.core"
+import { MCField, UserList, currentUser } from "./MC.core"
 import { TasksCfg } from "./tasks";
 
-
+/*
 function TimeCtrl($scope, $timeout) {
     $scope.clock = "loading clock..."; // initialise the time variable
     $scope.tickInterval = 1000 //ms
@@ -15,6 +15,7 @@ function TimeCtrl($scope, $timeout) {
     // Start the timer
     $timeout(tick, $scope.tickInterval);
 }
+*/
 
 interface TabObj {
   id: string;
@@ -37,7 +38,7 @@ const TABS: TabObj[] = [
 })
 
 export class AppComponent  implements OnInit {
-  name = "Angular " + VERSION.major;
+//  name = "Angular " + VERSION.major;
 
   MainAppName: string = "TASKS";
   MainViewName: string = "All tasks";
@@ -48,7 +49,7 @@ export class AppComponent  implements OnInit {
 
   TaskAppParams = { 
     initSelect: [3,4],
-    currentUser: 0,
+    currentUser: currentUser,
     users: UserList
   };
 
