@@ -7,14 +7,15 @@ export class TaskObj {
   id: number;
   name: string;
   owner: number;
-  created: Date;
+  createdT: Date;
   description: string;
   creator: number;
-  // TaskObj fields
   status: number;
-  dueDate: Date;
+  // Temporarily object specific fields
   resolvedT: Date;
   closedT: Date;
+  // TaskObj fields
+  dueDate: Date;
   // DB.Viewer fields
   filter: Boolean;
   selected: Boolean;
@@ -22,8 +23,9 @@ export class TaskObj {
 
   public dueTask(): Boolean {
     return this.dueDate < new Date() && !basicFlow[this.status].terminal;
-  }
+  };
 
+  // SO FAR OBJECT SPECIFIC
   public changeStatus(newStatus: number) {
     if (basicFlow[newStatus].resolutive && !basicFlow[this.status].resolutive)
       this.resolvedT = new Date();

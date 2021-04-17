@@ -65,7 +65,7 @@ export class TaskList_comp implements OnInit {
       t.name = "Programa tasks";
       t.owner = 0;
       t.description = "Crear la versión 0.4";
-      t.created = new Date();
+      t.createdT = new Date();
       t.filter = true;
       t.selected = false;
       t.status = 0;
@@ -80,7 +80,7 @@ export class TaskList_comp implements OnInit {
       t.name = "Clase Alemán";
       t.owner = 1;
       t.description = "Clase por la tarde";
-      t.created = new Date();
+      t.createdT = new Date();
       t.filter = true;
       t.selected = false;
       t.status = 1;
@@ -95,7 +95,7 @@ export class TaskList_comp implements OnInit {
       t.name = "Deberes";
       t.owner = 0;
       t.description = "Descripción 3";
-      t.created = new Date();
+      t.createdT = new Date();
       t.filter = true;
       t.selected = false;
       t.status = 2;
@@ -128,11 +128,11 @@ export class TaskList_comp implements OnInit {
 
   addNewTask(task: TaskObj) {
     task.id = this.idSequence;
-    task.created = new Date();
+    task.createdT = new Date();
     task.resolvedT = null;
     task.closedT = null;
 
-    this.task_l.push(Object.assign({}, task));
+    this.task_l.push(Object.assign(new TaskObj(), task));
 
     this.idSequence++;
   }

@@ -5,8 +5,8 @@ export interface FlowActionObj {
 
 export interface FlowStatusObj {
   name: string;
-  resolutive: Boolean;
-  terminal: Boolean;
+  resolutive: boolean;
+  terminal: boolean;
   actions: FlowActionObj[];
 }
 
