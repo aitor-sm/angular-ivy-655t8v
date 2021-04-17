@@ -1,5 +1,5 @@
 import { Component, VERSION, OnInit } from "@angular/core";
-import { MCField } from "./MC.core"
+import { MCField, UserList } from "./MC.core"
 import { TasksCfg } from "./tasks";
 
 
@@ -49,7 +49,7 @@ export class AppComponent  implements OnInit {
   TaskAppParams = { 
     initSelect: [3,4],
     currentUser: 0,
-    users: ["Aitor", "Andrés", "Jaime"]
+    users: UserList
   };
 
 
