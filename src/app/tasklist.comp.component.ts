@@ -36,8 +36,11 @@ export class TaskList_comp implements OnInit {
 
   newTaskToggle: boolean = false;
 
-  newTask: TaskObj = new TaskObj();
+  newTask: TaskObj;
  
+
+// QUITAR EL ID-SEQUENCE;  En el HTML, meter el getCreatorName / ¿se requiere clearNewTaskFields?
+
   ///////////////// CONSTRUCTOR
 
   ngOnInit() {
@@ -49,8 +52,10 @@ export class TaskList_comp implements OnInit {
       if (n <= this.task_l.length) this.task_l[n - 1].selected = true;
     });
 
+
     // Template for new tasks
-    this.clearNewTaskFields();
+//    this.createNewTaskTemplate ();
+//    this.clearNewTaskFields();
   }
 
   constructor (public DeleteTasksDialog: MatDialog) {}
@@ -60,6 +65,13 @@ export class TaskList_comp implements OnInit {
 
   retrieveTasks ()  {
     
+    this.task_l.push (new TaskObj ("Programa Tasks", 0, "Crear la versión 0.4", 0, new Date('2021-04-21')));
+    this.task_l.push (new TaskObj ("Clase alemán", 1, "Clase por la tarde", 1, new Date('2021-04-21')));
+    this.task_l.push (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-04-21')));
+
+/*
+Name: string, Owner: number, Desc: string, Status: number, DueDate: Date
+
     let t: TaskObj = new TaskObj();
       t.id = 1;
       t.name = "Programa tasks";
@@ -105,6 +117,7 @@ export class TaskList_comp implements OnInit {
       t.closedT = null;
     this.task_l.push (t);
 
+*/
     this.idSequence = this.task_l.length;
 
   }
@@ -127,12 +140,16 @@ export class TaskList_comp implements OnInit {
   }
 
   addNewTask(task: TaskObj) {
+/*
     task.id = this.idSequence;
     task.createdT = new Date();
-    task.resolvedT = null;
-    task.closedT = null;
+*/
+    this.newTask.resolvedT = null;
+    this.newTask.closedT = null;
 
-    this.task_l.push(Object.assign(new TaskObj(), task));
+//    this.task_l.push(Object.assign(new TaskObj(), task));
+    this.task_l.push(this.newTask);
+    this.createNewTaskTemplate ();
 
     this.idSequence++;
   }
@@ -200,7 +217,10 @@ export class TaskList_comp implements OnInit {
 
   toggleNewTaskBar() {
     this.newTaskToggle = !this.newTaskToggle;
-  }
+    if (this.newTaskToggle) {
+      this.createNewTaskTemplate ();
+}  }
+
 
   clearNewTaskFields() {
     this.newTask.name = "";
@@ -209,10 +229,16 @@ export class TaskList_comp implements OnInit {
     this.newTask.filter = true;
     this.newTask.selected = false;
     this.newTask.status = 0;
-    this.newTask.creator = this.Parameters["currentUser"];
+//    this.newTask.creator = this.Parameters["currentUser"];
     this.newTask.dueDate = new Date("2020-01-01");
   }
 
+
+  createNewTaskTemplate () {
+console.log ("KO::", this.Parameters["currentUser"]);
+    this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, new Date("2020-01-01") );
+console.log ("CU::", this.newTask.owner);
+  }
 
   ///////////////// OWN METHODS
 

@@ -32,8 +32,10 @@ export class MCObject {
   private _name: string;
   private _owner: number;
   private _description: string;
+  
   // FLOW RELATED FIELDS: temporarily part of BASE
   private _status: number;
+
   public resolvedT: Date;
   public closedT: Date;
 
@@ -87,7 +89,7 @@ export class MCObject {
     this._name = n;
   }
 
-  public get ownner (): number {
+  public get owner (): number {
     return this._owner;
   }
 

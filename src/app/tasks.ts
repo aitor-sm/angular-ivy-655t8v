@@ -1,25 +1,38 @@
-import { MCField } from "./MC.core"
+import { MCField, MCObject } from "./MC.core"
 import { FlowActionObj, basicFlow } from "./flows";
 
 
-export class TaskObj {
+export class TaskObj extends MCObject {
   // Object fields
-  id: number;
-  name: string;
-  owner: number;
-  createdT: Date;
-  description: string;
-  creator: number;
-  status: number;
+//  id: number;
+//  name: string;
+//  owner: number;
+//   createdT: Date;
+//   description: string;
+//   creator: number;
+//   status: number;
   // Temporarily object specific fields
-  resolvedT: Date;
-  closedT: Date;
+//  resolvedT: Date;
+//  closedT: Date;
   // TaskObj fields (X-Field)
   dueDate: Date;
-  
+
   // DB.Viewer fields
   filter: boolean;
   selected: boolean;
+
+
+// ACCESSORS PARA DUE DATE, Hacer filter y selected privados
+
+  public constructor (Name: string, Owner: number, Desc: string, Status: number, DueDate: Date) {
+
+    super( 20, Name, Owner, Desc, Status);
+
+    this.dueDate = DueDate;
+    this.filter = true;
+    this.selected = false;
+
+  }
 
 
   public dueTask(): boolean {
@@ -27,6 +40,8 @@ export class TaskObj {
   };
 
   // SO FAR OBJECT SPECIFIC
+
+/*
   public changeStatus(newStatus: number) {
     if (basicFlow[newStatus].resolutive && !basicFlow[this.status].resolutive)
       this.resolvedT = new Date();
@@ -43,6 +58,7 @@ export class TaskObj {
   public availableActions(): FlowActionObj[] {
     return basicFlow[this.status].actions;
   }
+*/
 
 }
 
