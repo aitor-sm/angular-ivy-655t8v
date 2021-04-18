@@ -1,9 +1,6 @@
 import { Component, Input, OnInit, Inject } from "@angular/core";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 import { TaskObj, TasksCfg } from "./tasks";
-import { FlowActionObj, basicFlow } from "./flows";
-
-//import { TASKS } from "./mock-tasks";
 
 export interface DeleteDialogData {
   numberOfTasks: number;
@@ -24,13 +21,11 @@ export class TaskList_comp implements OnInit {
 
   ///////////////// PROPERTIES
 
-  // To TaskList
-  idSequence: number;
+  // To DBList
   task_l: TaskObj[] =[];
-
-  // From this class
   focus: TaskObj;
 
+  // From this class
   reassignTo: number = 0;
   toDueDate: Date = new Date();
 
@@ -38,8 +33,6 @@ export class TaskList_comp implements OnInit {
 
   newTask: TaskObj;
  
-
-// QUITAR EL ID-SEQUENCE;  En el HTML, meter el getCreatorName / ¿se requiere clearNewTaskFields?
 
   ///////////////// CONSTRUCTOR
 
@@ -52,10 +45,6 @@ export class TaskList_comp implements OnInit {
       if (n <= this.task_l.length) this.task_l[n - 1].selected = true;
     });
 
-
-    // Template for new tasks
-//    this.createNewTaskTemplate ();
-//    this.clearNewTaskFields();
   }
 
   constructor (public DeleteTasksDialog: MatDialog) {}
@@ -68,57 +57,6 @@ export class TaskList_comp implements OnInit {
     this.task_l.push (new TaskObj ("Programa Tasks", 0, "Crear la versión 0.4", 0, new Date('2021-04-21')));
     this.task_l.push (new TaskObj ("Clase alemán", 1, "Clase por la tarde", 1, new Date('2021-04-21')));
     this.task_l.push (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-04-21')));
-
-/*
-Name: string, Owner: number, Desc: string, Status: number, DueDate: Date
-
-    let t: TaskObj = new TaskObj();
-      t.id = 1;
-      t.name = "Programa tasks";
-      t.owner = 0;
-      t.description = "Crear la versión 0.4";
-      t.createdT = new Date();
-      t.filter = true;
-      t.selected = false;
-      t.status = 0;
-      t.creator = 0;
-      t.dueDate = new Date('2021-04-21');
-      t.resolvedT = null;
-      t.closedT = null;
-    this.task_l.push (t);
-
-    t = new TaskObj();
-      t.id = 2;
-      t.name = "Clase Alemán";
-      t.owner = 1;
-      t.description = "Clase por la tarde";
-      t.createdT = new Date();
-      t.filter = true;
-      t.selected = false;
-      t.status = 1;
-      t.creator = 0;
-      t.dueDate = new Date('2021-04-21');
-      t.resolvedT = null;
-      t.closedT = null;
-    this.task_l.push (t);
-    
-    t = new TaskObj();
-      t.id = 3;
-      t.name = "Deberes";
-      t.owner = 0;
-      t.description = "Descripción 3";
-      t.createdT = new Date();
-      t.filter = true;
-      t.selected = false;
-      t.status = 2;
-      t.creator = 0;
-      t.dueDate = new Date('2021-04-21');
-      t.resolvedT = null;
-      t.closedT = null;
-    this.task_l.push (t);
-
-*/
-    this.idSequence = this.task_l.length;
 
   }
 
@@ -140,10 +78,6 @@ Name: string, Owner: number, Desc: string, Status: number, DueDate: Date
   }
 
   addNewTask(task: TaskObj) {
-/*
-    task.id = this.idSequence;
-    task.createdT = new Date();
-*/
     this.newTask.resolvedT = null;
     this.newTask.closedT = null;
 
@@ -151,7 +85,6 @@ Name: string, Owner: number, Desc: string, Status: number, DueDate: Date
     this.task_l.push(this.newTask);
     this.createNewTaskTemplate ();
 
-    this.idSequence++;
   }
 
   ///////////////// DB.VIEWER METHODS
@@ -195,7 +128,6 @@ Name: string, Owner: number, Desc: string, Status: number, DueDate: Date
     dialogRef.afterClosed().subscribe(result => {
       
       if (typeof(result) != "undefined") {
-//      console.log(result);
       TasksCfg.find(a => a.FName=="WarnOnDelete").FValue = result.confirmation;
 
       if (result.doIt)
@@ -217,27 +149,15 @@ Name: string, Owner: number, Desc: string, Status: number, DueDate: Date
 
   toggleNewTaskBar() {
     this.newTaskToggle = !this.newTaskToggle;
-    if (this.newTaskToggle) {
+    if (this.newTaskToggle)
       this.createNewTaskTemplate ();
-}  }
-
-
-  clearNewTaskFields() {
-    this.newTask.name = "";
-    this.newTask.owner = 0;
-    this.newTask.description = "";
-    this.newTask.filter = true;
-    this.newTask.selected = false;
-    this.newTask.status = 0;
-//    this.newTask.creator = this.Parameters["currentUser"];
-    this.newTask.dueDate = new Date("2020-01-01");
   }
 
-
   createNewTaskTemplate () {
-console.log ("KO::", this.Parameters["currentUser"]);
     this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, new Date("2020-01-01") );
-console.log ("CU::", this.newTask.owner);
+
+    this.newTask.filter = true;
+    this.newTask.selected = false;
   }
 
   ///////////////// OWN METHODS

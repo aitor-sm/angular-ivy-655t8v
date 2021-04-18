@@ -53,19 +53,12 @@
     [(ngModel)]="newTask.name" placeholder="New task name" size="12"></td>
 
         <td>
-
-        <select required [(ngModel)]='newTask.owner'>
-      <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i">{{Parameters['users'][i]}}</option>
-      </select>
-
-<!--
-           <select required [(ngModel)]='newTask.owner' ng-selected="i">
-          <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i" ng-selected="i==3">{{Parameters['users'][i]}}</option>
-      </select>
-    -->  
+          <select required [(ngModel)]='newTask.owner'>
+          <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i">{{Parameters['users'][i]}}</option>
+          </select>
         </td>
 
-        <td><i>{{Parameters['users'][newTask.creator]}}</i></td>
+        <td><i>{{newTask.getCreatorName()}}</i></td>
         <td><i>{{newTask.getStatusName()}}</i></td>
         <td><i>--Now--</i></td>
         <td><i>Empty</i></td>
@@ -81,7 +74,7 @@
         <td>
           <button type="button"  [disabled]="!isValidNewTask()" (click)="addNewTask(newTask)" class=inlined >Create task</button>
           &nbsp;
-          <button type="button"  (click)="clearNewTaskFields()" class=inlined >Clear fields</button>
+          <button type="button"  (click)="createNewTaskTemplate()" class=inlined >Clear fields</button>
         </td>
       </tr>
 
@@ -109,7 +102,7 @@
     <td *ngIf="task!=focus">{{users[task.owner]}}</td>
 -->
 
-            <td>{{Parameters['users'][task.creator]}}</td>
+            <td>{{task.getCreatorName()}}</td>
             <td>{{task.getStatusName()}}</td>
             <td>{{task.created | date: 'dd/MM/y'}}</td>
             <td>{{task.resolvedT | date: 'dd/MM/y'}}</td>
