@@ -59,6 +59,11 @@ export class MCObject {
     this.description = Desc;
     this.status = Status;
 
+    // Temporarily, flow options
+    this.resolvedT = null;
+    this.closedT = null;
+
+
   }
 
   // READONLY GETTERS

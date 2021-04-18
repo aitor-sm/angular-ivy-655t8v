@@ -21,8 +21,10 @@ export class TaskList_comp implements OnInit {
 
   ///////////////// PROPERTIES
 
-  // To DBList
+  // To TaskList
   task_l: TaskObj[] =[];
+
+  // To DBList
   focus: TaskObj;
 
   // From this class
@@ -37,9 +39,10 @@ export class TaskList_comp implements OnInit {
   ///////////////// CONSTRUCTOR
 
   ngOnInit() {
-    // Retrieve tasks
+    // To TASK List
     this.retrieveTasks();
 
+    // To DBList
     // Parse the initially selected tasks
     this.Parameters["initSelect"].forEach((n: number) => {
       if (n <= this.task_l.length) this.task_l[n - 1].selected = true;
@@ -78,16 +81,18 @@ export class TaskList_comp implements OnInit {
   }
 
   addNewTask(task: TaskObj) {
-    this.newTask.resolvedT = null;
-    this.newTask.closedT = null;
-
-//    this.task_l.push(Object.assign(new TaskObj(), task));
-    this.task_l.push(this.newTask);
-    this.createNewTaskTemplate ();
-
+    this.task_l.push(task);
   }
 
   ///////////////// DB.VIEWER METHODS
+
+  addNewTaskButton () {
+    let I = this.newTask;
+    
+    this.addNewTask (this.newTask);
+    this.createNewTaskTemplate ();
+    Object.assign (this.newTask, I);
+  }
 
   onMouseOver(t: TaskObj): void {
     this.focus = t;

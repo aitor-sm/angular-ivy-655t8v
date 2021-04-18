@@ -39,7 +39,15 @@ export class TaskObj extends MCObject {
 
 export class TaskList {
 
-  protected task_l    : TaskObj[] = [];
+  public task_l    : TaskObj[] = [];
+
+
+  retrieveTasks ()  {
+    this.task_l.push (new TaskObj ("Programa Tasks", 0, "Crear la versión 0.4", 0, new Date('2021-04-21')));
+    this.task_l.push (new TaskObj ("Clase alemán", 1, "Clase por la tarde", 1, new Date('2021-04-21')));
+    this.task_l.push (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-04-21')));
+  }
+
 
   deleteTask(t: TaskObj) {
     for (let i = this.task_l.length - 1; i >= 0; i--)
@@ -48,6 +56,7 @@ export class TaskList {
         break;
       }
   }
+
 
   numTotalTasks(): number {
     return this.task_l.filter(x => x.filter).length;
@@ -58,6 +67,10 @@ export class TaskList {
     return this.task_l.filter(t => t.dueTask()).length;
   }
  
+  public addNewTask(task: TaskObj) {
+//    this.task_l.push(Object.assign(new TaskObj(), task));
+    this.task_l.push(task);
+  }
 
 }
 
