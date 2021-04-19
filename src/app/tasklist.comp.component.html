@@ -12,16 +12,16 @@
           <button type="button" class=toggleOff [class.toggleOn]="newTaskToggle" (click)="toggleNewTaskBar()">New Task</button>
           <button type="button" class=toolbar disabled>Search</button>
           |
-          <button type="button"  class=toolbar [disabled]="numSelectedTasks()==0" (click)="reassignSelectedTasks (reassignTo )">Reassign to:</button>
+          <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="reassignSelectedTasks (reassignTo )">Reassign to:</button>
           <select required [(ngModel)]='reassignTo'>
       <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i">{{Parameters['users'][i]}}</option>
       </select>
           &nbsp;
-          <button type="button"  class=toolbar [disabled]="numSelectedTasks()==0" (click)="changeDueDateOnSelectedTasks (toDueDate)">Change Due date to:</button>
+          <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="changeDueDateOnSelectedTasks (toDueDate)">Change Due date to:</button>
           <input type="date" class=input_inlined style="width:120px"
         [ngModel]="toDueDate | date:'yyyy-MM-dd'"  (ngModelChange)="toDueDate=$event">
           &nbsp;
-          <button type="button"  class=toolbar [disabled]="numSelectedTasks()==0" (click)="deleteSelectedTasksButton(1)">Delete</button>
+          <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="deleteSelectedTasksButton(1)">Delete</button>
         </td>
       </tr>
     </table>
@@ -80,11 +80,11 @@
 
       <!--------- TABLE ELEMENTS  ---->
 
-      <ng-container *ngIf="task_l.length > 0; then task_tableelements else no_elements">
+      <ng-container *ngIf="TL.countIf(applyFilter) > 0; then task_tableelements else no_elements">
       </ng-container>
 
       <ng-template #task_tableelements>
-        <ng-container *ngFor="let task of task_l">
+        <ng-container *ngFor="let task of TL.subFilter(applyFilter)">
           <tr *ngIf="applyFilter(task)" class=record (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)" [class.highlight]="task.dueTask()" [class.selected]="task.selected">
 
             <td><input type="checkbox" [(ngModel)]="task.selected"></td>
@@ -155,7 +155,7 @@
     <table class=toolbar>
       <tr height=20px>
         <td>
-          Total: {{numTotalTasks()}} tasks, ({{numSelectedTasks()}} selected), {{numDueTasks()}} are due
+          Total: {{TL.countIf (this.applyFilter)}} tasks, ({{TL.countSelIf(this.applyFilter)}} selected), {{numDueTasks()}} are due
         </td>
       </tr>
     </table>

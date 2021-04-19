@@ -39,7 +39,20 @@ export class TaskObj extends MCObject {
 
 export class TaskList {
 
-  public task_l    : TaskObj[] = [];
+  protected task_l    : TaskObj[] = [];
+
+  constructor (p: object) {
+
+    // To TASK List
+    this.retrieveTasks();
+
+    // To DBList
+    // Parse the initially selected tasks
+    p["initSelect"].forEach((n: number) => {
+      if (n <= this.task_l.length) this.task_l[n - 1].selected = true;
+    });
+
+  }
 
 
   retrieveTasks ()  {
@@ -88,6 +101,9 @@ export class TaskList {
     return this.task_l.filter(t => t.selected).length;
   }
 
+  public countSelIf(f: (arg0: TaskObj) => boolean): number {
+    return this.task_l.filter(t => t.selected && f(t)).length;
+  }
   public do (f: (arg0: TaskObj) => void) {
     this.task_l.forEach (t => f(t));
   }
@@ -102,6 +118,18 @@ export class TaskList {
 
   public splice (n: number, m: number) {
     this.task_l.splice (n,m);
+  }
+
+  public indexOf (t: TaskObj): number {
+    return this.task_l.indexOf (t);
+  }
+
+  public deleteSel () {
+    this.task_l = this.task_l.reduce((p,c) => (!c.selected && p.push(c),p),[]);
+  }
+
+  public subFilter (f): TaskObj[] {
+    return this.task_l.filter (f);
   }
 
 }

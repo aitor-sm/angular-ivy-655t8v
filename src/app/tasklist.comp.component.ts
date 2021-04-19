@@ -22,7 +22,7 @@ export class TaskList_comp implements OnInit {
   ///////////////// PROPERTIES
 
   // To TaskList
-  task_l: TaskObj[] =[];
+//  task_l: TaskObj[] =[];
 
   // To DBList
   focus: TaskObj;
@@ -35,21 +35,19 @@ export class TaskList_comp implements OnInit {
 
   newTask: TaskObj;
 
-  TL : TaskList = new TaskList();
+  TL : TaskList;
 
  
 
   ///////////////// CONSTRUCTOR
 
   ngOnInit() {
-    // To TASK List
-    this.retrieveTasks();
 
-    // To DBList
-    // Parse the initially selected tasks
-    this.Parameters["initSelect"].forEach((n: number) => {
-      if (n <= this.task_l.length) this.task_l[n - 1].selected = true;
-    });
+    let p = { 
+      initSelect : this.Parameters["initSelect"]
+    };
+
+    this.TL = new TaskList(p);
 
   }
 
@@ -57,35 +55,44 @@ export class TaskList_comp implements OnInit {
 
 
   ///////////////// TASK-LIST METHODS
-
+/*
   retrieveTasks ()  {
     
-    this.task_l.push (new TaskObj ("Programa Tasks", 0, "Crear la versión 0.4", 0, new Date('2021-04-21')));
-    this.task_l.push (new TaskObj ("Clase alemán", 1, "Clase por la tarde", 1, new Date('2021-04-21')));
-    this.task_l.push (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-04-21')));
+    this.TL.task_l.push (new TaskObj ("Programa Tasks", 0, "Crear la versión 0.4", 0, new Date('2021-04-21')));
+    this.TL.task_l.push (new TaskObj ("Clase alemán", 1, "Clase por la tarde", 1, new Date('2021-04-21')));
+    this.TL.task_l.push (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-04-21')));
 
   }
+*/
 
+/*
 
   deleteTask(t: TaskObj) {
-    for (let i = this.task_l.length - 1; i >= 0; i--)
-      if (this.task_l[i] == this.focus) {
-        this.task_l.splice(i, 1);
+    for (let i = this.TL.task_l.length - 1; i >= 0; i--)
+      if (this.TL.task_l[i] == this.focus) {
+        this.TL.task_l.splice(i, 1);
         break;
       }
   }
+*/
 
   numTotalTasks(): number {
-    return this.task_l.filter(x => this.applyFilter(x)).length;
+      return this.TL.countIf (this.applyFilter);
+//    return this.TL.task_l.filter(x => this.applyFilter(x)).length;
   }
+
 
   numDueTasks(): number {
-    return this.task_l.filter(t => t.dueTask()).length;
+      return this.TL.countIf (t => (this.applyFilter(t) && t.dueTask()));
+//    return this.TL.task_l.filter(t => t.dueTask()).length;
   }
 
+/*
   addNewTask(task: TaskObj) {
-    this.task_l.push(task);
+    this.TL.addNewTask(task);
+//    this.TL.task_l.push(task);
   }
+*/
 
   ///////////////// DB.VIEWER METHODS
 
@@ -96,7 +103,7 @@ export class TaskList_comp implements OnInit {
   addNewTaskButton () {
     let I = this.newTask;
     
-    this.addNewTask (this.newTask);
+    this.TL.addNewTask (this.newTask);
     this.createNewTaskTemplate ();
     Object.assign (this.newTask, I);
   }
@@ -112,7 +119,10 @@ export class TaskList_comp implements OnInit {
   onSelectAll(e: Event): void {
     const checkbox = e.target as HTMLInputElement;
 
-    this.task_l.forEach(t => (this.applyFilter(t) && (t.selected = checkbox.checked)));
+    this.TL.doIf ( t => t.selected = checkbox.checked,
+                   this.applyFilter );
+
+//    this.TL.task_l.forEach(t => (this.applyFilter(t) && (t.selected = checkbox.checked)));
 //    for (let i = this.task_l.length - 1; i >= 0; i--) {
 //      this.task_l[i].selected = checkbox.checked;
 //    }
@@ -122,9 +132,10 @@ export class TaskList_comp implements OnInit {
 
     switch (o) {
       case 0:   /* Focused */
-        this.task_l.splice(this.task_l.indexOf(this.focus),1);
+        this.TL.splice(this.TL.indexOf(this.focus),1);
       case 1:  /* All selected */
-        this.task_l = this.task_l.reduce((p,c) => (!c.selected && p.push(c),p),[]);
+        this.TL.deleteSel();
+//        this.TL.task_l = this.TL.task_l.reduce((p,c) => (!c.selected && p.push(c),p),[]);
         break;
     }
 
@@ -142,7 +153,7 @@ export class TaskList_comp implements OnInit {
       height: "200px",
       width: "100%",
       data: {
-        numberOfTasks: this.numSelectedTasks(),
+        numberOfTasks: ((o==0)? 1 : this.TL.countSelIf(this.applyFilter)),
         confirmation: true,
         doIt: true
       },
@@ -164,10 +175,13 @@ export class TaskList_comp implements OnInit {
         this.doDeleteTasks(o);
   }
 
+/*
   numSelectedTasks(): number {
-    return this.task_l.filter(x => x.selected).length;
+      return this.TL.countSel();
+//    return this.TL.task_l.filter(x => x.selected).length;
 //    return this.task_l.filter(x => x.selected && x.filter).length;
   }
+*/
 
   isValidNewTask(): Boolean {
     return this.newTask.name != "" && this.newTask.description != "";
@@ -190,15 +204,20 @@ export class TaskList_comp implements OnInit {
 
   reassignSelectedTasks(assignee: number) {
 
-      this.task_l.filter(t => t.selected).forEach(t => t.owner = assignee);
+      this.TL.doSel ( t => t.owner = assignee);
+
+//      this.TL.task_l.filter(t => t.selected).forEach(t => t.owner = assignee);
 //    for (let i = this.task_l.length - 1; i >= 0; i--)
 //      if (this.task_l[i].selected) this.task_l[i].owner = assignee;
   }
 
   changeDueDateOnSelectedTasks(d: Date) {
-    for (let i = this.task_l.length - 1; i >= 0; i--)
-      if (this.task_l[i].selected)
-        this.task_l[i].dueDate = new Date(this.toDueDate);
+
+    this.TL.doSel ( t => t.dueDate = new Date(this.toDueDate));
+/*
+    for (let i = this.TL.task_l.length - 1; i >= 0; i--)
+      if (this.TL.task_l[i].selected)
+        this.TL.task_l[i].dueDate = new Date(this.toDueDate);  */
   }
 }
 
