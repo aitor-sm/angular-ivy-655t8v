@@ -21,7 +21,7 @@
           <input type="date" class=input_inlined style="width:120px"
         [ngModel]="toDueDate | date:'yyyy-MM-dd'"  (ngModelChange)="toDueDate=$event">
           &nbsp;
-          <button type="button"  class=toolbar [disabled]="numSelectedTasks()==0" (click)="deleteSelectedTasksButton()">Delete</button>
+          <button type="button"  class=toolbar [disabled]="numSelectedTasks()==0" (click)="deleteSelectedTasksButton(1)">Delete</button>
         </td>
       </tr>
     </table>
@@ -119,7 +119,7 @@
             <td *ngIf="task!=focus">&nbsp;{{task.description}}</td>
 
             <td *ngIf="task==focus">
-              <button type="button"(click)="deleteTask(task)" class=inlined >Delete</button>
+              <button type="button"(click)="deleteSelectedTasksButton(0)" class=inlined >Delete</button>
               <ng-container *ngFor="let action of task.availableActions()">
                 &nbsp;
                 <button type="button" (click)="task.status = action.nextStatus" class=inlined >{{action.name}}</button>

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Inject } from "@angular/core";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
-import { TaskObj, TasksCfg } from "./tasks";
+import { TaskObj, TaskList, TasksCfg } from "./tasks";
 
 export interface DeleteDialogData {
   numberOfTasks: number;
@@ -34,6 +34,9 @@ export class TaskList_comp implements OnInit {
   newTaskToggle: boolean = false;
 
   newTask: TaskObj;
+
+  TL : TaskList = new TaskList();
+
  
 
   ///////////////// CONSTRUCTOR
@@ -66,7 +69,7 @@ export class TaskList_comp implements OnInit {
 
   deleteTask(t: TaskObj) {
     for (let i = this.task_l.length - 1; i >= 0; i--)
-      if (this.task_l[i] == t) {
+      if (this.task_l[i] == this.focus) {
         this.task_l.splice(i, 1);
         break;
       }
@@ -115,15 +118,23 @@ export class TaskList_comp implements OnInit {
 //    }
   }
 
-  deleteSelectedTasks(): void {
+  doDeleteTasks(o: number): void {
 
-      this.task_l = this.task_l.reduce((p,c) => (!c.selected && p.push(c),p),[]);
+    switch (o) {
+      case 0:   /* Focused */
+        this.task_l.splice(this.task_l.indexOf(this.focus),1);
+      case 1:  /* All selected */
+        this.task_l = this.task_l.reduce((p,c) => (!c.selected && p.push(c),p),[]);
+        break;
+    }
+
+      
 
 //      for (let i = this.task_l.length - 1; i >= 0; i--)
 //        if (this.task_l[i].selected) this.task_l.splice(i, 1);
   }
 
-  deleteSelectedTasksButton(): void {
+  deleteSelectedTasksButton(o: number): void {
     
     if (TasksCfg.find(a => a.FName=="WarnOnDelete").FValue) {
     
@@ -145,12 +156,12 @@ export class TaskList_comp implements OnInit {
       TasksCfg.find(a => a.FName=="WarnOnDelete").FValue = result.confirmation;
 
       if (result.doIt)
-        this.deleteSelectedTasks();
+        this.doDeleteTasks(o);
       }
     });
     }
     else
-        this.deleteSelectedTasks();
+        this.doDeleteTasks(o);
   }
 
   numSelectedTasks(): number {
