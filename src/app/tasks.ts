@@ -2,15 +2,13 @@ import { MCField, MCObject } from "./MC.core"
 import { FlowActionObj, basicFlow } from "./flows";
 
 
-export class TaskObj extends MCObject {
-  private _dueDate: Date;
+////////////// TASK OBJECT ////////////////
 
-  // DB.Viewer fields
-//  filter: boolean;
+export class TaskObj extends MCObject {
+
+  // DB.View.Obj fields
   selected: boolean;
 
-
-// ACCESSORS PARA DUE DATE, Hacer filter y selected privados
 
   public constructor (Name: string, Owner: number, Desc: string, Status: number, DueDate: Date) {
 
@@ -18,17 +16,17 @@ export class TaskObj extends MCObject {
 
     this.dueDate = DueDate;
 
-//    this.filter = true;
+    // DB.View.Obj init
     this.selected = false;
 
   }
 
   public get dueDate () {
-    return this._dueDate;
+      return this.getXField ("DueDate");
   }
 
   public set dueDate (d: Date) {
-    this._dueDate = d;
+      this.setXField ("DueDate", d);
   }
 
   public dueTask(): boolean {
@@ -37,17 +35,17 @@ export class TaskObj extends MCObject {
 
 }
 
+////////////// TASK LIST OBJECT ////////////////
+
+
 export class TaskList {
 
   protected task_l    : TaskObj[] = [];
 
   constructor (p: object) {
 
-    // To TASK List
     this.retrieveTasks();
 
-    // To DBList
-    // Parse the initially selected tasks
     p["initSelect"].forEach((n: number) => {
       if (n <= this.task_l.length) this.task_l[n - 1].selected = true;
     });
@@ -61,24 +59,6 @@ export class TaskList {
     this.task_l.push (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-04-21')));
   }
 
-
-  deleteTask(t: TaskObj) {
-    for (let i = this.task_l.length - 1; i >= 0; i--)
-      if (this.task_l[i] == t) {
-        this.task_l.splice(i, 1);
-        break;
-      }
-  }
-
-/*
-  numTotalTasks(): number {
-    return this.task_l.filter(x => x.filter).length;
-  }
-
-  numDueTasks(): number {
-    return this.task_l.filter(t => t.dueTask()).length;
-  }
-*/
  
   public addNewTask(task: TaskObj) {
 //    this.task_l.push(Object.assign(new TaskObj(), task));
@@ -134,6 +114,8 @@ export class TaskList {
 
 }
 
+
+////////////// TASK CONFIGURATION ////////////////
 
 export var TasksCfg : MCField[] = [
   {

@@ -21,25 +21,21 @@ export class TaskList_comp implements OnInit {
 
   ///////////////// PROPERTIES
 
-  // To TaskList
-//  task_l: TaskObj[] =[];
-
-  // To DBList
-  focus: TaskObj;
-
-  // From this class
-  reassignTo: number = 0;
-  toDueDate: Date = new Date();
-
-  newTaskToggle: boolean = false;
-
-  newTask: TaskObj;
-
   TL : TaskList;
 
+  // Visual components
+  focus: TaskObj;     // Focused task
+  newTask: TaskObj;   // Template for new Task
+
+  // Window controls
+  reassignTo: number = 0;
+  newTaskToggle: boolean = false;
+
+  // Task-specific
+  toDueDate: Date = new Date();
  
 
-  ///////////////// CONSTRUCTOR
+  ///////////////// CONSTRUCTORS
 
   ngOnInit() {
 
@@ -54,58 +50,10 @@ export class TaskList_comp implements OnInit {
   constructor (public DeleteTasksDialog: MatDialog) {}
 
 
-  ///////////////// TASK-LIST METHODS
-/*
-  retrieveTasks ()  {
-    
-    this.TL.task_l.push (new TaskObj ("Programa Tasks", 0, "Crear la versión 0.4", 0, new Date('2021-04-21')));
-    this.TL.task_l.push (new TaskObj ("Clase alemán", 1, "Clase por la tarde", 1, new Date('2021-04-21')));
-    this.TL.task_l.push (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-04-21')));
-
-  }
-*/
-
-/*
-
-  deleteTask(t: TaskObj) {
-    for (let i = this.TL.task_l.length - 1; i >= 0; i--)
-      if (this.TL.task_l[i] == this.focus) {
-        this.TL.task_l.splice(i, 1);
-        break;
-      }
-  }
-*/
-
-  numTotalTasks(): number {
-      return this.TL.countIf (this.applyFilter);
-//    return this.TL.task_l.filter(x => this.applyFilter(x)).length;
-  }
-
-
-  numDueTasks(): number {
-      return this.TL.countIf (t => (this.applyFilter(t) && t.dueTask()));
-//    return this.TL.task_l.filter(t => t.dueTask()).length;
-  }
-
-/*
-  addNewTask(task: TaskObj) {
-    this.TL.addNewTask(task);
-//    this.TL.task_l.push(task);
-  }
-*/
-
-  ///////////////// DB.VIEWER METHODS
+  ///////////////// VISUAL EFFECTS
 
   applyFilter (t: TaskObj): boolean {
     return true;
-  }
-
-  addNewTaskButton () {
-    let I = this.newTask;
-    
-    this.TL.addNewTask (this.newTask);
-    this.createNewTaskTemplate ();
-    Object.assign (this.newTask, I);
   }
 
   onMouseOver(t: TaskObj): void {
@@ -121,28 +69,30 @@ export class TaskList_comp implements OnInit {
 
     this.TL.doIf ( t => t.selected = checkbox.checked,
                    this.applyFilter );
+  };
 
-//    this.TL.task_l.forEach(t => (this.applyFilter(t) && (t.selected = checkbox.checked)));
-//    for (let i = this.task_l.length - 1; i >= 0; i--) {
-//      this.task_l[i].selected = checkbox.checked;
-//    }
+  toggleNewTaskBar() {
+    this.newTaskToggle = !this.newTaskToggle;
+    if (this.newTaskToggle)
+      this.createNewTaskTemplate ();
   }
 
-  doDeleteTasks(o: number): void {
+  createNewTaskTemplate () {
+    this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, new Date("2020-01-01") );
+  }
 
-    switch (o) {
-      case 0:   /* Focused */
-        this.TL.splice(this.TL.indexOf(this.focus),1);
-      case 1:  /* All selected */
-        this.TL.deleteSel();
-//        this.TL.task_l = this.TL.task_l.reduce((p,c) => (!c.selected && p.push(c),p),[]);
-        break;
-    }
+  isValidNewTask(): Boolean {
+    return this.newTask.name != "" && this.newTask.description != "";
+  }
 
-      
+  ///////////////// WINDOWS CONTROLS
 
-//      for (let i = this.task_l.length - 1; i >= 0; i--)
-//        if (this.task_l[i].selected) this.task_l.splice(i, 1);
+  addNewTaskButton () {
+    let I = this.newTask;
+    
+    this.TL.addNewTask (this.newTask);
+    this.createNewTaskTemplate ();
+    Object.assign (this.newTask, I);
   }
 
   deleteSelectedTasksButton(o: number): void {
@@ -175,50 +125,38 @@ export class TaskList_comp implements OnInit {
         this.doDeleteTasks(o);
   }
 
-/*
-  numSelectedTasks(): number {
-      return this.TL.countSel();
-//    return this.TL.task_l.filter(x => x.selected).length;
-//    return this.task_l.filter(x => x.selected && x.filter).length;
-  }
-*/
 
-  isValidNewTask(): Boolean {
-    return this.newTask.name != "" && this.newTask.description != "";
-  }
+  doDeleteTasks(o: number): void {
 
-  toggleNewTaskBar() {
-    this.newTaskToggle = !this.newTaskToggle;
-    if (this.newTaskToggle)
-      this.createNewTaskTemplate ();
+    switch (o) {
+      case 0:   /* Focused */
+        this.TL.splice(this.TL.indexOf(this.focus),1);
+        break;
+      case 1:  /* All selected */
+        this.TL.deleteSel();
+        break;
+    }
   }
 
-  createNewTaskTemplate () {
-    this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, new Date("2020-01-01") );
-
-//    this.newTask.filter = true;
-    this.newTask.selected = false;
-  }
-
-  ///////////////// OWN METHODS
 
   reassignSelectedTasks(assignee: number) {
-
       this.TL.doSel ( t => t.owner = assignee);
-
-//      this.TL.task_l.filter(t => t.selected).forEach(t => t.owner = assignee);
-//    for (let i = this.task_l.length - 1; i >= 0; i--)
-//      if (this.task_l[i].selected) this.task_l[i].owner = assignee;
   }
+
+
+
+  ///////////////// TASK SPECIFIC METHODS
 
   changeDueDateOnSelectedTasks(d: Date) {
-
     this.TL.doSel ( t => t.dueDate = new Date(this.toDueDate));
-/*
-    for (let i = this.TL.task_l.length - 1; i >= 0; i--)
-      if (this.TL.task_l[i].selected)
-        this.TL.task_l[i].dueDate = new Date(this.toDueDate);  */
   }
+
+  numDueTasks(): number {
+      return this.TL.countIf (t => (this.applyFilter(t) && t.dueTask()));
+  }
+
+
+
 }
 
 
