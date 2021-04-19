@@ -85,7 +85,7 @@
 
       <ng-template #task_tableelements>
         <ng-container *ngFor="let task of task_l">
-          <tr *ngIf="task.filter" class=record (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)" [class.highlight]="task.dueTask()" [class.selected]="task.selected">
+          <tr *ngIf="applyFilter(task)" class=record (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)" [class.highlight]="task.dueTask()" [class.selected]="task.selected">
 
             <td><input type="checkbox" [(ngModel)]="task.selected"></td>
 

@@ -73,7 +73,7 @@ export class TaskList_comp implements OnInit {
   }
 
   numTotalTasks(): number {
-    return this.task_l.filter(x => x.filter).length;
+    return this.task_l.filter(x => this.applyFilter(x)).length;
   }
 
   numDueTasks(): number {
@@ -85,6 +85,10 @@ export class TaskList_comp implements OnInit {
   }
 
   ///////////////// DB.VIEWER METHODS
+
+  applyFilter (t: TaskObj): boolean {
+    return true;
+  }
 
   addNewTaskButton () {
     let I = this.newTask;
@@ -104,14 +108,19 @@ export class TaskList_comp implements OnInit {
 
   onSelectAll(e: Event): void {
     const checkbox = e.target as HTMLInputElement;
-    for (let i = this.task_l.length - 1; i >= 0; i--) {
-      this.task_l[i].selected = checkbox.checked;
-    }
+
+    this.task_l.forEach(t => (this.applyFilter(t) && (t.selected = checkbox.checked)));
+//    for (let i = this.task_l.length - 1; i >= 0; i--) {
+//      this.task_l[i].selected = checkbox.checked;
+//    }
   }
 
   deleteSelectedTasks(): void {
-      for (let i = this.task_l.length - 1; i >= 0; i--)
-        if (this.task_l[i].selected) this.task_l.splice(i, 1);
+
+      this.task_l = this.task_l.reduce((p,c) => (!c.selected && p.push(c),p),[]);
+
+//      for (let i = this.task_l.length - 1; i >= 0; i--)
+//        if (this.task_l[i].selected) this.task_l.splice(i, 1);
   }
 
   deleteSelectedTasksButton(): void {
@@ -145,7 +154,8 @@ export class TaskList_comp implements OnInit {
   }
 
   numSelectedTasks(): number {
-    return this.task_l.filter(x => x.selected && x.filter).length;
+    return this.task_l.filter(x => x.selected).length;
+//    return this.task_l.filter(x => x.selected && x.filter).length;
   }
 
   isValidNewTask(): Boolean {
@@ -161,15 +171,17 @@ export class TaskList_comp implements OnInit {
   createNewTaskTemplate () {
     this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, new Date("2020-01-01") );
 
-    this.newTask.filter = true;
+//    this.newTask.filter = true;
     this.newTask.selected = false;
   }
 
   ///////////////// OWN METHODS
 
   reassignSelectedTasks(assignee: number) {
-    for (let i = this.task_l.length - 1; i >= 0; i--)
-      if (this.task_l[i].selected) this.task_l[i].owner = assignee;
+
+      this.task_l.filter(t => t.selected).forEach(t => t.owner = assignee);
+//    for (let i = this.task_l.length - 1; i >= 0; i--)
+//      if (this.task_l[i].selected) this.task_l[i].owner = assignee;
   }
 
   changeDueDateOnSelectedTasks(d: Date) {

@@ -6,7 +6,7 @@ export class TaskObj extends MCObject {
   private _dueDate: Date;
 
   // DB.Viewer fields
-  filter: boolean;
+//  filter: boolean;
   selected: boolean;
 
 
@@ -18,7 +18,7 @@ export class TaskObj extends MCObject {
 
     this.dueDate = DueDate;
 
-    this.filter = true;
+//    this.filter = true;
     this.selected = false;
 
   }
@@ -57,19 +57,51 @@ export class TaskList {
       }
   }
 
-
+/*
   numTotalTasks(): number {
     return this.task_l.filter(x => x.filter).length;
   }
 
-
   numDueTasks(): number {
     return this.task_l.filter(t => t.dueTask()).length;
   }
+*/
  
   public addNewTask(task: TaskObj) {
 //    this.task_l.push(Object.assign(new TaskObj(), task));
     this.task_l.push(task);
+  }
+
+  public getItem (i: number): TaskObj {
+    return this.task_l[i];
+  }
+
+  public count(): number {
+    return this.task_l.length;
+  }
+
+  public countIf(f: (arg0: TaskObj) => boolean): number {
+    return this.task_l.filter(t => f(t)).length;
+  }
+
+  public countSel (): number {
+    return this.task_l.filter(t => t.selected).length;
+  }
+
+  public do (f: (arg0: TaskObj) => void) {
+    this.task_l.forEach (t => f(t));
+  }
+
+  public doIf (f: (arg0: TaskObj) => void, g: (arg0: TaskObj) => boolean) {
+    this.task_l.filter(t => g(t)).forEach (t => f(t));
+  }
+
+  public doSel (f) {
+    this.task_l.filter(t => t.selected).forEach (t => f(t));
+  }
+
+  public splice (n: number, m: number) {
+    this.task_l.splice (n,m);
   }
 
 }
