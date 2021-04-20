@@ -1,4 +1,4 @@
-import { MCField, MCObject } from "./MC.core"
+import { MCField, MCObject, MCUXObject } from "./MC.core"
 
 
 ////////////// TASK OBJECT ////////////////
@@ -37,9 +37,9 @@ export class TaskObj extends MCObject {
 ////////////// TASK LIST OBJECT ////////////////
 
 
-export class TaskList {
+export class MCUXList {
 
-  protected task_l    : TaskObj[] = [];
+  protected task_l    : MCUXObject[] = [];
 
   constructor (p: object) {
 
@@ -59,12 +59,12 @@ export class TaskList {
   }
 
  
-  public addNewTask(task: TaskObj) {
+  public addNewTask(task: MCUXObject) {
 //    this.task_l.push(Object.assign(new TaskObj(), task));
     this.task_l.push(task);
   }
 
-  public getItem (i: number): TaskObj {
+  public getItem (i: number): MCUXObject {
     return this.task_l[i];
   }
 
@@ -72,7 +72,7 @@ export class TaskList {
     return this.task_l.length;
   }
 
-  public countIf(f: (arg0: TaskObj) => boolean): number {
+  public countIf(f: (arg0: MCUXObject) => boolean): number {
     return this.task_l.filter(t => f(t)).length;
   }
 
@@ -80,14 +80,14 @@ export class TaskList {
     return this.task_l.filter(t => t.selected).length;
   }
 
-  public countSelIf(f: (arg0: TaskObj) => boolean): number {
+  public countSelIf(f: (arg0: MCUXObject) => boolean): number {
     return this.task_l.filter(t => t.selected && f(t)).length;
   }
-  public do (f: (arg0: TaskObj) => void) {
+  public do (f: (arg0: MCUXObject) => void) {
     this.task_l.forEach (t => f(t));
   }
 
-  public doIf (f: (arg0: TaskObj) => void, g: (arg0: TaskObj) => boolean) {
+  public doIf (f: (arg0: MCUXObject) => void, g: (arg0: MCUXObject) => boolean) {
     this.task_l.filter(t => g(t)).forEach (t => f(t));
   }
 

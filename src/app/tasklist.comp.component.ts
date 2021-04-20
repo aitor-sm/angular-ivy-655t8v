@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Inject } from "@angular/core";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
-import { TaskObj, TaskList, TasksCfg } from "./tasks";
+import { TaskObj, MCUXList, TasksCfg } from "./tasks";
+import { MCUXObject } from "./MC.core";
 
 export interface DeleteDialogData {
   numberOfTasks: number;
@@ -21,7 +22,7 @@ export class TaskList_comp implements OnInit {
 
   ///////////////// PROPERTIES
 
-  TL : TaskList;
+  TL : MCUXList;
 
   // Visual components
   focus: TaskObj;     // Focused task
@@ -43,7 +44,7 @@ export class TaskList_comp implements OnInit {
       initSelect : this.Parameters["initSelect"]
     };
 
-    this.TL = new TaskList(p);
+    this.TL = new MCUXList(p);
 
   }
 
@@ -52,7 +53,7 @@ export class TaskList_comp implements OnInit {
 
   ///////////////// VISUAL EFFECTS
 
-  applyFilter (t: TaskObj): boolean {
+  applyFilter (t: MCUXObject): boolean {
     return true;
   }
 
@@ -91,8 +92,18 @@ export class TaskList_comp implements OnInit {
     let I = this.newTask;
     
     this.TL.addNewTask (this.newTask);
+
     this.createNewTaskTemplate ();
-    Object.assign (this.newTask, I);
+    this.newTask.name = I.name;
+    this.newTask.description = I.description;
+
+// Se está copiando el X-Fields!
+/*
+  console.log (I.getXField("DueDate"));
+  console.log (this.newTask.getXField("DueDate"));
+  console.log (I.getXField("DueDate") == this.newTask.getXField("DueDate"));
+  console.log (I.getXField("DueDate") === this.newTask.getXField("DueDate"));
+*/  
   }
 
   deleteSelectedTasksButton(o: number): void {
@@ -149,10 +160,16 @@ export class TaskList_comp implements OnInit {
 
   changeDueDateOnSelectedTasks(d: Date) {
     this.TL.doSel ( t => t.dueDate = new Date(this.toDueDate));
+  };
+
+/*
+  f : Function = (t: MCUXObject) : boolean => {
+    return this.applyFilter(t);
   }
+*/
 
   numDueTasks(): number {
-      return this.TL.countIf (t => (this.applyFilter(t) && t.dueTask()));
+      return this.TL.countIf (t => (this.applyFilter(t) && (t as TaskObj).dueTask()));
   }
 
 

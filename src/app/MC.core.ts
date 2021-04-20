@@ -52,6 +52,7 @@ export class MCObject {
     this._creator = currentUser;
 
     this._class = ClassId;
+    this._XFields = [];
 
     // accessor properties
     this.name = Name;
@@ -64,6 +65,19 @@ export class MCObject {
     this.closedT = null;
 
 
+  }
+
+  public clone (): MCObject {
+    let a : MCObject = new MCObject (this._class, this._name, this._owner, this._description, this._status);
+    
+    a.resolvedT = new Date(this.resolvedT);
+    a.closedT = new Date (this.closedT);
+
+//    a._XFields = this._XFields.clone();
+
+    this._XFields.forEach(val => a._XFields.push(Object.assign({}, val)));
+
+    return a;
   }
 
   // READONLY GETTERS
