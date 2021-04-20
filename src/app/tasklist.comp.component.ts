@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Inject } from "@angular/core";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
-import { TaskObj, MCUXList, TasksCfg } from "./tasks";
+import { TaskObj, TasksCfg, MCUXList } from "./tasks";
 import { MCUXObject } from "./MC.core";
 
 export interface DeleteDialogData {
@@ -91,7 +91,7 @@ export class TaskList_comp implements OnInit {
   addNewTaskButton () {
     let I = this.newTask;
     
-    this.TL.addNewTask (this.newTask);
+    this.TL.addNewItem (this.newTask);
 
     this.createNewTaskTemplate ();
     this.newTask.name = I.name;

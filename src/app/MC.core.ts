@@ -185,12 +185,13 @@ export class MCUXObject extends MCObject {
 
   public selected: boolean;
 
-  public constructor (Name: string, Owner: number, Desc: string, Status: number) {
+  public constructor (ClassId: number, Name: string, Owner: number, Desc: string, Status: number) {
 
-    super( 20, Name, Owner, Desc, Status);
+    super( ClassId, Name, Owner, Desc, Status);
 
     this.selected = false;
 
   }
 
 }
+
