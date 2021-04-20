@@ -1,5 +1,4 @@
 import { MCField, MCObject } from "./MC.core"
-import { FlowActionObj, basicFlow } from "./flows";
 
 
 ////////////// TASK OBJECT ////////////////
@@ -30,7 +29,7 @@ export class TaskObj extends MCObject {
   }
 
   public dueTask(): boolean {
-    return this.dueDate < new Date() && !basicFlow[this.status].terminal;
+    return this.dueDate < new Date() && !this.isTerminalStatus();
   };
 
 }
@@ -52,7 +51,7 @@ export class TaskList {
 
   }
 
-
+  // Retrieve specific to TAKS
   retrieveTasks ()  {
     this.task_l.push (new TaskObj ("Programa Tasks", 0, "Crear la versión 0.4", 0, new Date('2021-04-21')));
     this.task_l.push (new TaskObj ("Clase alemán", 1, "Clase por la tarde", 1, new Date('2021-04-21')));
