@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Inject } from "@angular/core";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 import { TaskObj, TasksCfg, MCUXList } from "./tasks";
-import { MCDBField, MCObject, MCUXObject } from "./MC.core";
+import { MCDBField, UserList, currentUser, MCObject, MCUXObject } from "./MC.core";
 
 export interface DeleteDialogData {
   numberOfTasks: number;
@@ -35,6 +35,7 @@ export class TaskList_comp implements OnInit {
   // Task-specific
   toDueDate: Date = new Date();
  
+  headers : MCDBField[] = TaskDBFields;
 
   ///////////////// CONSTRUCTORS
 
@@ -46,7 +47,7 @@ export class TaskList_comp implements OnInit {
 
     this.TL = new MCUXList(p);
 
-    TaskDBFields.filter(t=> {return t.Show}).forEach(t => {console.log (MCObject.getFieldType(t.FName))});
+//    this.visibleHeaders().forEach(t => {console.log (t.FName)});
 
   }
 
@@ -54,6 +55,10 @@ export class TaskList_comp implements OnInit {
 
 
   ///////////////// VISUAL EFFECTS
+
+  visibleHeaders () : MCDBField[] {
+    return this.headers.filter (t => {return t.Show});
+  }
 
   applyFilter (t: MCUXObject): boolean {
     return true;
@@ -218,60 +223,80 @@ export var TaskDBFields : MCDBField[] = [
     FName: "id",
     FCaption: "Task ID",
     Show:  false,
-    Access: "ro"
+    Access: "ro",
+    Width : 100,
+    Default: null
   },
   {
     FName: "name",
     FCaption: "Task",
     Show:  true,
-    Access: "rw"
+    Access: "rw",
+    Width : 100,
+    Default: "Enter task name here"
   },
   {
-    FName: "ownerName",
+    FName: "owner",
     FCaption: "Assigned to",
     Show:  true,
-    Access: "rw"
+    Access: "rw",
+    Width : 80,
+    Default: UserList[currentUser]
   },
   {
-    FName: "creatorName",
+    FName: "creator",
     FCaption: "Reporter",
     Show:  true,
-    Access: "ro"
+    Access: "ro",
+    Width : 80,
+    Default: UserList[currentUser]
   },
   {
     FName: "statusName",
     FCaption: "Status",
     Show:  true,
-    Access: "rw"
+    Access: "ro",
+    Width : 80,
+    Default: "to-do"
   },
   {
     FName: "createdT",
-    FCaption: "Created at:",
+    FCaption: "Created at",
     Show:  true,
-    Access: "ro"
+    Access: "ro",
+    Width : 90,
+    Default: new Date()
   },
   {
     FName: "resolvedT",
-    FCaption: "Resolved at:",
+    FCaption: "Resolved at",
     Show:  true,
-    Access: "ro"
+    Access: "ro",
+    Width : 90,
+    Default: null
   },
   {
     FName: "DueDate",
-    FCaption: "Due by:",
+    FCaption: "Due by",
     Show:  true,
-    Access: "rw"
+    Access: "rw",
+    Width : 90,
+    Default: new Date("2020-01-01")
   },
   {
     FName: "closedT",
-    FCaption: "Closed at:",
+    FCaption: "Closed at",
     Show:  false,
-    Access: "ro"
+    Access: "ro",
+    Width : 90,
+    Default: null
   },
   {
     FName: "description",
-    FCaption: "Description:",
+    FCaption: "Description",
     Show:  true,
-    Access: "rw"
+    Access: "rw",
+    Width : 0,
+    Default: "Enter task description"
   }
 ]

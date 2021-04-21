@@ -1,6 +1,6 @@
 import { FlowActionObj, basicFlow } from "./flows";
 
-export type MCType = "objid" | "auto" | "boolean" | "number" | "string";
+export type MCType = "objid" | "auto" | "boolean" | "number" | "string" |"user";
 
 export interface MCField {
   FName: string;
@@ -15,6 +15,8 @@ export interface MCParameter extends MCField {
 export interface MCDBField extends MCField {
   Show : boolean;
   Access:  "ro" | "rw";
+  Width : number;
+  Default: any;
 }
 
 export const Classes: string[] = [
@@ -193,9 +195,9 @@ export class MCObject {
       case "id"         :
       case "class"      :  return "objid";
       case "class#"     :
-      case "status"     :
-      case "owner"      :   // TEMPORARY!!!
-      case "creator"    :  return "number"     // TEMPORARY!!!
+      case "status"     :  return "number";  // TEMPORARY!!!
+      case "owner"      :  
+      case "creator"    :  return "user";
       case "name"       :  
       case "creatorName":
       case "ownerName"  :
