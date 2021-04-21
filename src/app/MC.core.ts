@@ -203,7 +203,7 @@ export class MCObject {
       case "description":  return "string";
       case "createdT"   :
       case "resolvedT"  :
-      case "dueDate"    :  // TEMPORARY   X-Field!!!   
+      case "DueDate"    :  // TEMPORARY   X-Field!!!   
       case "closedT"    :  return "date";
       default           :  return "string";
     }

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Inject } from "@angular/core";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 import { TaskObj, TasksCfg, MCUXList } from "./tasks";
-import { MCDBField, MCUXObject } from "./MC.core";
+import { MCDBField, MCObject, MCUXObject } from "./MC.core";
 
 export interface DeleteDialogData {
   numberOfTasks: number;
@@ -45,6 +45,8 @@ export class TaskList_comp implements OnInit {
     };
 
     this.TL = new MCUXList(p);
+
+    TaskDBFields.filter(t=> {return t.Show}).forEach(t => {console.log (MCObject.getFieldType(t.FName))});
 
   }
 
@@ -211,7 +213,7 @@ export class DialogDeleteTasks {
 
 
 
-export var DBFields : MCDBField[] = [
+export var TaskDBFields : MCDBField[] = [
   {
     FName: "id",
     FCaption: "Task ID",
@@ -225,16 +227,16 @@ export var DBFields : MCDBField[] = [
     Access: "rw"
   },
   {
-    FName: "creatorName",
-    FCaption: "Reporter",
-    Show:  true,
-    Access: "ro"
-  },
-  {
     FName: "ownerName",
     FCaption: "Assigned to",
     Show:  true,
     Access: "rw"
+  },
+  {
+    FName: "creatorName",
+    FCaption: "Reporter",
+    Show:  true,
+    Access: "ro"
   },
   {
     FName: "statusName",
@@ -249,16 +251,16 @@ export var DBFields : MCDBField[] = [
     Access: "ro"
   },
   {
-    FName: "DueDate",
-    FCaption: "Due by:",
-    Show:  true,
-    Access: "rw"
-  },
-  {
     FName: "resolvedT",
     FCaption: "Resolved at:",
     Show:  true,
     Access: "ro"
+  },
+  {
+    FName: "DueDate",
+    FCaption: "Due by:",
+    Show:  true,
+    Access: "rw"
   },
   {
     FName: "closedT",
