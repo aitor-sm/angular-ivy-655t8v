@@ -1,4 +1,4 @@
-import { MCField, MCObject, MCUXObject } from "./MC.core";
+import { MCField, MCParameter, MCObject, MCUXObject } from "./MC.core";
 
 
 ////////////// TASK OBJECT ////////////////
@@ -51,9 +51,9 @@ export class MCUXList {
 
   // Retrieve specific to TAKS
   retrieveItems ()  {
-    this.obj_l.push (new TaskObj ("Programa Tasks", 0, "Crear la versión 0.4", 0, new Date('2021-04-21')));
-    this.obj_l.push (new TaskObj ("Clase alemán", 1, "Clase por la tarde", 1, new Date('2021-04-21')));
-    this.obj_l.push (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-04-21')));
+    this.obj_l.push (new TaskObj ("Programa Tasks", 0, "Crear la versión 0.4", 0, new Date('2021-05-21')));
+    this.obj_l.push (new TaskObj ("Clase alemán", 1, "Clase por la tarde", 1, new Date('2021-05-21')));
+    this.obj_l.push (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-05-21')));
   }
 
  
@@ -97,7 +97,7 @@ export class MCUXList {
     this.obj_l.splice (n,m);
   }
 
-  public indexOf (t: TaskObj): number {
+  public indexOf (t: MCUXObject): number {
     return this.obj_l.indexOf (t);
   }
 
@@ -105,7 +105,7 @@ export class MCUXList {
     this.obj_l = this.obj_l.reduce((p,c) => (!c.selected && p.push(c),p),[]);
   }
 
-  public subFilter (f): TaskObj[] {
+  public subFilter (f): MCUXObject[] {
     return this.obj_l.filter (f);
   }
 
@@ -115,11 +115,11 @@ export class MCUXList {
 
 ////////////// TASK CONFIGURATION ////////////////
 
-export var TasksCfg : MCField[] = [
+export var TasksCfg : MCParameter[] = [
   {
     FName: "WarnOnDelete",
-    FCaption: "Alert me before deleting a task",
     FType: "boolean",
+    FCaption: "Alert me before deleting a task",
     FValue: true
   }
 ]

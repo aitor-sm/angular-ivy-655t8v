@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Inject } from "@angular/core";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 import { TaskObj, TasksCfg, MCUXList } from "./tasks";
-import { MCUXObject } from "./MC.core";
+import { MCDBField, MCUXObject } from "./MC.core";
 
 export interface DeleteDialogData {
   numberOfTasks: number;
@@ -25,7 +25,7 @@ export class TaskList_comp implements OnInit {
   TL : MCUXList;
 
   // Visual components
-  focus: TaskObj;     // Focused task
+  focus: MCUXObject;     // Focused task
   newTask: TaskObj;   // Template for new Task
 
   // Window controls
@@ -57,11 +57,11 @@ export class TaskList_comp implements OnInit {
     return true;
   }
 
-  onMouseOver(t: TaskObj): void {
+  onMouseOver(t: MCUXObject): void {
     this.focus = t;
   }
 
-  onMouseOut(t: TaskObj): void {
+  onMouseOut(t: MCUXObject): void {
     this.focus = null;
   }
 
@@ -172,6 +172,13 @@ export class TaskList_comp implements OnInit {
       return this.TL.countIf (t => (this.applyFilter(t) && (t as TaskObj).dueTask()));
   }
 
+  getDueDate (t): Date {
+    return (t as TaskObj).dueDate;
+  }
+
+  isDueTask (t): boolean {
+    return (t as TaskObj).dueTask();
+  }
 
 
 }
@@ -201,3 +208,68 @@ export class DialogDeleteTasks {
     this.dialogRef.close();
   }
 }
+
+
+
+export var DBFields : MCDBField[] = [
+  {
+    FName: "id",
+    FCaption: "Task ID",
+    Show:  false,
+    Access: "ro"
+  },
+  {
+    FName: "name",
+    FCaption: "Task",
+    Show:  true,
+    Access: "rw"
+  },
+  {
+    FName: "creatorName",
+    FCaption: "Reporter",
+    Show:  true,
+    Access: "ro"
+  },
+  {
+    FName: "ownerName",
+    FCaption: "Assigned to",
+    Show:  true,
+    Access: "rw"
+  },
+  {
+    FName: "statusName",
+    FCaption: "Status",
+    Show:  true,
+    Access: "rw"
+  },
+  {
+    FName: "createdT",
+    FCaption: "Created at:",
+    Show:  true,
+    Access: "ro"
+  },
+  {
+    FName: "DueDate",
+    FCaption: "Due by:",
+    Show:  true,
+    Access: "rw"
+  },
+  {
+    FName: "resolvedT",
+    FCaption: "Resolved at:",
+    Show:  true,
+    Access: "ro"
+  },
+  {
+    FName: "closedT",
+    FCaption: "Closed at:",
+    Show:  false,
+    Access: "ro"
+  },
+  {
+    FName: "description",
+    FCaption: "Description:",
+    Show:  true,
+    Access: "rw"
+  }
+]

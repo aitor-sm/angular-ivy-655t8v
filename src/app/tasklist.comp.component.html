@@ -85,7 +85,7 @@
 
       <ng-template #task_tableelements>
         <ng-container *ngFor="let task of TL.subFilter(applyFilter)">
-          <tr *ngIf="applyFilter(task)" class=record (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)" [class.highlight]="task.dueTask()" [class.selected]="task.selected">
+          <tr *ngIf="applyFilter(task)" class=record (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)" [class.highlight]="isDueTask(task)" [class.selected]="task.selected">
 
             <td><input type="checkbox" [(ngModel)]="task.selected"></td>
 
@@ -107,7 +107,7 @@
             <td>{{task.created | date: 'dd/MM/y'}}</td>
             <td>{{task.resolvedT | date: 'dd/MM/y'}}</td>
 
-            <td>{{task.dueDate | date: 'dd/MM/y'}}</td>
+            <td>{{getDueDate(task) | date: 'dd/MM/y'}}</td>
             <!-- DOES NOT WORK WELL
     <td *ngIf="task==focus"><input type="date" class=input_inlined style="width:120px"
         [ngModel]="task.dueDate | date:'yyyy-MM-dd' : 'UTC'"  (ngModelChange)="task.dueDate = $event" ></td>

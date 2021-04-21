@@ -1,5 +1,5 @@
 import { Component, VERSION, OnInit } from "@angular/core";
-import { MCField, UserList, currentUser } from "./MC.core"
+import { MCField, MCParameter, UserList, currentUser } from "./MC.core"
 import { TasksCfg } from "./tasks";
 
 /*
@@ -43,7 +43,7 @@ export class AppComponent  implements OnInit {
   MainAppName: string = "TASKS";
   MainViewName: string = "All tasks";
 
-  cfg : MCField[] = TasksCfg;
+  cfg : MCParameter[] = TasksCfg;
 
   TaskVersion: string = "0.0.4";
 

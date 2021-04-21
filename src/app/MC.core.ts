@@ -1,10 +1,20 @@
 import { FlowActionObj, basicFlow } from "./flows";
 
+export type MCType = "objid" | "auto" | "boolean" | "number" | "string";
+
 export interface MCField {
   FName: string;
   FCaption: string;
-  FType: any;
+}
+
+export interface MCParameter extends MCField {
+  FType: MCType;
   FValue: any;
+}
+
+export interface MCDBField extends MCField {
+  Show : boolean;
+  Access:  "ro" | "rw";
 }
 
 export const Classes: string[] = [
@@ -94,8 +104,8 @@ export class MCObject {
     return this._creator;
   }
 
-  public get classId (): number {
-    return this._class;
+  public get classId (): string {
+    return "CLAS-" + Classes[this._class];
   }
 
 
@@ -178,6 +188,46 @@ export class MCObject {
     return basicFlow[this._status].terminal;
   }
 
+  public static getFieldType (f: string): string {
+    switch (f) {
+      case "id"         :
+      case "class"      :  return "objid";
+      case "class#"     :
+      case "status"     :
+      case "owner"      :   // TEMPORARY!!!
+      case "creator"    :  return "number"     // TEMPORARY!!!
+      case "name"       :  
+      case "creatorName":
+      case "ownerName"  :
+      case "statusName" :   // TEMPORARY!!!
+      case "description":  return "string";
+      case "createdT"   :
+      case "resolvedT"  :
+      case "dueDate"    :  // TEMPORARY   X-Field!!!   
+      case "closedT"    :  return "date";
+      default           :  return "string";
+    }
+  }
+
+  public getFieldValue (f: string): any {
+    switch (f) {
+      case "id"         :  return this.id;
+      case "class"      :  return this.classId;
+      case "class#"     :  return this._class;
+      case "status"     :  return this.status;
+      case "owner"      :  return this.owner;
+      case "creator"    :  return this.creator;
+      case "name"       :  return this.name;
+      case "creatorName":  return this.getCreatorName();
+      case "ownerName"  :  return this.getOwnerName();
+      case "statusName" :  return this.getStatusName();
+      case "description":  return this.description;
+      case "createdT"   :  return this.created;
+      case "resolvedT"  :  return this.resolvedT;
+      case "closedT"    :  return this.closedT;
+      default           :  return this.getXField(f);
+    }
+  }
 }
 
 
@@ -194,4 +244,9 @@ export class MCUXObject extends MCObject {
   }
 
 }
+
+
+
+
+
 
