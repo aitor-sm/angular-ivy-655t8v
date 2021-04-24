@@ -35,7 +35,7 @@ export class TaskList_comp implements OnInit {
   // Task-specific
   toDueDate: Date = new Date();
  
-  headers : MCDBField[] = TaskDBFields;
+  fields : MCDBField[] = TaskDBFields;
 
   ///////////////// CONSTRUCTORS
 
@@ -47,7 +47,7 @@ export class TaskList_comp implements OnInit {
 
     this.TL = new MCUXList(p);
 
-//    this.visibleHeaders().forEach(t => {console.log (t.FName)});
+//    this.visibleFields().forEach(t => {console.log (t.FName)});
 
   }
 
@@ -56,8 +56,8 @@ export class TaskList_comp implements OnInit {
 
   ///////////////// VISUAL EFFECTS
 
-  visibleHeaders () : MCDBField[] {
-    return this.headers.filter (t => {return t.Show});
+  visibleFields () : MCDBField[] {
+    return this.fields.filter (t => {return t.Show});
   }
 
   applyFilter (t: MCUXObject): boolean {

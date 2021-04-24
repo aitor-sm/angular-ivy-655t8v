@@ -32,25 +32,10 @@
 
       <!--------- FIELDS NAME  ---->
 
-<!--  OLD
-      <tr class=header>
-        <td width=25><input type="checkbox" (change)="onSelectAll($event)"></td>
-        <td width=100>Name</td>
-        <td width=80>Owner</td>
-        <td width=80>Reporter</td>
-        <td width=80>Status</td>
-        <td width=90>Created</td>
-        <td width=90>Resolved</td>
-        <td width=125>Due by</td>
-        <td>Description</td>
-        <td>Actions</td>
-      </tr>
--->
-
       <tr class=header>
         <td width=25><input type="checkbox" (change)="onSelectAll($event)"></td>
 
-        <td *ngFor="let f of visibleHeaders()" width={{f.Width}}>{{f.FCaption}}</td>
+        <td *ngFor="let f of visibleFields()" width={{f.Width}}>{{f.FCaption}}</td>
 
         <td>Actions</td>
       </tr>
@@ -75,9 +60,6 @@
 
         <td><input type="date" class=input_inlined style="width:120px"
         [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"  (ngModelChange)="newTask.dueDate = $event"></td>
-        <!--        [ngModel]="newTask.dueDate | date:'yyyy-MM-dd' : 'UTC'"  (ngModelChange)="newTask.dueDate = $event"></td>  -->
-        <!--    <td><input type="date" class=input_inlined style="width:115px"
-        [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"></td>  -->
 
         <td><input class=input_inlined id="newdesc"
     [(ngModel)]="newTask.description" placeholder="Enter the task description" size="45%"></td>
@@ -93,53 +75,53 @@
       <ng-container *ngIf="TL.countIf(applyFilter) > 0; then task_tableelements else no_elements">
       </ng-container>
 
+      <!--------- Non-empty TABLE  ---->
+
       <ng-template #task_tableelements>
         <ng-container *ngFor="let task of TL.subFilter(applyFilter)">
           <tr *ngIf="applyFilter(task)" class=record (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)" [class.highlight]="isDueTask(task)" [class.selected]="task.selected">
 
+
+            <!--------- LIST OF FIELDS  ---->
+
             <td><input type="checkbox" [(ngModel)]="task.selected"></td>
 
-            <td *ngIf="task==focus"><input class=input_inlined id="name"
+            <!--------- Customizatble FIELDS  ---->
+
+            <td *ngIf="task==focus; else name_no_focus"><input class=input_inlined id="name"
     [(ngModel)]="task.name" placeholder="Edit your name here" size="12"></td>
-            <td *ngIf="task!=focus">&nbsp;{{task.name}}</td>
+            <ng-template #name_no_focus><td>&nbsp;{{task.name}}</td></ng-template>
 
             <td>{{task.getOwnerName()}}</td>
-            <!-- DOES NOT WORK WELL
-    <td *ngIf="task==focus"><select required [(ngModel)]='task.owner'>
-      <option *ngFor="let item of [].constructor(users.length); let i = index" [value]="i">{{users[i]}}</option>
-      </select>
-      </td>
-    <td *ngIf="task!=focus">{{users[task.owner]}}</td>
--->
-
             <td>{{task.getCreatorName()}}</td>
             <td>{{task.getStatusName()}}</td>
             <td>{{task.created | date: 'dd/MM/y'}}</td>
             <td>{{task.resolvedT | date: 'dd/MM/y'}}</td>
-
             <td>{{getDueDate(task) | date: 'dd/MM/y'}}</td>
-            <!-- DOES NOT WORK WELL
-    <td *ngIf="task==focus"><input type="date" class=input_inlined style="width:120px"
-        [ngModel]="task.dueDate | date:'yyyy-MM-dd' : 'UTC'"  (ngModelChange)="task.dueDate = $event" ></td>
-    <td *ngIf="task!=focus">{{task.dueDate | date: 'dd/MM/y'}}</td>
--->
 
-            <td *ngIf="task==focus"><input class=input_inlined id="desc"
+            <td *ngIf="task==focus; else description_no_focus"><input class=input_inlined id="desc"
     [(ngModel)]="task.description" placeholder="Edit your description here" size="45%"></td>
-            <td *ngIf="task!=focus">&nbsp;{{task.description}}</td>
+            <ng-template #description_no_focus><td>&nbsp;{{task.description}}</td></ng-template>
 
-            <td *ngIf="task==focus">
+
+            <!--------- Action Buttons  ---->
+
+            <td *ngIf="task==focus; else actions_no_focus">
               <button type="button"(click)="deleteSelectedTasksButton(0)" class=inlined >Delete</button>
               <ng-container *ngFor="let action of task.availableActions()">
                 &nbsp;
                 <button type="button" (click)="task.status = action.nextStatus" class=inlined >{{action.name}}</button>
               </ng-container>
             </td>
-            <td *ngIf="task!=focus"></td>
+            <ng-template #actions_no_focus><td ></td></ng-template>
+
+            <!--------- END LIST OF FIELDS  ---->
 
           </tr>
         </ng-container>
       </ng-template>
+
+      <!--------- EPTY TABLE  -------->
 
       <ng-template #no_elements>
         <tr>
