@@ -6,7 +6,37 @@
 
   <!--------- TOOLBAR  ---->
 
-  <table class=toolbar>
+
+
+  <table class=toolbar height=18px>
+      <tr height=18px><td width=100%>
+      
+      <table  class=toolbar_tabs height=18px width=100%><tr>
+
+        <td width=10px ></td>
+        <td width=90px class=toolbar_tab>
+          <button class="toolbar_tab" (click)="openToolbarTab($event, '10')" id="defaultToolBarOpen">&nbsp;<span style="color:#ddd000;">&#11201;</span> Database</button>
+        </td>
+        <td width=10px></td>
+        <td width=90px class=toolbar_tab>
+          <button class="toolbar_tab" (click)="openToolbarTab($event, '11')">&nbsp;<span style="color:#ddd000;">&#11201;</span> Record</button>
+        </td>
+        <td width=10px></td>
+        <td width=90px class=toolbar_tab>
+          <button class="toolbar_tab" (click)="openToolbarTab($event, '12')">&nbsp;👁 View</button>
+        </td>
+<!--
+        <td width=90px class=toolbar_tab style="background-color: #888888;">&nbsp;👁&nbsp;View</td>
+-->
+        <td></td>
+      </tr></table>
+
+      </td></tr>
+      </table>
+
+      <div id="DBProps" class="toolbartabcontent" style="display:block">
+
+      <table class=toolbar height=70px style="border-top: none">
       <tr>
         <td>
           <button type="button" class=toggleOff [class.toggleOn]="newTaskToggle" (click)="toggleNewTaskBar()">New Task</button>
@@ -26,9 +56,11 @@
       </tr>
     </table>
 
+    </div>
+
 <!--------- ELEMENTS TABLE  ---->
 
-    <table>
+    <table width=100%>
 
       <!--------- FIELDS NAME  ---->
 
@@ -129,6 +161,7 @@
           <td colspan=9><i>No tasks to show </i></td>
         </tr>
       </ng-template>
+
     </table>
   </div>
 

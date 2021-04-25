@@ -146,8 +146,9 @@ export class MCObject {
     this._XFields.push ( {name : value});
   }
 
-  public setXField (name: string, value: any) {
+  public setXField (name: string, value: any): boolean {
     this._XFields[name] = value;
+    return true;
   }
 
   public getClassName (): string {
@@ -230,6 +231,29 @@ export class MCObject {
       default           :  return this.getXField(f);
     }
   }
+
+  public setFieldValue (f: string, v: any): boolean {
+    switch (f) {
+      case "id"         :  return false;
+      case "class"      :  return false;
+      case "class#"     :  return false;
+      case "status"     :  return false;
+      case "owner"      :  this.owner = v; break;
+      case "creator"    :  return false;
+      case "name"       :  this.name = v; break;
+      case "creatorName":  return false;
+      case "ownerName"  :  return false;
+      case "statusName" :  return false;
+      case "description":  this.description = v; break;
+      case "createdT"   :  return false;
+      case "resolvedT"  :  return false;
+      case "closedT"    :  return false;
+      default           :  return this.setXField(f, v);
+    }
+    return true;
+  }
+
+
 }
 
 

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Inject } from "@angular/core";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 import { TaskObj, TasksCfg, MCUXList } from "./tasks";
+import {TabObj } from "./app.component"
 import { MCDBField, UserList, currentUser, MCObject, MCUXObject } from "./MC.core";
 
 export interface DeleteDialogData {
@@ -8,6 +9,12 @@ export interface DeleteDialogData {
   confirmation: boolean;
   doIt: boolean;
 }
+
+const ToolbarTABS: TabObj[] = [
+  { id: "10", divname:"DBProps", caption: "Database"},
+  { id: "11", divname:"DBProps", caption: "Record"},
+  { id: "12", divname:"DBProps", caption: "View"}
+];
 
 
 @Component({
@@ -46,6 +53,9 @@ export class TaskList_comp implements OnInit {
     };
 
     this.TL = new MCUXList(p);
+
+    document.getElementById("defaultToolBarOpen").click();
+
 
 //    this.visibleFields().forEach(t => {console.log (t.FName)});
 
@@ -92,6 +102,32 @@ export class TaskList_comp implements OnInit {
   isValidNewTask(): Boolean {
     return this.newTask.name != "" && this.newTask.description != "";
   }
+
+    findTabByID (findid: string): TabObj {
+    let i: number;
+    for (i=0; i<ToolbarTABS.length; i++)
+      if (ToolbarTABS[i].id==findid)  return ToolbarTABS[i];
+  }
+
+
+
+openToolbarTab (evt, tabId) {
+  var i, tabcontent, tablinks;
+
+  tabcontent = document.getElementsByClassName("toolbartabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("toolbar_tab");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  
+  let T = this.findTabByID(tabId);
+  document.getElementById(T.divname).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
 
   ///////////////// WINDOWS CONTROLS
 

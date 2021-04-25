@@ -17,7 +17,7 @@ function TimeCtrl($scope, $timeout) {
 }
 */
 
-interface TabObj {
+export interface TabObj {
   id: string;
   divname: string;
   caption: string;
