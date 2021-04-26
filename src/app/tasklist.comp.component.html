@@ -4,55 +4,76 @@
 
   <div class="row header">
 
-  <!--------- TOOLBAR  ---->
+    <!--------- TOOLBAR  ---->
 
-  <table class=toolbar height=18px>
-      <tr height=18px><td width=100%>
-      
-      <table  class=toolbar_tabs height=18px width=100%><tr>
+    <table class=toolbar height=18px>
+      <tr height=18px>
+        <td width=100%>
 
-        <td width=10px style="border-bottom: none"></td>
-        <td width=90px class=toolbar_tab>
-          <button class="toolbar_tab" (click)="openToolbarTab($event, '10')" id="defaultToolBarOpen">&nbsp;<span style="color:#ddd000;">&#11201;</span> {{Parameters["DBName"]}}</button>
-        </td>
-        <td width=10px style="border-bottom: none"></td>
-        <td width=90px class=toolbar_tab>
-          <button class="toolbar_tab" (click)="openToolbarTab($event, '11')">&nbsp;<span style="color:#ddd000;">&#11201;</span> {{Parameters["DBRecordName"]}}</button>
-        </td>
-        <td width=10px style="border-bottom: none"></td>
-        <td width=90px class=toolbar_tab>
-          <button class="toolbar_tab" (click)="openToolbarTab($event, '12')">&nbsp;👁 View</button>
-        </td>
-<!--
+          <table class=toolbar_tabs height=18px width=100%>
+            <tr>
+
+              <td width=10px style="border-bottom: none"></td>
+              <td width=90px class=toolbar_tab>
+                <button class="toolbar_tab" (click)="openToolbarTab($event, '10')" id="defaultToolBarOpen">&nbsp;<span style="color:#ddd000;">&#11201;</span> {{Parameters["DBName"]}}</button>
+              </td>
+              <td width=10px style="border-bottom: none"></td>
+              <td width=90px class=toolbar_tab>
+                <button class="toolbar_tab" (click)="openToolbarTab($event, '11')">&nbsp;<span style="color:#ddd000;">&#11201;</span> {{Parameters["DBRecordName"]}}</button>
+              </td>
+              <td width=10px style="border-bottom: none"></td>
+              <td width=90px class=toolbar_tab>
+                <button class="toolbar_tab" (click)="openToolbarTab($event, '12')">&nbsp;👁 View</button>
+              </td>
+              <!--
         <td width=90px class=toolbar_tab style="background-color: #888888;">&nbsp;👁&nbsp;View</td>
 -->
-        <td style="border-bottom: none"></td>
-      </tr></table>
+              <td style="border-bottom: none"></td>
+            </tr>
+          </table>
 
-      </td></tr>
-      <tr  height=70px>
-        <td>
-        <div id="DBProps" class="toolbartabcontent" style="display:block">
-          <button type="button" class=toggleOff [class.toggleOn]="newTaskToggle" (click)="toggleNewTaskBar()">New Task</button>
-          <button type="button" class=toolbar disabled>Search</button>
-          |
-          <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="reassignSelectedTasks (reassignTo )">Reassign to:</button>
-          <select required [(ngModel)]='reassignTo'>
+        </td>
+      </tr>
+
+      <!-- /// TOOLBAR TABS -->
+
+      <tr height=70px><td>
+
+          <!-- /// DB PROPERTIES TOOLBAR-->
+
+          <div id="DBProps" class="toolbartabcontent" style="display:block">
+            <button type="button" class=toggleOff [class.toggleOn]="newTaskToggle" (click)="toggleNewTaskBar()">New {{Parameters["DBRecordName"]}}</button>
+            <button type="button" class=toolbar disabled>Search</button>
+            |
+            <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="deleteSelectedTasksButton(1)">Delete</button>
+          </div>
+
+          <!-- /// DB RECORD PROPERTIES TOOLBAR-->
+
+          <div id="DBRecProps" class="toolbartabcontent" style="display:block">
+            <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="reassignSelectedTasks (reassignTo )">Reassign to:</button>
+            <select required [(ngModel)]='reassignTo'>
       <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i">{{Parameters['users'][i]}}</option>
       </select>
-          &nbsp;
-          <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="changeDueDateOnSelectedTasks (toDueDate)">Change Due date to:</button>
-          <input type="date" class=input_inlined style="width:120px"
+            &nbsp;
+            <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="changeDueDateOnSelectedTasks (toDueDate)">Change Due date to:</button>
+            <input type="date" class=input_inlined style="width:120px"
         [ngModel]="toDueDate | date:'yyyy-MM-dd'"  (ngModelChange)="toDueDate=$event">
           &nbsp;
-          <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="deleteSelectedTasksButton(1)">Delete</button>
-        </div>
-        </td>
+          </div>
+
+          <!-- /// VIEW PROPERTIES TOOLBAR-->
+
+          <div id="ViewProps" class="toolbartabcontent" style="display:block">
+          No view properties have been defined
+          </div>
+          <!-- /// END OF TOOLBAR TABS-->
+       </td>
       </tr>
     </table>
 
 
-<!--------- ELEMENTS TABLE  ---->
+    <!--------- ELEMENTS TABLE  ---->
 
     <table width=100%>
 
@@ -105,7 +126,8 @@
 
       <ng-template #task_tableelements>
         <ng-container *ngFor="let task of TL.subFilter(applyFilter)">
-          <tr *ngIf="applyFilter(task)" class=record (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)" [class.highlight]="isDueTask(task)" [class.selected]="task.selected">
+          <tr *ngIf="applyFilter(task)" class=record (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)"
+            [class.highlight]="isDueTask(task)" [class.selected]="task.selected">
 
 
             <!--------- LIST OF FIELDS  ---->
@@ -116,7 +138,9 @@
 
             <td *ngIf="task==focus; else name_no_focus"><input class=input_inlined id="name"
     [(ngModel)]="task.name" placeholder="Edit your name here" size="12"></td>
-            <ng-template #name_no_focus><td>&nbsp;{{task.name}}</td></ng-template>
+            <ng-template #name_no_focus>
+              <td>&nbsp;{{task.name}}</td>
+            </ng-template>
 
             <td>{{task.getOwnerName()}}</td>
             <td>{{task.getCreatorName()}}</td>
@@ -127,7 +151,9 @@
 
             <td *ngIf="task==focus; else description_no_focus"><input class=input_inlined id="desc"
     [(ngModel)]="task.description" placeholder="Edit your description here" size="45%"></td>
-            <ng-template #description_no_focus><td>&nbsp;{{task.description}}</td></ng-template>
+            <ng-template #description_no_focus>
+              <td>&nbsp;{{task.description}}</td>
+            </ng-template>
 
 
             <!--------- Action Buttons  ---->
@@ -139,7 +165,9 @@
                 <button type="button" (click)="task.status = action.nextStatus" class=inlined >{{action.name}}</button>
               </ng-container>
             </td>
-            <ng-template #actions_no_focus><td ></td></ng-template>
+            <ng-template #actions_no_focus>
+              <td></td>
+            </ng-template>
 
             <!--------- END LIST OF FIELDS  ---->
 
@@ -174,7 +202,8 @@
     <table class=toolbar>
       <tr height=20px>
         <td>
-          Total: {{TL.countIf (this.applyFilter)}} tasks, ({{TL.countSelIf(this.applyFilter)}} selected), {{numDueTasks()}} are due
+          Total: {{TL.countIf (this.applyFilter)}} tasks, ({{TL.countSelIf(this.applyFilter)}} selected),
+          {{numDueTasks()}} are due
         </td>
       </tr>
     </table>

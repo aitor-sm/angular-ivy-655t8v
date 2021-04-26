@@ -52,7 +52,8 @@ export class AppComponent  implements OnInit {
     currentUser: currentUser,
     users: UserList,
     DBName: "Task List",
-    DBRecordName: "Task"
+    DBRecordName: "Task",
+    DefaultOpen: "toolbarTab_DBRecProp"
   };
 
 

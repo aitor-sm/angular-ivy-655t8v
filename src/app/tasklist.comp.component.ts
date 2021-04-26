@@ -12,8 +12,8 @@ export interface DeleteDialogData {
 
 const ToolbarTABS: TabObj[] = [
   { id: "10", divname:"DBProps", caption: "Database"},
-  { id: "11", divname:"DBProps", caption: "Record"},
-  { id: "12", divname:"DBProps", caption: "View"}
+  { id: "11", divname:"DBRecProps", caption: "Record"},
+  { id: "12", divname:"ViewProps", caption: "View"}
 ];
 
 
