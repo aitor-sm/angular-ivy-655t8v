@@ -15,15 +15,15 @@
 
               <td width=10px style="border-bottom: none"></td>
               <td width=90px class=toolbar_tab>
-                <button class="toolbar_tab" (click)="openToolbarTab($event, '10')" id="defaultToolBarOpen">&nbsp;<span style="color:#ddd000;">&#11201;</span> {{Parameters["DBName"]}}</button>
+                <button class="toolbar_tab" (click)="openToolbarTab($event, '10')" id="ToolBar_List">&nbsp;<span style="color:#ddd000;">&#11201;</span> {{Parameters["DBName"]}}</button>
               </td>
               <td width=2px style="border-bottom: none"></td>
               <td width=90px class=toolbar_tab>
-                <button class="toolbar_tab" (click)="openToolbarTab($event, '11')">&nbsp;<span style="color:#ddd000;">&#11201;</span> {{Parameters["DBRecordName"]}}</button>
+                <button class="toolbar_tab" (click)="openToolbarTab($event, '11')" id="ToolBar_Item">&nbsp;<span style="color:#ddd000;">&#11201;</span> {{Parameters["DBRecordName"]}}</button>
               </td>
               <td width=2px style="border-bottom: none"></td>
               <td width=90px class=toolbar_tab>
-                <button class="toolbar_tab" (click)="openToolbarTab($event, '12')">&nbsp;👁 View</button>
+                <button class="toolbar_tab" (click)="openToolbarTab($event, '12')"  id="ToolBar_View">&nbsp;👁 View</button>
               </td>
               <!--
         <td width=90px class=toolbar_tab style="background-color: #888888;">&nbsp;👁&nbsp;View</td>
@@ -42,7 +42,6 @@
           <!-- /// DB PROPERTIES TOOLBAR-->
 
           <div id="DBProps" class="toolbartabcontent" style="display:block">
-            <img src="./img/newRecord.png" alt="new Record">
             <button type="button" class=toggleOff [class.toggleOn]="newTaskToggle" (click)="toggleNewTaskBar()">
               New {{Parameters["DBRecordName"]}}</button>
             <button type="button" class=toolbar disabled>Search</button>
@@ -53,15 +52,25 @@
           <!-- /// DB RECORD PROPERTIES TOOLBAR-->
 
           <div id="DBRecProps" class="toolbartabcontent" style="display:block">
+          <table height=100%><tr><td class="toolbar_section" width=80px>
+            <div class="toolbar_section_title">Classification</div>
+            Class:&nbsp;&nbsp; <span style="font-weight: bold ">TASK</span><br>
+
+
+            </td><td class="toolbar_section">
             <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="reassignSelectedTasks (reassignTo )">Reassign to:</button>
             <select required [(ngModel)]='reassignTo'>
       <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i">{{Parameters['users'][i]}}</option>
       </select>
             &nbsp;
+            </td><td class="toolbar_section">
             <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="changeDueDateOnSelectedTasks (toDueDate)">Change Due date to:</button>
             <input type="date" class=input_inlined style="width:120px"
         [ngModel]="toDueDate | date:'yyyy-MM-dd'"  (ngModelChange)="toDueDate=$event">
           &nbsp;
+
+          </td><td>
+          </td></tr></table>
           </div>
 
           <!-- /// VIEW PROPERTIES TOOLBAR-->

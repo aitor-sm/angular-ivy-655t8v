@@ -40,6 +40,15 @@ table.toolbar_tabs {
   border: none;
 }
 
+td.toolbar_section {
+  padding: 2px;
+  border-right-width: 2px;
+  border-right-color: darkgray;
+  border-right-style: solid;
+  vertical-align: text-top;
+  font-size: x-small;
+}
+
 td.toolbar_tab {
   background-color: #cccccc;
   border-radius: 8px 8px 0px 0px;
@@ -63,6 +72,10 @@ button.toggleOn {
   color: white;
 }
 
+div.toolbar_section_title {
+  font-size: 8px;
+  font-variant: small-caps;
+}
 
 
 /* DBView - rows */

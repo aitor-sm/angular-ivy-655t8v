@@ -54,7 +54,7 @@ export class TaskList_comp implements OnInit {
 
     this.TL = new MCUXList(p);
 
-    document.getElementById("defaultToolBarOpen").click();
+    document.getElementById(this.Parameters["initToolbar"]).click();
 
 
 //    this.visibleFields().forEach(t => {console.log (t.FName)});
