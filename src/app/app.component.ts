@@ -50,7 +50,9 @@ export class AppComponent  implements OnInit {
   TaskAppParams = { 
     initSelect: [3,4],
     currentUser: currentUser,
-    users: UserList
+    users: UserList,
+    DBName: "Task List",
+    DBRecordName: "Task"
   };
 
 

@@ -37,11 +37,13 @@ table.toolbar {
 
 table.toolbar_tabs {
   background-color: #444444;
+  border: none;
 }
 
 td.toolbar_tab {
   background-color: #cccccc;
   border-radius: 8px 8px 0px 0px;
+  border: none;
 }
 
 button.toolbar {
@@ -116,9 +118,6 @@ button.inlined {
   text-align: left;
   cursor: pointer;
   transition: 0.3s;
-/*  font-size: 10px; */
-/*  border-top: 1px solid #666666;*/
-  border-bottom: 1px solid black;
   border-radius: 8px 8px 0px 0px;
 }
 
