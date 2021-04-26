@@ -42,7 +42,9 @@
           <!-- /// DB PROPERTIES TOOLBAR-->
 
           <div id="DBProps" class="toolbartabcontent" style="display:block">
-            <button type="button" class=toggleOff [class.toggleOn]="newTaskToggle" (click)="toggleNewTaskBar()">New {{Parameters["DBRecordName"]}}</button>
+            <img src="./img/newRecord.png" alt="new Record">
+            <button type="button" class=toggleOff [class.toggleOn]="newTaskToggle" (click)="toggleNewTaskBar()">
+              New {{Parameters["DBRecordName"]}}</button>
             <button type="button" class=toolbar disabled>Search</button>
             |
             <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="deleteSelectedTasksButton(1)">Delete</button>
