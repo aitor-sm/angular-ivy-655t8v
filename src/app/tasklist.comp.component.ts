@@ -131,6 +131,34 @@ openToolbarTab (evt, tabId) {
 
   ///////////////// WINDOWS CONTROLS
 
+  selectedSum (): object {
+    let o = {};
+    let l = this.TL.selected();
+    
+    if (l.length > 0) {
+
+      /* class names */
+      let s : Set<any>;
+
+      s = l.reduce ((p,c) => (p.add(c.getClassName())),new Set());
+      if (s.size > 1) o["ClassName"] = "*";
+      else  o["ClassName"] = s.entries().next().value[0];
+
+      s = l.reduce ((p,c) => (p.add(c.owner)),new Set());
+      if (s.size > 1) o["Owner"] = "*";
+      else  o["Owner"] = s.entries().next().value[0];
+
+      s = l.reduce ((p,c) => (p.add((c as TaskObj).dueDate)),new Set());
+      if (s.size > 1) o["DueDate"] = "*";
+      else  o["DueDate"] = s.entries().next().value[0];
+
+    }
+
+    console.log ("o=",o);
+    return o;
+  }
+
+
   addNewTaskButton () {
     let I = this.newTask;
     

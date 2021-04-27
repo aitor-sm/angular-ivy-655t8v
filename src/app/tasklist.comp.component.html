@@ -54,9 +54,10 @@
           <div id="DBRecProps" class="toolbartabcontent" style="display:block">
           <table height=100%><tr><td class="toolbar_section" width=80px>
             <div class="toolbar_section_title">Classification</div>
-            Class:&nbsp;&nbsp; <span style="font-weight: bold ">TASK</span><br>
-
-
+            <div class="colFmt"><span>Class:</span><span style="font-weight: bold ">TASK</span></div><br>
+            <div class="colFmt"><span>Type:</span><span>Task</span></div>
+            
+            <br>
             </td><td class="toolbar_section">
             <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="reassignSelectedTasks (reassignTo )">Reassign to:</button>
             <select required [(ngModel)]='reassignTo'>
@@ -214,7 +215,7 @@
       <tr height=20px>
         <td>
           Total: {{TL.countIf (this.applyFilter)}} tasks, ({{TL.countSelIf(this.applyFilter)}} selected),
-          {{numDueTasks()}} are due
+          {{numDueTasks()}} are due <!--,  {{selectedSum()["ClassName"]}} name-->
         </td>
       </tr>
     </table>

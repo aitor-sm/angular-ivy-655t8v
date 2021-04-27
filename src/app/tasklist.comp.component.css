@@ -40,6 +40,10 @@ table.toolbar_tabs {
   border: none;
 }
 
+div.colFmt span{position: absolute;}
+div.colFmt span:nth-child(1){left: 8px;}
+div.colFmt span:nth-child(2){left: 40px;}
+
 td.toolbar_section {
   padding: 2px;
   border-right-width: 2px;

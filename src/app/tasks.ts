@@ -109,6 +109,10 @@ export class MCUXList {
     return this.obj_l.filter (f);
   }
 
+  public selected (): MCUXObject[] {
+    return this.obj_l.filter(t => t.selected);
+  }
+
 }
 
 
