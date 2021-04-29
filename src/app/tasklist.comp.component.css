@@ -40,6 +40,25 @@ table.toolbar_tabs {
   border: none;
 }
 
+table.toolbar_inlined {
+  font-size: x-small;
+  border: 2px inset #cccccc;
+}
+
+td.toolbar_header_cell {
+  background-color: #aaaaaa;
+  border: 1px solid #aaaaaa;
+}
+td.toolbar_inlined_cell {
+  background-color: #cccccc;
+  border: 1px solid #aaaaaa;
+}
+
+select.toolbarbox {
+  font-size: x-small
+}
+
+
 div.colFmt span{position: absolute;}
 div.colFmt span:nth-child(1){left: 8px;}
 div.colFmt span:nth-child(2){left: 40px;}
@@ -49,7 +68,7 @@ td.toolbar_section {
   border-right-width: 2px;
   border-right-color: darkgray;
   border-right-style: solid;
-  vertical-align: text-top;
+  vertical-align: top;
   font-size: x-small;
 }
 
@@ -60,21 +79,22 @@ td.toolbar_tab {
 }
 
 button.toolbar {
-  font-size: 12px;
+  font-size: x-small;
 }
 
 button.toggleOff {
-  font-size: 12px;
+  font-size: x-small;
   background-color: #ddddff; 
   color: black; 
   border: 2px solid #008CBA; 
 }
 
 button.toggleOn {
-  font-size: 12px;
+  font-size: x-small;
   background-color: #008CBA;
   color: white;
 }
+
 
 div.toolbar_section_title {
   font-size: 8px;

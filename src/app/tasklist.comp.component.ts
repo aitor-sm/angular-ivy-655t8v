@@ -36,12 +36,19 @@ export class TaskList_comp implements OnInit {
   newTask: TaskObj;   // Template for new Task
 
   // Window controls
-  reassignTo: number = 0;
   newTaskToggle: boolean = false;
 
-  // Task-specific
+  // Object properties specific
+  op_classname: string = "";
+  op_name: string = "";
+  op_owner: number = -1;
+  op_creator: number = -1;
+  op_createdT: Date;
+  op_resolvedT: Date;
+  op_closedT: Date;
   toDueDate: Date = new Date();
- 
+
+  // Imported fields to show
   fields : MCDBField[] = TaskDBFields;
 
   ///////////////// CONSTRUCTORS
@@ -53,6 +60,7 @@ export class TaskList_comp implements OnInit {
     };
 
     this.TL = new MCUXList(p);
+    this.selectedSummary (null);
 
     document.getElementById(this.Parameters["initToolbar"]).click();
 
@@ -63,6 +71,13 @@ export class TaskList_comp implements OnInit {
 
   constructor (public DeleteTasksDialog: MatDialog) {}
 
+
+  ///////////////// GENERAL UTILITY
+
+  numSelected () : number {
+    return this.TL.countSelIf(this.applyFilter);
+ }
+ 
 
   ///////////////// VISUAL EFFECTS
 
@@ -80,6 +95,21 @@ export class TaskList_comp implements OnInit {
 
   onMouseOut(t: MCUXObject): void {
     this.focus = null;
+  }
+
+  onChangeOwner () {
+    this.reassignSelectedTasks (this.op_owner);
+  }
+
+  onSelectRecord (e: Event, r: MCUXObject) {
+    const checkbox = e.target as HTMLInputElement;
+
+    r.selected = checkbox.checked;
+
+    if (r.selected && this.numSelected()==1)
+      this.selectedSummary (r)
+    else
+      this.selectedSummary (null);    
   }
 
   onSelectAll(e: Event): void {
@@ -131,31 +161,87 @@ openToolbarTab (evt, tabId) {
 
   ///////////////// WINDOWS CONTROLS
 
-  selectedSum (): object {
-    let o = {};
+
+  /* Update the property fields depending on selected items;
+  if an item is given, it replaces properties depending on it */
+  selectedSummary (r: MCUXObject|null) {
+
+    let k: MCUXObject = null;
     let l = this.TL.selected();
-    
-    if (l.length > 0) {
 
-      /* class names */
-      let s : Set<any>;
+    if (l.length == 0){
+      this.op_classname = "none";
+      this.op_name = "";
+      this.op_owner = -1;
+      this.op_creator = -1;
+      this.op_createdT = null;
+      this.op_resolvedT = null;
+      this.op_closedT = null;
 
-      s = l.reduce ((p,c) => (p.add(c.getClassName())),new Set());
-      if (s.size > 1) o["ClassName"] = "*";
-      else  o["ClassName"] = s.entries().next().value[0];
 
-      s = l.reduce ((p,c) => (p.add(c.owner)),new Set());
-      if (s.size > 1) o["Owner"] = "*";
-      else  o["Owner"] = s.entries().next().value[0];
+      this.toDueDate = new Date("2020-01-01");
 
-      s = l.reduce ((p,c) => (p.add((c as TaskObj).dueDate)),new Set());
-      if (s.size > 1) o["DueDate"] = "*";
-      else  o["DueDate"] = s.entries().next().value[0];
-
+      return;
     }
 
-    console.log ("o=",o);
-    return o;
+    if (  r !== undefined && r !== null ) {
+      k = r;
+    }
+    else if ( l.length == 1) {
+      k = l[0];
+    }
+
+
+    if (k !== null)    
+    {
+      this.op_classname = k.getClassName();
+      this.op_name = k.name;
+      this.op_owner = k.owner;
+      this.op_creator = k.creator;
+      this.op_createdT = k.created;
+      this.toDueDate = (k as TaskObj).dueDate;
+      this.op_resolvedT = k.resolvedT;
+      this.op_closedT = k.closedT;
+    }
+    else 
+    {
+  
+      let o = {};
+      
+      if (l.length > 0) {
+
+        /* class names */
+        let s : Set<any>;
+
+        s = l.reduce ((p,c) => (p.add(c.getClassName())),new Set());
+        if (s.size > 1) this.op_classname = "several";
+        else  this.op_classname = s.entries().next().value[0];
+
+        s = l.reduce ((p,c) => (p.add(c.owner)),new Set());
+        if (s.size > 1) this.op_owner = -1;
+        else  this.op_owner = s.entries().next().value[0];
+
+        s = l.reduce ((p,c) => (p.add((c as TaskObj).dueDate)),new Set());
+        if (s.size > 1) this.toDueDate = null;
+        else  this.toDueDate = s.entries().next().value[0];
+
+/*
+        s = l.reduce ((p,c) => (p.add(c.getClassName())),new Set());
+        if (s.size > 1) o["ClassName"] = "*";
+        else  o["ClassName"] = s.entries().next().value[0];
+
+        s = l.reduce ((p,c) => (p.add(c.owner)),new Set());
+        if (s.size > 1) o["Owner"] = "*";
+        else  o["Owner"] = s.entries().next().value[0];
+
+        s = l.reduce ((p,c) => (p.add((c as TaskObj).dueDate)),new Set());
+        if (s.size > 1) o["DueDate"] = "*";
+        else  o["DueDate"] = s.entries().next().value[0];
+*/
+      }
+//      console.log ("o=",o);
+        
+    }
   }
 
 

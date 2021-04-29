@@ -53,21 +53,40 @@
 
           <div id="DBRecProps" class="toolbartabcontent" style="display:block">
           <table height=100%><tr><td class="toolbar_section" width=80px>
+
             <div class="toolbar_section_title">Classification</div>
-            <div class="colFmt"><span>Class:</span><span style="font-weight: bold ">TASK</span></div><br>
+            <div class="colFmt"><span>Class:</span><span style="font-weight: bold ">{{op_classname}}</span></div><br>
             <div class="colFmt"><span>Type:</span><span>Task</span></div>
-            
             <br>
+
+            </td><td class="toolbar_section" width=165px>
+            <div class="toolbar_section_title" style="background-color: #cccccc;">Milestones</div>
+            <table class="toolbar_inlined" width=160px><tr>
+              <td class="toolbar_header_cell" width=40px>Created</td>
+              <td class="toolbar_inlined_cell"> {{ (op_creator==-1)?"none":Parameters['users'][op_creator] }}</td>
+              <td class="toolbar_inlined_cell">{{op_createdT | date: 'dd/MM/y'}}</td>
+            </tr><tr>
+              <td class="toolbar_header_cell">Resolved</td>
+              <td class="toolbar_inlined_cell"> </td>
+              <td class="toolbar_inlined_cell">{{op_resolvedT | date: 'dd/MM/y'}}</td>
+            </tr><tr>
+              <td class="toolbar_header_cell">Closed</td>
+              <td class="toolbar_inlined_cell"> </td>
+              <td class="toolbar_inlined_cell">{{op_closedT | date: 'dd/MM/y'}}</td>
+            </tr></table>
+
             </td><td class="toolbar_section">
-            <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="reassignSelectedTasks (reassignTo )">Reassign to:</button>
-            <select required [(ngModel)]='reassignTo'>
-      <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i">{{Parameters['users'][i]}}</option>
+<!--            <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="reassignSelectedTasks (op_owner )">Reassign to:</button>-->
+            <br>
+            <span style = "vertical-align: top;">Owner: </span>
+            <select class="toolbarbox" required size=3 [(ngModel)]='op_owner' [disabled]="TL.countSelIf(applyFilter)==0" >
+      <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i" (click)="onChangeOwner()">{{Parameters['users'][i]}}</option>
       </select>
             &nbsp;
             </td><td class="toolbar_section">
             <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="changeDueDateOnSelectedTasks (toDueDate)">Change Due date to:</button>
             <input type="date" class=input_inlined style="width:120px"
-        [ngModel]="toDueDate | date:'yyyy-MM-dd'"  (ngModelChange)="toDueDate=$event">
+        [ngModel]="toDueDate | date:'yyyy-MM-dd'"  (ngModelChange)="toDueDate=$event" [disabled]="TL.countSelIf(applyFilter)==0">
           &nbsp;
 
           </td><td>
@@ -144,7 +163,7 @@
 
             <!--------- LIST OF FIELDS  ---->
 
-            <td><input type="checkbox" [(ngModel)]="task.selected"></td>
+            <td><input type="checkbox" (change)="onSelectRecord($event, task) "[(ngModel)]="task.selected" ></td>
 
             <!--------- Customizatble FIELDS  ---->
 
@@ -174,7 +193,7 @@
               <button type="button"(click)="deleteSelectedTasksButton(0)" class=inlined >Delete</button>
               <ng-container *ngFor="let action of task.availableActions()">
                 &nbsp;
-                <button type="button" (click)="task.status = action.nextStatus" class=inlined >{{action.name}}</button>
+                <button type="button" (click)="task.status = action.nextStatus; selectedSummary(null) " class=inlined >{{action.name}}</button>
               </ng-container>
             </td>
             <ng-template #actions_no_focus>
@@ -214,7 +233,7 @@
     <table class=toolbar>
       <tr height=20px>
         <td>
-          Total: {{TL.countIf (this.applyFilter)}} tasks, ({{TL.countSelIf(this.applyFilter)}} selected),
+          Total: {{TL.countIf (this.applyFilter)}} tasks, ({{numSelected()}} selected),
           {{numDueTasks()}} are due <!--,  {{selectedSum()["ClassName"]}} name-->
         </td>
       </tr>
