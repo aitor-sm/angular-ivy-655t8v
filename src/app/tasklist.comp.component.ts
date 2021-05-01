@@ -1,7 +1,8 @@
 import { Component, Input, OnInit, Inject } from "@angular/core";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 import { TaskObj, TasksCfg, MCUXList } from "./tasks";
-import {TabObj } from "./app.component"
+import { basicFlow, FlowStatusObj } from "./flows";
+import { TabObj } from "./app.component";
 import { MCDBField, UserList, currentUser, MCObject, MCUXObject } from "./MC.core";
 
 export interface DeleteDialogData {
@@ -34,6 +35,7 @@ export class TaskList_comp implements OnInit {
   // Visual components
   focus: MCUXObject;     // Focused task
   newTask: TaskObj;   // Template for new Task
+  sel: MCUXObject; 
 
   // Window controls
   newTaskToggle: boolean = false;
@@ -46,10 +48,13 @@ export class TaskList_comp implements OnInit {
   op_createdT: Date;
   op_resolvedT: Date;
   op_closedT: Date;
+  op_status: number;
+  op_description: string;
   toDueDate: Date = new Date();
 
   // Imported fields to show
   fields : MCDBField[] = TaskDBFields;
+//  f : FlowStatusObj[] = basicFlow;
 
   ///////////////// CONSTRUCTORS
 
@@ -177,6 +182,8 @@ openToolbarTab (evt, tabId) {
       this.op_createdT = null;
       this.op_resolvedT = null;
       this.op_closedT = null;
+      this.op_status = -1;
+      this.op_description = "";
 
 
       this.toDueDate = new Date("2020-01-01");
@@ -202,6 +209,9 @@ openToolbarTab (evt, tabId) {
       this.toDueDate = (k as TaskObj).dueDate;
       this.op_resolvedT = k.resolvedT;
       this.op_closedT = k.closedT;
+      this.op_status = k.status;
+      this.op_description = k.description;
+
     }
     else 
     {
@@ -213,6 +223,10 @@ openToolbarTab (evt, tabId) {
         /* class names */
         let s : Set<any>;
 
+        s = l.reduce ((p,c) => (p.add(c.name)),new Set());
+        if (s.size > 1) this.op_name = "";
+        else  this.op_name = s.entries().next().value[0];
+
         s = l.reduce ((p,c) => (p.add(c.getClassName())),new Set());
         if (s.size > 1) this.op_classname = "several";
         else  this.op_classname = s.entries().next().value[0];
@@ -220,6 +234,14 @@ openToolbarTab (evt, tabId) {
         s = l.reduce ((p,c) => (p.add(c.owner)),new Set());
         if (s.size > 1) this.op_owner = -1;
         else  this.op_owner = s.entries().next().value[0];
+
+        s = l.reduce ((p,c) => (p.add(c.status)),new Set());
+        if (s.size > 1) this.op_status = -1;
+        else  this.op_status = s.entries().next().value[0];
+
+        s = l.reduce ((p,c) => (p.add(c.description)),new Set());
+        if (s.size > 1) this.op_description = "";
+        else  this.op_description = s.entries().next().value[0];
 
         s = l.reduce ((p,c) => (p.add((c as TaskObj).dueDate)),new Set());
         if (s.size > 1) this.toDueDate = null;
@@ -244,6 +266,12 @@ openToolbarTab (evt, tabId) {
     }
   }
 
+  getSelectedStatusName (): string {
+    if (this.op_status == -1)
+      return "-"
+    else
+      return basicFlow[this.op_status].name
+  }
 
   addNewTaskButton () {
     let I = this.newTask;
@@ -311,13 +339,26 @@ openToolbarTab (evt, tabId) {
       this.TL.doSel ( t => t.owner = assignee);
   }
 
-
+  renameSelectedTasks () {
+    this.TL.doSel (t => t.name = this.op_name);
+  }
 
   ///////////////// TASK SPECIFIC METHODS
 
   changeDueDateOnSelectedTasks(d: Date) {
     this.TL.doSel ( t => t.dueDate = new Date(this.toDueDate));
   };
+
+  checkOneSelectedTask (): boolean {
+    if (this.TL.countSelIf(this.applyFilter)==1) {
+      this.sel = this.TL.selected()[0];
+      return true;
+    }
+    else {
+      this.sel = null;
+      return false;
+    }
+  }
 
 /*
   f : Function = (t: MCUXObject) : boolean => {

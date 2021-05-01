@@ -78,6 +78,11 @@ td.toolbar_tab {
   border: none;
 }
 
+input.toolbar {
+  font-size: x-small;
+  vertical-align: top;
+}
+
 button.toolbar {
   font-size: x-small;
 }

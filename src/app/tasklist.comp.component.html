@@ -77,17 +77,33 @@
 
             </td><td class="toolbar_section">
 <!--            <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="reassignSelectedTasks (op_owner )">Reassign to:</button>-->
-            <br>
+            <span style = "vertical-align: top;">Name: </span>
+            <input id="newdesc" class="toolbar" style = "vertical-align: top;"
+    [(ngModel)]="op_name" placeholder="Name for selected" size="12" (change)="renameSelectedTasks()" [disabled]="TL.countSelIf(applyFilter)==0"><br><br>
             <span style = "vertical-align: top;">Owner: </span>
             <select class="toolbarbox" required size=3 [(ngModel)]='op_owner' [disabled]="TL.countSelIf(applyFilter)==0" >
       <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i" (click)="onChangeOwner()">{{Parameters['users'][i]}}</option>
       </select>
             &nbsp;
+            </td><td class="toolbar_section" width="150px">
+            <span style = "vertical-align: top;">Status: </span><span style="font-weight: bold " ng-bind-html="getSelectedStatusName()">{{getSelectedStatusName()}}</span><br>
+            Flow actions:<br>
+            <ng-container *ngIf="checkOneSelectedTask ()">
+              <ng-container *ngFor="let action of sel.availableActions()" > 
+                &nbsp;&nbsp;<button type="button" (click)="sel.status = action.nextStatus; selectedSummary(null) " class=inlined >{{action.name}}</button><br>
+              </ng-container>
+            </ng-container>
+
+
+          </td><td class="toolbar_section" width="180px">
+            <span style = "vertical-align: top;">Description: </span><br>
+            <input id="newdesc" class="toolbar" style = "vertical-align: top;"
+    [(ngModel)]="sel.description" placeholder="Enter description here" size="30" *ngIf="checkOneSelectedTask()">
             </td><td class="toolbar_section">
-            <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="changeDueDateOnSelectedTasks (toDueDate)">Change Due date to:</button>
-            <input type="date" class=input_inlined style="width:120px"
-        [ngModel]="toDueDate | date:'yyyy-MM-dd'"  (ngModelChange)="toDueDate=$event" [disabled]="TL.countSelIf(applyFilter)==0">
-          &nbsp;
+<!--            <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="changeDueDateOnSelectedTasks (toDueDate)">Change Due date to:</button>-->
+         <div class="toolbar_section_title">{{Parameters["DBRecordName"]}}  specific</div>
+         <span style = "vertical-align: top;">Due date: </span>   <input type="date" class=input_inlined style="width:120px"
+        [ngModel]="toDueDate | date:'yyyy-MM-dd'"  (ngModelChange)="toDueDate=$event; changeDueDateOnSelectedTasks (toDueDate)" [disabled]="TL.countSelIf(applyFilter)==0">
 
           </td><td>
           </td></tr></table>
