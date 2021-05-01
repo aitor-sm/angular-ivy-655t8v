@@ -112,7 +112,7 @@
           <!-- /// VIEW PROPERTIES TOOLBAR-->
 
           <div id="ViewProps" class="toolbartabcontent" style="display:block">
-          No view properties have been defined
+          &nbsp;<input type="checkbox" [(ngModel)]="vw_showTerminalTasks" (change)="vw_toggleTerminalTasks($event)" checked=true>Show completed tasks
           </div>
           <!-- /// END OF TOOLBAR TABS-->
        </td>

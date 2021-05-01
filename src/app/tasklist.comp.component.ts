@@ -53,9 +53,9 @@ export class TaskList_comp implements OnInit {
   op_description: string;
   toDueDate: Date = new Date();
 
-  // Imported fields to show
+  // View options
   fields : MCDBField[] = TaskDBFields;
-//  f : FlowStatusObj[] = basicFlow;
+  vw_showTerminalTasks: boolean = true;
 
   ///////////////// CONSTRUCTORS
 
@@ -67,6 +67,8 @@ export class TaskList_comp implements OnInit {
 
     this.TL = new MCUXList(p);
     this.selectedSummary (null);
+
+    console.log ("b0=",this.vw_showTerminalTasks);
 
     document.getElementById(this.Parameters["initToolbar"]).click();
 
@@ -91,8 +93,17 @@ export class TaskList_comp implements OnInit {
     return this.fields.filter (t => {return t.Show});
   }
 
-  applyFilter (t: MCUXObject): boolean {
-    return true;
+  vw_toggleTerminalTasks (e) {
+//    const checkbox = e.target as HTMLInputElement;
+
+//    this.vw_showTerminalTasks = checkbox.checked;
+
+    if (!this.vw_showTerminalTasks)
+      this.TL.doSel ( t => {if (t.isTerminalStatus()) t.selected=false})
+  }
+
+  applyFilter = t => {
+    return this.vw_showTerminalTasks || !t.isTerminalStatus();
   }
 
   onMouseOver(t: MCUXObject): void {
