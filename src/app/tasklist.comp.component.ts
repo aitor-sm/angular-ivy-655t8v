@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Inject } from "@angular/core";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 import { TaskObj, TasksCfg, MCUXList } from "./tasks";
-import { basicFlow, FlowStatusObj } from "./flows";
+import { basicFlow, FlowActionObj, FlowStatusObj } from "./flows";
 import { TabObj } from "./app.component";
 import { MCDBField, UserList, currentUser, MCObject, MCUXObject } from "./MC.core";
 import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
@@ -68,8 +68,6 @@ export class TaskList_comp implements OnInit {
     this.TL = new MCUXList(p);
     this.selectedSummary (null);
 
-    console.log ("b0=",this.vw_showTerminalTasks);
-
     document.getElementById(this.Parameters["initToolbar"]).click();
 
 
@@ -116,6 +114,13 @@ export class TaskList_comp implements OnInit {
 
   onChangeOwner () {
     this.reassignSelectedTasks (this.op_owner);
+  }
+
+  commonAvailableActions (): FlowActionObj[] {
+    if (this.op_status >= 0)
+      return basicFlow[this.op_status].actions;
+    else 
+      return null
   }
 
   onSelectRecord (e: Event, r: MCUXObject) {
@@ -228,9 +233,11 @@ openToolbarTab (evt, tabId) {
     else 
     {
   
-      let o = {};
-      
+//      let o = {};
+
       if (l.length > 0) {
+
+//        console.log ("ll=", l.length);
 
         /* class names */
         let s : Set<any>;
@@ -356,6 +363,11 @@ openToolbarTab (evt, tabId) {
         this.TL.deleteSel();
         break;
     }
+  }
+
+  doActionTasks (newStatus: number) {
+    this.TL.doSel ( t => t.status = newStatus);
+    this.selectedSummary(null);
   }
 
 

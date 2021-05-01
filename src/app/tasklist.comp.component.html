@@ -88,9 +88,9 @@
             </td><td class="toolbar_section" width="150px">
             <span style = "vertical-align: top;">Status: </span><span style="font-weight: bold " ng-bind-html="getSelectedStatusName()">{{getSelectedStatusName()}}</span><br>
             Flow actions:<br>
-            <ng-container *ngIf="checkOneSelectedTask ()">
-              <ng-container *ngFor="let action of sel.availableActions()" > 
-                &nbsp;&nbsp;<button type="button" (click)="sel.status = action.nextStatus; selectedSummary(null) " class=inlined >{{action.name}}</button><br>
+            <ng-container *ngIf="numSelected()>0 && op_status>=0">
+              <ng-container *ngFor="let action of commonAvailableActions()" > 
+                &nbsp;&nbsp;<button type="button" (click)="doActionTasks( action.nextStatus)" class=inlined >{{action.name}}</button><br>
               </ng-container>
             </ng-container>
 
@@ -179,7 +179,7 @@
 
             <!--------- LIST OF FIELDS  ---->
 
-            <td><input type="checkbox" (change)="onSelectRecord($event, task) "[(ngModel)]="task.selected" ></td>
+            <td><input type="checkbox" (change)="onSelectRecord($event, task)" [(ngModel)]="task.selected" ></td>
 
             <!--------- Customizatble FIELDS  ---->
 
