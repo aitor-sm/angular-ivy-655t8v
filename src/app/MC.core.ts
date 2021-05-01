@@ -208,7 +208,8 @@ export class MCObject {
   }
 */
 
-  public static getFieldType (f: string): string {
+//  public static getFieldType (f: string): string {
+  public getFieldType (f: string): string {
     switch (f) {
       case "id"         :
       case "class"      :  return "objid";

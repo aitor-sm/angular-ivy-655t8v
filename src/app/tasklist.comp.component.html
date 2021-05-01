@@ -182,25 +182,49 @@
             <td><input type="checkbox" (change)="onSelectRecord($event, task)" [(ngModel)]="task.selected" ></td>
 
             <!--------- Customizatble FIELDS  ---->
-
+<!--
             <td *ngIf="task==focus; else name_no_focus"><input class=input_inlined id="name"
     [(ngModel)]="task.name" placeholder="Edit your name here" size="12"></td>
             <ng-template #name_no_focus>
               <td>&nbsp;{{task.name}}</td>
             </ng-template>
+-->
 
+        <td *ngFor="let f of visibleFields()" width={{f.Width}} >
+          <div [ngSwitch]="task.getFieldType(f.FName)">
+            <ng-container *ngSwitchCase="'date'">{{task.getFieldValue(f.FName) | date: 'dd/MM/y'}}</ng-container>
+            <ng-container *ngSwitchDefault> {{task.getFieldValue(f.FName)}}</ng-container>
+          </div>
+        </td>
+
+<!--
+        <td *ngFor="let f of visibleFields()" width={{f.Width}} >
+          <div *ngIf="task.getFieldType(f.FName) == 'date'">
+          {{task.getFieldValue(f.FName) | date: 'dd/MM/y'}}
+          </div>
+          <div *ngIf="task.getFieldType(f.FName) != 'date'">
+          {{task.getFieldValue(f.FName)}}
+          </div>
+        </td>
+-->
+
+<!--
+            <td>{{task.name}}</td>
             <td>{{task.getOwnerName()}}</td>
             <td>{{task.getCreatorName()}}</td>
             <td>{{task.getStatusName()}}</td>
             <td>{{task.created | date: 'dd/MM/y'}}</td>
             <td>{{task.resolvedT | date: 'dd/MM/y'}}</td>
             <td>{{getDueDate(task) | date: 'dd/MM/y'}}</td>
-
+            <td>{{task.description}}</td>
+-->
+<!--
             <td *ngIf="task==focus; else description_no_focus"><input class=input_inlined id="desc"
     [(ngModel)]="task.description" placeholder="Edit your description here" size="45%"></td>
             <ng-template #description_no_focus>
               <td>&nbsp;{{task.description}}</td>
             </ng-template>
+-->
 
 
             <!--------- Action Buttons  ---->

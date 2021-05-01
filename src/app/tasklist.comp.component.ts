@@ -463,7 +463,7 @@ export var TaskDBFields : MCDBField[] = [
     Default: "Enter task name here"
   },
   {
-    FName: "owner",
+    FName: "ownerName",
     FCaption: "Assigned to",
     Show:  true,
     Access: "rw",
@@ -471,7 +471,7 @@ export var TaskDBFields : MCDBField[] = [
     Default: UserList[currentUser]
   },
   {
-    FName: "creator",
+    FName: "creatorName",
     FCaption: "Reporter",
     Show:  true,
     Access: "ro",
