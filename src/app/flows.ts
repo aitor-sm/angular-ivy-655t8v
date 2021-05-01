@@ -6,14 +6,14 @@ export interface FlowActionObj {
 export interface FlowStatusObj {
   name: string;
   resolutive: boolean;
-  terminal: boolean;
+//  terminal: boolean;
   actions: FlowActionObj[];
 }
 
 export var basicFlow : FlowStatusObj[] = [
     {
       name: "to-do",
-      terminal: false,
+//      terminal: false,
       resolutive: false,
       actions: [
         {
@@ -28,7 +28,7 @@ export var basicFlow : FlowStatusObj[] = [
     },
     {
       name: "in progress",
-      terminal: false,
+//      terminal: false,
       resolutive: false,
       actions: [
         {
@@ -47,7 +47,7 @@ export var basicFlow : FlowStatusObj[] = [
     },
     {
       name: "blocked",
-      terminal: false,
+//      terminal: false,
       resolutive: false,
       actions: [
         {
@@ -63,7 +63,7 @@ export var basicFlow : FlowStatusObj[] = [
     {
       name: "resolved",
       resolutive: true,
-      terminal: false,
+//      terminal: false,
       actions: [
         {
           nextStatus: 1,
@@ -77,14 +77,14 @@ export var basicFlow : FlowStatusObj[] = [
     },
     {
       name: "done",
-      terminal: true,
+//      terminal: true,
       resolutive: true,
       actions: [
       ]
     },
     {
       name: "cancelled",
-      terminal: true,
+//      terminal: true,
       resolutive: true,
       actions: [
       ]

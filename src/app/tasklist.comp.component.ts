@@ -4,6 +4,7 @@ import { TaskObj, TasksCfg, MCUXList } from "./tasks";
 import { basicFlow, FlowStatusObj } from "./flows";
 import { TabObj } from "./app.component";
 import { MCDBField, UserList, currentUser, MCObject, MCUXObject } from "./MC.core";
+import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
 
 export interface DeleteDialogData {
   numberOfTasks: number;
@@ -227,6 +228,14 @@ openToolbarTab (evt, tabId) {
         if (s.size > 1) this.op_name = "";
         else  this.op_name = s.entries().next().value[0];
 
+        s = l.reduce ((p,c) => (p.add(c.creator)),new Set());
+        if (s.size > 1) this.op_creator = -1;
+        else  this.op_creator = s.entries().next().value[0];
+
+        s = l.reduce ((p,c) => (p.add(c.created)),new Set());
+        if (s.size > 1) this.op_createdT = null;
+        else  this.op_createdT = s.entries().next().value[0];
+
         s = l.reduce ((p,c) => (p.add(c.getClassName())),new Set());
         if (s.size > 1) this.op_classname = "several";
         else  this.op_classname = s.entries().next().value[0];
@@ -246,6 +255,10 @@ openToolbarTab (evt, tabId) {
         s = l.reduce ((p,c) => (p.add((c as TaskObj).dueDate)),new Set());
         if (s.size > 1) this.toDueDate = null;
         else  this.toDueDate = s.entries().next().value[0];
+
+        this.op_resolvedT = null;
+        this.op_closedT = null;
+
 
 /*
         s = l.reduce ((p,c) => (p.add(c.getClassName())),new Set());

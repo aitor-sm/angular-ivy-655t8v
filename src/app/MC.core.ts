@@ -1,4 +1,4 @@
-import { FlowActionObj, basicFlow } from "./flows";
+import { FlowActionObj, FlowStatusObj, basicFlow } from "./flows";
 
 export type MCType = "objid" | "auto" | "boolean" | "number" | "string" |"user";
 
@@ -170,6 +170,11 @@ export class MCObject {
   }
 
   // FLOW RELATED METHODS: temporarily part of BASE
+  public isTerminalStatus (a?: FlowStatusObj): boolean {
+    let f : FlowStatusObj = (typeof a !== 'undefined')?a : basicFlow[this._status];
+    return f.actions.length == 0
+  }
+
   public get status (): number {
     return this._status;
   }
@@ -178,7 +183,7 @@ export class MCObject {
     if (basicFlow[newStatus].resolutive && !basicFlow[this._status].resolutive)
       this.resolvedT = new Date();
 
-    if (basicFlow[newStatus].terminal) this.closedT = new Date();
+    if (this.isTerminalStatus (basicFlow[newStatus])) this.closedT = new Date();
 
     this._status = newStatus;
   }
@@ -187,9 +192,11 @@ export class MCObject {
     return basicFlow[this._status].actions;
   }
 
+/*
   public isTerminalStatus(): boolean {
     return basicFlow[this._status].terminal;
   }
+*/
 
   public static getFieldType (f: string): string {
     switch (f) {
