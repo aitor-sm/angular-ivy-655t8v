@@ -8,7 +8,7 @@ export class TaskObj extends MCUXObject {
 
   public constructor (Name: string, Owner: number, Desc: string, Status: number, DueDate: Date) {
 
-    super( 20, Name, Owner, Desc, Status);
+    super( 100, Name, Owner, Desc, Status);
 
     this.dueDate = DueDate;
 

@@ -19,13 +19,14 @@ export interface MCDBField extends MCField {
   Default: any;
 }
 
+/*
 export const Classes: string[] = [
   "CLAS", "RELT", "TAG_", "FOLD", "USER", 
   "STAT", "AUDT", "CONF", "PROC", "PROT", 
   "","","","","",
   "","","","","",
   "TASK"
-];
+]; */
 
 export const UserList : string[] = ["Aitor", "Andrés", "Jaime", "Pedro"];
 export var currentUser : number = 0;
@@ -107,7 +108,7 @@ export class MCObject {
   }
 
   public get classId (): string {
-    return "CLAS-" + Classes[this._class];
+    return "CLAS-" +  this.getClassName();
   }
 
 
@@ -152,7 +153,16 @@ export class MCObject {
   }
 
   public getClassName (): string {
-    return Classes[this._class];
+  const SysClasses: string[] = [
+    "CLAS", "RELT", "TAG_", "FOLD", "USER", 
+    "STAT", "AUDT", "CONF", "PROC", "PROT"];
+  const AppClasses: string[] = [
+    "TASK"];
+
+    if (this._class <100)
+      return SysClasses [this._class];
+    else
+      return AppClasses [this._class-100];
   }
 
   // TEXTUAL DESCRIPTIONS
