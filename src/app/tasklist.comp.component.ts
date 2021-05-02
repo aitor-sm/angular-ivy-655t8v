@@ -56,6 +56,8 @@ export class TaskList_comp implements OnInit {
   // View options
   fields : MCDBField[] = TaskDBFields;
   vw_showTerminalTasks: boolean = true;
+  vw_showHeaders : boolean = true;
+  vw_showGrid : boolean = false;
 
   ///////////////// CONSTRUCTORS
 

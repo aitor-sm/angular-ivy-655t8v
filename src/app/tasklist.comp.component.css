@@ -32,7 +32,7 @@ table.toolbar {
   width: 100%;
   background-color: #cccccc;
   border: 1px solid black;
-  border-bottom: none;
+  border-bottom: solid 1px black
 }
 
 table.toolbar_tabs {
@@ -127,6 +127,10 @@ tr.selected {
 tr.highlight {
   color: #FF0000;
   font-weight: bold;
+}
+
+td.grid {
+  border: 1px dashed gray
 }
 
 

@@ -78,10 +78,10 @@
             </td><td class="toolbar_section">
 <!--            <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="reassignSelectedTasks (op_owner )">Reassign to:</button>-->
             <span style = "vertical-align: top;">Name: </span>
-            <input id="newdesc" class="toolbar" style = "vertical-align: top;"
+            <input class="toolbar" style = "vertical-align: top;"
     [(ngModel)]="op_name" placeholder="Name for selected" size="12" (change)="renameSelectedTasks()" [disabled]="TL.countSelIf(applyFilter)==0"><br><br>
             <span style = "vertical-align: top;">Owner: </span>
-            <select class="toolbarbox" required size=3 [(ngModel)]='op_owner' [disabled]="TL.countSelIf(applyFilter)==0" >
+            <select class="toolbarbox" required size=2 [(ngModel)]='op_owner' [disabled]="TL.countSelIf(applyFilter)==0" >
       <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i" (click)="onChangeOwner()">{{Parameters['users'][i]}}</option>
       </select>
             &nbsp;
@@ -97,7 +97,7 @@
 
           </td><td class="toolbar_section" width="180px">
             <span style = "vertical-align: top;">Description: </span><br>
-            <input id="newdesc" class="toolbar" style = "vertical-align: top;"
+            <input class="toolbar" style = "vertical-align: top;"
     [(ngModel)]="sel.description" placeholder="Enter description here" size="30" *ngIf="checkOneSelectedTask()">
             </td><td class="toolbar_section">
 <!--            <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="changeDueDateOnSelectedTasks (toDueDate)">Change Due date to:</button>-->
@@ -112,7 +112,11 @@
           <!-- /// VIEW PROPERTIES TOOLBAR-->
 
           <div id="ViewProps" class="toolbartabcontent" style="display:block">
-          &nbsp;<input type="checkbox" [(ngModel)]="vw_showTerminalTasks" (change)="vw_toggleTerminalTasks($event)" checked=true>Show completed tasks
+          &nbsp;<input type="checkbox" [(ngModel)]="vw_showTerminalTasks" (change)="vw_toggleTerminalTasks($event)">Show completed tasks<br>
+          &nbsp;<input type="checkbox" [(ngModel)]="vw_showHeaders" >Show headers<br>
+          &nbsp;<input type="checkbox" [(ngModel)]="vw_showGrid" >Show grid<br>
+
+          
           </div>
           <!-- /// END OF TOOLBAR TABS-->
        </td>
@@ -126,8 +130,8 @@
 
       <!--------- FIELDS NAME  ---->
 
-      <tr class=header>
-        <td width=25><input type="checkbox" (change)="onSelectAll($event)"></td>
+      <tr *ngIf="vw_showHeaders" class=header>
+        <td width="25px"><input type="checkbox" (change)="onSelectAll($event)"></td>
 
         <td *ngFor="let f of visibleFields()" width={{f.Width}}>{{f.FCaption}}</td>
 
@@ -137,8 +141,8 @@
       <!--------- New Task ROW  ---->
 
       <tr class=newitem *ngIf="newTaskToggle">
-        <td></td>
-        <td><input class=input_inlined id="newdesc"
+        <td width="25px"></td>
+        <td><input class=input_inlined 
     [(ngModel)]="newTask.name" placeholder="New task name" size="12"></td>
 
         <td>
@@ -155,7 +159,7 @@
         <td><input type="date" class=input_inlined style="width:120px"
         [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"  (ngModelChange)="newTask.dueDate = $event"></td>
 
-        <td><input class=input_inlined id="newdesc"
+        <td><input class=input_inlined 
     [(ngModel)]="newTask.description" placeholder="Enter the task description" size="45%"></td>
         <td>
           <button type="button"  [disabled]="!isValidNewTask()" (click)="addNewTaskButton()" class=inlined >Create task</button>
@@ -179,7 +183,7 @@
 
             <!--------- LIST OF FIELDS  ---->
 
-            <td><input type="checkbox" (change)="onSelectRecord($event, task)" [(ngModel)]="task.selected" ></td>
+            <td width="25px" [class.grid] = "vw_showGrid"><input type="checkbox" (change)="onSelectRecord($event, task)" [(ngModel)]="task.selected" ></td>
 
             <!--------- Customizatble FIELDS  ---->
 <!--
@@ -190,7 +194,7 @@
             </ng-template>
 -->
 
-        <td *ngFor="let f of visibleFields()" width={{f.Width}} >
+        <td *ngFor="let f of visibleFields()" width={{f.Width}}  [class.grid] = "vw_showGrid">
           <div [ngSwitch]="task.getFieldType(f.FName)">
             <ng-container *ngSwitchCase="'date'">{{task.getFieldValue(f.FName) | date: 'dd/MM/y'}}</ng-container>
             <ng-container *ngSwitchDefault> {{task.getFieldValue(f.FName)}}</ng-container>
@@ -229,7 +233,7 @@
 
             <!--------- Action Buttons  ---->
 
-            <td *ngIf="task==focus; else actions_no_focus">
+            <td *ngIf="task==focus; else actions_no_focus"  [class.grid] = "vw_showGrid">
               <button type="button"(click)="deleteSelectedTasksButton(0)" class=inlined >Delete</button>
               <ng-container *ngFor="let action of task.availableActions()">
                 &nbsp;
@@ -237,7 +241,7 @@
               </ng-container>
             </td>
             <ng-template #actions_no_focus>
-              <td></td>
+              <td [class.grid] = "vw_showGrid"></td>
             </ng-template>
 
             <!--------- END LIST OF FIELDS  ---->
