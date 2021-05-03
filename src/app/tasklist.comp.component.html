@@ -168,6 +168,50 @@
         </td>
       </tr>
 
+
+      <tr class=newitem *ngIf="newTaskToggle">
+        <td width="25px"></td>
+
+
+        <td *ngFor="let f of visibleFields()" width={{f.Width}}  [class.grid] = "vw_showGrid">
+          <div [ngSwitch]="newTask.getFieldType(f.FName)">
+            <ng-container *ngSwitchCase="'date'">{{newTask.getFieldValue(f.FName) | date: 'dd/MM/y'}}</ng-container>
+            <ng-container *ngSwitchDefault> {{newTask.getFieldValue(f.FName)}}</ng-container>
+          </div>
+        </td>
+
+<!--
+
+        <td><input class=input_inlined 
+    [(ngModel)]="newTask.name" placeholder="New task name" size="12"></td>
+
+        <td>
+          <select required [(ngModel)]='newTask.owner'>
+          <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i">{{Parameters['users'][i]}}</option>
+          </select>
+        </td>
+
+        <td><i>{{newTask.getCreatorName()}}</i></td>
+        <td><i>{{newTask.getStatusName()}}</i></td>
+        <td><i>--Now--</i></td>
+        <td><i>Empty</i></td>
+
+        <td><input type="date" class=input_inlined style="width:120px"
+        [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"  (ngModelChange)="newTask.dueDate = $event"></td>
+
+        <td><input class=input_inlined 
+    [(ngModel)]="newTask.description" placeholder="Enter the task description" size="45%"></td>
+
+-->
+
+        <td>
+          <button type="button"  [disabled]="!isValidNewTask()" (click)="addNewTaskButton()" class=inlined >Create task</button>
+          &nbsp;
+          <button type="button"  (click)="createNewTaskTemplate()" class=inlined >Clear fields</button>
+        </td>
+
+      </tr>
+
       <!--------- TABLE ELEMENTS  ---->
 
       <ng-container *ngIf="TL.countIf(applyFilter) > 0; then task_tableelements else no_elements">

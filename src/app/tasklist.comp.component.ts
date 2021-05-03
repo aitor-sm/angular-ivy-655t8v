@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Inject } from "@angular/core";
+import {formatDate} from '@angular/common';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 import { TaskObj, TasksCfg, MCUXList } from "./tasks";
 import { basicFlow, FlowActionObj, FlowStatusObj } from "./flows";
@@ -35,11 +36,11 @@ export class TaskList_comp implements OnInit {
 
   // Visual components
   focus: MCUXObject;     // Focused task
-  newTask: TaskObj;   // Template for new Task
   sel: MCUXObject; 
 
-  // Window controls
+  // Controls for new task
   newTaskToggle: boolean = false;
+  newTask: TaskObj;   // Template for new Task
 
   // Object properties specific
   op_classname: string = "";
@@ -454,7 +455,10 @@ export var TaskDBFields : MCDBField[] = [
     Show:  false,
     Access: "ro",
     Width : 100,
-    Default: null
+    Default: null,
+    FOptionality: "mandatory",
+    MinWidth: 100,
+    NewRecordCaption: ""
   },
   {
     FName: "name",
@@ -462,7 +466,10 @@ export var TaskDBFields : MCDBField[] = [
     Show:  true,
     Access: "rw",
     Width : 100,
-    Default: "Enter task name here"
+    Default: "",
+    FOptionality: "mandatory",
+    MinWidth: 100,
+    NewRecordCaption: "Enter task name here"
   },
   {
     FName: "ownerName",
@@ -470,7 +477,10 @@ export var TaskDBFields : MCDBField[] = [
     Show:  true,
     Access: "rw",
     Width : 80,
-    Default: UserList[currentUser]
+    Default: UserList[currentUser],
+    FOptionality: "mandatory",
+    MinWidth: 80,
+    NewRecordCaption: ""    
   },
   {
     FName: "creatorName",
@@ -478,7 +488,11 @@ export var TaskDBFields : MCDBField[] = [
     Show:  true,
     Access: "ro",
     Width : 80,
-    Default: UserList[currentUser]
+    Default: UserList[currentUser],
+    FOptionality: "mandatory",
+    MinWidth: 80,
+    NewRecordCaption: UserList[currentUser]
+
   },
   {
     FName: "statusName",
@@ -486,7 +500,10 @@ export var TaskDBFields : MCDBField[] = [
     Show:  true,
     Access: "ro",
     Width : 80,
-    Default: "to-do"
+    Default: basicFlow[0].name,
+    FOptionality: "mandatory",
+    MinWidth: 80,
+    NewRecordCaption: "--"+basicFlow[0].name+'--'
   },
   {
     FName: "createdT",
@@ -494,7 +511,11 @@ export var TaskDBFields : MCDBField[] = [
     Show:  true,
     Access: "ro",
     Width : 90,
-    Default: new Date()
+    Default: "now",
+    FOptionality: "mandatory",
+    MinWidth: 90,
+    NewRecordCaption: "now"
+//    NewRecordCaption: formatDate(new Date(), 'yyyy/MM/dd', 'en')
   },
   {
     FName: "resolvedT",
@@ -502,15 +523,21 @@ export var TaskDBFields : MCDBField[] = [
     Show:  true,
     Access: "ro",
     Width : 90,
-    Default: null
+    Default: null,
+    FOptionality: "optional",
+    MinWidth: 90,
+    NewRecordCaption: ""
   },
   {
     FName: "DueDate",
     FCaption: "Due by",
     Show:  true,
     Access: "rw",
-    Width : 90,
-    Default: new Date("2020-01-01")
+    Width : 125,
+    Default: new Date("2020-01-01"),
+    FOptionality: "mandatory",
+    MinWidth: 125,
+    NewRecordCaption: ""
   },
   {
     FName: "closedT",
@@ -518,7 +545,10 @@ export var TaskDBFields : MCDBField[] = [
     Show:  false,
     Access: "ro",
     Width : 90,
-    Default: null
+    Default: null,
+    FOptionality: "optional",
+    MinWidth: 90,
+    NewRecordCaption: ""
   },
   {
     FName: "description",
@@ -526,6 +556,9 @@ export var TaskDBFields : MCDBField[] = [
     Show:  true,
     Access: "rw",
     Width : 0,
-    Default: "Enter task description"
-  }
+    Default: "",
+    FOptionality: "optional",
+    MinWidth: 0,
+    NewRecordCaption: "Enter task description"
+ }
 ]

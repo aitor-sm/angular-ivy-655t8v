@@ -5,6 +5,7 @@ export type MCType = "objid" | "auto" | "boolean" | "number" | "string" |"user";
 export interface MCField {
   FName: string;
   FCaption: string;
+  FOptionality: "optional" | "mandatory";
 }
 
 export interface MCParameter extends MCField {
@@ -17,6 +18,8 @@ export interface MCDBField extends MCField {
   Access:  "ro" | "rw";
   Width : number;
   Default: any;
+  MinWidth: number;
+  NewRecordCaption: string;
 }
 
 /*

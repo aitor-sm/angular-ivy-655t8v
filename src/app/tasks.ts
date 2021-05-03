@@ -123,6 +123,7 @@ export var TasksCfg : MCParameter[] = [
   {
     FName: "WarnOnDelete",
     FType: "boolean",
+    FOptionality: "mandatory",
     FCaption: "Alert me before deleting a task",
     FValue: true
   }
