@@ -175,8 +175,17 @@
 
         <td *ngFor="let f of visibleFields()" width={{f.Width}}  [class.grid] = "vw_showGrid">
           <div [ngSwitch]="newTask.getFieldType(f.FName)">
+
+            <ng-container *ngSwitchCase="'string'">
+              <ng-container *ngIf="f.Access == 'ro'"> 
+              {{newTask.getFieldValue(f.FName)}}
+              </ng-container>
+            </ng-container>
+
             <ng-container *ngSwitchCase="'date'">{{newTask.getFieldValue(f.FName) | date: 'dd/MM/y'}}</ng-container>
+
             <ng-container *ngSwitchDefault> {{newTask.getFieldValue(f.FName)}}</ng-container>
+
           </div>
         </td>
 
