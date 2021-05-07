@@ -233,6 +233,10 @@ export class MCObject {
     }
   }
 
+  public PixelsToSize (n: number): string {
+    return n==0? '100%' : ''+n/10;
+  }
+
   public getFieldValue (f: string): any {
     switch (f) {
       case "id"         :  return this.id;

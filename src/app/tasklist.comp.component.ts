@@ -465,10 +465,10 @@ export var TaskDBFields : MCDBField[] = [
     FCaption: "Task",
     Show:  true,
     Access: "rw",
-    Width : 12,
+    Width : 120,
     Default: "",
     FOptionality: "mandatory",
-    MinWidth: 12,
+    MinWidth: 120,
     NewRecordCaption: "Enter task name here"
   },
   {
@@ -555,7 +555,7 @@ export var TaskDBFields : MCDBField[] = [
     FCaption: "Description",
     Show:  true,
     Access: "rw",
-    Width : 0,
+    Width : 280,
     Default: "",
     FOptionality: "optional",
     MinWidth: 0,

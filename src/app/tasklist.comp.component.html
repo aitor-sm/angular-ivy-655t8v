@@ -182,7 +182,7 @@
               </ng-container>
               <ng-template #newrec_string_rw>
                 <input #newrec_text class=input_inlined 
-    (change)="newTask.setFieldValue(f.FName,newrec_text.value)" placeholder={{f.FCaption}} size={{f.Width}}>
+    (change)="newTask.setFieldValue(f.FName,newrec_text.value)" placeholder={{f.NewRecordCaption}} size={{newTask.PixelsToSize(f.Width)}}>
               </ng-template>
 
 
