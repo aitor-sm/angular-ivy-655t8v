@@ -20,6 +20,7 @@ const ToolbarTABS: TabObj[] = [
 ];
 
 
+
 @Component({
   selector: "tasklist_comp",
   templateUrl: "./tasklist.comp.component.html",
@@ -151,7 +152,9 @@ export class TaskList_comp implements OnInit {
   }
 
   createNewTaskTemplate () {
-    this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, new Date("2020-01-01") );
+    let d : Date = typeof(this.newTask) != "undefined" ? new Date (this.newTask.dueDate) : new Date("2020-01-01") ;
+//    this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, new Date("2020-01-01") );
+    this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, d);
   }
 
   isValidNewTask(): Boolean {
@@ -472,7 +475,7 @@ export var TaskDBFields : MCDBField[] = [
     NewRecordCaption: "Enter task name here"
   },
   {
-    FName: "ownerName",
+    FName: "owner",
     FCaption: "Assigned to",
     Show:  true,
     Access: "rw",
@@ -483,7 +486,7 @@ export var TaskDBFields : MCDBField[] = [
     NewRecordCaption: ""    
   },
   {
-    FName: "creatorName",
+    FName: "creator",
     FCaption: "Reporter",
     Show:  true,
     Access: "ro",

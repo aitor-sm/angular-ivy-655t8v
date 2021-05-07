@@ -140,33 +140,6 @@
 
       <!--------- New Task ROW  ---->
 
-      <tr class=newitem *ngIf="newTaskToggle">
-        <td width="25px"></td>
-        <td><input class=input_inlined 
-    [(ngModel)]="newTask.name" placeholder="New task name" size="12"></td>
-
-        <td>
-          <select required [(ngModel)]='newTask.owner'>
-          <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i">{{Parameters['users'][i]}}</option>
-          </select>
-        </td>
-
-        <td><i>{{newTask.getCreatorName()}}</i></td>
-        <td><i>{{newTask.getStatusName()}}</i></td>
-        <td><i>--Now--</i></td>
-        <td><i>Empty</i></td>
-
-        <td><input type="date" class=input_inlined style="width:120px"
-        [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"  (ngModelChange)="newTask.dueDate = $event"></td>
-
-        <td><input class=input_inlined 
-    [(ngModel)]="newTask.description" placeholder="Enter the task description" size="45%"></td>
-        <td>
-          <button type="button"  [disabled]="!isValidNewTask()" (click)="addNewTaskButton()" class=inlined >Create task</button>
-          &nbsp;
-          <button type="button"  (click)="createNewTaskTemplate()" class=inlined >Clear fields</button>
-        </td>
-      </tr>
 
 
       <tr class=newitem *ngIf="newTaskToggle">
@@ -184,11 +157,30 @@
                 <input #newrec_text class=input_inlined 
     (change)="newTask.setFieldValue(f.FName,newrec_text.value)" placeholder={{f.NewRecordCaption}} size={{newTask.PixelsToSize(f.Width)}}>
               </ng-template>
-
-
             </ng-container>
 
-            <ng-container *ngSwitchCase="'date'">{{newTask.getFieldValue(f.FName) | date: 'dd/MM/y'}}</ng-container>
+            <ng-container *ngSwitchCase="'user'">
+              <ng-container *ngIf="f.Access == 'ro'; else newrec_user_rw"> 
+              {{newTask.getFieldValue(f.FName) | user}}
+              </ng-container>
+              <ng-template #newrec_user_rw>
+
+                <select required #t (change)="newTask.setFieldValue(f.FName,t.value)">
+                <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i">{{Parameters['users'][i]}}</option>
+                </select>
+
+              </ng-template>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'date'">
+              <ng-container *ngIf="f.Access == 'ro'; else newrec_date_rw"> 
+              {{newTask.getFieldValue(f.FName) | date: 'dd/MM/y'}}
+              </ng-container>
+              <ng-template #newrec_date_rw>
+
+              <input type="date" class=input_inlined style="width:120px"  [ngModel]="newTask.getFieldValue(f.FName) | date:'yyyy-MM-dd'"  (ngModelChange)="newTask.setFieldValue(f.FName,$event)">
+              </ng-template>
+            </ng-container>
 
             <ng-container *ngSwitchDefault> {{newTask.getFieldValue(f.FName)}}</ng-container>
 
@@ -256,6 +248,7 @@
         <td *ngFor="let f of visibleFields()" width={{f.Width}}  [class.grid] = "vw_showGrid">
           <div [ngSwitch]="task.getFieldType(f.FName)">
             <ng-container *ngSwitchCase="'date'">{{task.getFieldValue(f.FName) | date: 'dd/MM/y'}}</ng-container>
+            <ng-container *ngSwitchCase="'user'">{{task.getFieldValue(f.FName) | user }}</ng-container>
             <ng-container *ngSwitchDefault> {{task.getFieldValue(f.FName)}}</ng-container>
           </div>
         </td>

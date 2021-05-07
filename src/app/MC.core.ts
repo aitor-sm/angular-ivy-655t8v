@@ -278,6 +278,9 @@ export class MCObject {
     return true;
   }
 
+  public getUserName (n: number): string {
+    return UserList[n]
+  }
 
 }
 

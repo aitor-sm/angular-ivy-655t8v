@@ -29,6 +29,8 @@ import { AppComponent } from "./app.component";
 import { HelloComponent } from "./hello.component";
 import { TaskList_comp, DialogDeleteTasks} from "./tasklist.comp.component";
 
+import { UserPipe } from './user.pipe';
+
 @NgModule({
   imports: [BrowserModule, FormsModule,
     BrowserAnimationsModule,
@@ -58,7 +60,7 @@ import { TaskList_comp, DialogDeleteTasks} from "./tasklist.comp.component";
     MatDialogModule,
     MatTooltipModule, 
     MatCheckboxModule ],
-  declarations: [AppComponent, HelloComponent, TaskList_comp, DialogDeleteTasks],
+  declarations: [AppComponent, HelloComponent, TaskList_comp, DialogDeleteTasks, UserPipe],
   entryComponents: [DialogDeleteTasks],
   bootstrap: [AppComponent]
 })
