@@ -177,9 +177,15 @@
           <div [ngSwitch]="newTask.getFieldType(f.FName)">
 
             <ng-container *ngSwitchCase="'string'">
-              <ng-container *ngIf="f.Access == 'ro'"> 
+              <ng-container *ngIf="f.Access == 'ro'; else newrec_string_rw"> 
               {{newTask.getFieldValue(f.FName)}}
               </ng-container>
+              <ng-template #newrec_string_rw>
+                <input #newrec_text class=input_inlined 
+    (change)="newTask.setFieldValue(f.FName,newrec_text.value)" placeholder={{f.FCaption}} size={{f.Width}}>
+              </ng-template>
+
+
             </ng-container>
 
             <ng-container *ngSwitchCase="'date'">{{newTask.getFieldValue(f.FName) | date: 'dd/MM/y'}}</ng-container>
