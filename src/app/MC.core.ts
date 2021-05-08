@@ -49,6 +49,8 @@ export class MCObject {
   private _owner: number;
   private _description: string;
   
+  private _XFields : {[key: string]: any} = [];
+
   // FLOW RELATED FIELDS: temporarily part of BASE
   private _status: number;
 
@@ -56,9 +58,8 @@ export class MCObject {
   public closedT: Date;
 
   // Static members
-  static sequence: number = 0; // there should be one per class
+  private static sequence: number = 0; // there should be one per class
 
-  private _XFields : {[key: string]: any} = [];
 
   constructor (ClassId: number, Name: string, Owner: number, Desc: string, Status: number) {
     this._id = MCObject.sequence;
@@ -114,6 +115,19 @@ export class MCObject {
     return "CLAS-" +  this.getClassName();
   }
 
+  public getClassName (): string {
+  const SysClasses: string[] = [
+    "CLAS", "RELT", "TAG_", "FOLD", "USER", 
+    "STAT", "AUDT", "CONF", "PROC", "PROT"];
+  const AppClasses: string[] = [
+    "TASK"];
+
+    if (this._class <100)
+      return SysClasses [this._class];
+    else
+      return AppClasses [this._class-100];
+  }
+
 
   // ACCESSORS FOR BASIC PROPERTIES 
   public get name (): string {
@@ -155,18 +169,6 @@ export class MCObject {
     return true;
   }
 
-  public getClassName (): string {
-  const SysClasses: string[] = [
-    "CLAS", "RELT", "TAG_", "FOLD", "USER", 
-    "STAT", "AUDT", "CONF", "PROC", "PROT"];
-  const AppClasses: string[] = [
-    "TASK"];
-
-    if (this._class <100)
-      return SysClasses [this._class];
-    else
-      return AppClasses [this._class-100];
-  }
 
   // TEXTUAL DESCRIPTIONS
   public getOwnerName (): string {
@@ -233,10 +235,6 @@ export class MCObject {
     }
   }
 
-  public PixelsToSize (n: number): string {
-    return n==0? '100%' : ''+n/10;
-  }
-
   public getFieldValue (f: string): any {
     switch (f) {
       case "id"         :  return this.id;
@@ -278,8 +276,9 @@ export class MCObject {
     return true;
   }
 
-  public getUserName (n: number): string {
-    return UserList[n]
+  // Shouldn't be here
+  public PixelsToSize (n: number): string {
+    return n==0? '100%' : ''+n/10;
   }
 
 }

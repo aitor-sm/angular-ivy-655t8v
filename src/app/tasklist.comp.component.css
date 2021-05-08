@@ -12,9 +12,9 @@
   flex: 1 1 auto;
 }
 .vbox .row.footer {
-  flex: 0 1 20px;
+/*  flex: 0 1 20px; */
+  flex: 0 1 auto;
 }
-
 
 
 /* Basic */
@@ -25,6 +25,22 @@ table {
   font-family: Lato;
   font-size: small;
 }
+
+      .row.content table {
+        height: 100%;
+        width: 100%;
+        table-layout: fixed;
+      }
+      .row.content tbody {
+        display: block;
+        width: 100%;
+        overflow: auto;
+        height: 100%
+      }
+
+      .row.content  thead tr {
+        display: block;
+      }
 
 
 /* General styles - TOOLBAR  */
@@ -116,9 +132,14 @@ tr.header {
   background-color: #dedede;
   font-weight: bold;
   border: 1px solid black;
+  position: sticky;
+  top: 0;
 }
 tr.record:hover {
   background-color: #ddddff;
+}
+td.record:last-child {
+    width: 100%;
 }
 tr.selected {
   color: #0000FF;

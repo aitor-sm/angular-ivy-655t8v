@@ -123,15 +123,16 @@
       </tr>
     </table>
 
-
-    <!--------- ELEMENTS TABLE  ---->
+    </div>
+    <div class="row content">
 
     <table width=100%>
 
       <!--------- FIELDS NAME  ---->
 
+      <thead>
       <tr *ngIf="vw_showHeaders" class=header>
-        <td width="25px"><input type="checkbox" (change)="onSelectAll($event)"></td>
+        <td width="25"><input type="checkbox" (change)="onSelectAll($event)"></td>
 
         <td *ngFor="let f of visibleFields()" width={{f.Width}}>{{f.FCaption}}</td>
 
@@ -139,8 +140,6 @@
       </tr>
 
       <!--------- New Task ROW  ---->
-
-
 
       <tr class=newitem *ngIf="newTaskToggle">
         <td width="25px"></td>
@@ -218,8 +217,11 @@
         </td>
 
       </tr>
+      </thead>
 
       <!--------- TABLE ELEMENTS  ---->
+
+      <tbody>
 
       <ng-container *ngIf="TL.countIf(applyFilter) > 0; then task_tableelements else no_elements">
       </ng-container>
@@ -293,7 +295,7 @@
               </ng-container>
             </td>
             <ng-template #actions_no_focus>
-              <td [class.grid] = "vw_showGrid"></td>
+              <td [class.grid] = "vw_showGrid">DDDD</td>
             </ng-template>
 
             <!--------- END LIST OF FIELDS  ---->
@@ -307,27 +309,29 @@
       <ng-template #no_elements>
         <tr>
           <td></td>
-          <td colspan=9><i>No tasks to show </i></td>
+          <td colspan=10><i>No tasks to show </i></td>
         </tr>
       </ng-template>
 
+      </tbody>
     </table>
+
   </div>
 
 
   <!--------- VERTICAL FILLER  ---->
 
-
+<!--
   <div class="row content">
   </div>
-
+-->
 
   <!--------- STATUS BAR  ---->
 
   <div class="row footer">
 
-    <table class=toolbar>
-      <tr height=20px>
+    <table class=toolbar  height=20px>
+      <tr>
         <td>
           Total: {{TL.countIf (this.applyFilter)}} tasks, ({{numSelected()}} selected),
           {{numDueTasks()}} are due <!--,  {{selectedSum()["ClassName"]}} name-->
