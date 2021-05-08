@@ -30,6 +30,8 @@ import { HelloComponent } from "./hello.component";
 import { TaskList_comp, DialogDeleteTasks} from "./tasklist.comp.component";
 
 import { UserPipe } from './user.pipe';
+import { StatusPipe } from './status.pipe';
+
 
 @NgModule({
   imports: [BrowserModule, FormsModule,
@@ -60,7 +62,7 @@ import { UserPipe } from './user.pipe';
     MatDialogModule,
     MatTooltipModule, 
     MatCheckboxModule ],
-  declarations: [AppComponent, HelloComponent, TaskList_comp, DialogDeleteTasks, UserPipe],
+  declarations: [AppComponent, HelloComponent, TaskList_comp, DialogDeleteTasks, UserPipe, StatusPipe],
   entryComponents: [DialogDeleteTasks],
   bootstrap: [AppComponent]
 })

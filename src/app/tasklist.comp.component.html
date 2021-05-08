@@ -181,6 +181,10 @@
               </ng-template>
             </ng-container>
 
+            <ng-container *ngSwitchCase="'status'">
+              {{newTask.getFieldValue(f.FName) |status }}
+            </ng-container>
+
             <ng-container *ngSwitchDefault> {{newTask.getFieldValue(f.FName)}}</ng-container>
 
           </div>
@@ -251,6 +255,7 @@
           <div [ngSwitch]="task.getFieldType(f.FName)">
             <ng-container *ngSwitchCase="'date'">{{task.getFieldValue(f.FName) | date: 'dd/MM/y'}}</ng-container>
             <ng-container *ngSwitchCase="'user'">{{task.getFieldValue(f.FName) | user }}</ng-container>
+            <ng-container *ngSwitchCase="'status'">{{task.getFieldValue(f.FName) | status }}</ng-container>
             <ng-container *ngSwitchDefault> {{task.getFieldValue(f.FName)}}</ng-container>
           </div>
         </td>
@@ -295,7 +300,7 @@
               </ng-container>
             </td>
             <ng-template #actions_no_focus>
-              <td [class.grid] = "vw_showGrid">DDDD</td>
+              <td [class.grid] = "vw_showGrid"></td>
             </ng-template>
 
             <!--------- END LIST OF FIELDS  ---->

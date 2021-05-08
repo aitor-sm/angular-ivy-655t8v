@@ -1,11 +1,12 @@
 import { FlowActionObj, FlowStatusObj, basicFlow } from "./flows";
 
-export type MCType = "objid" | "auto" | "boolean" | "number" | "string" |"user";
+export type MCType = "objid" | "auto" | "boolean" | "number" | "string" |"date" | "user" | "status";
 
 export interface MCField {
   FName: string;
   FCaption: string;
   FOptionality: "optional" | "mandatory";
+  Default: any;
 }
 
 export interface MCParameter extends MCField {
@@ -17,19 +18,9 @@ export interface MCDBField extends MCField {
   Show : boolean;
   Access:  "ro" | "rw";
   Width : number;
-  Default: any;
   MinWidth: number;
   NewRecordCaption: string;
 }
-
-/*
-export const Classes: string[] = [
-  "CLAS", "RELT", "TAG_", "FOLD", "USER", 
-  "STAT", "AUDT", "CONF", "PROC", "PROT", 
-  "","","","","",
-  "","","","","",
-  "TASK"
-]; */
 
 export const UserList : string[] = ["Aitor", "Andrés", "Jaime", "Pedro"];
 export var currentUser : number = 0;
@@ -160,10 +151,6 @@ export class MCObject {
     return this._XFields[s];
   }
 
-  public addXField (name: string, value: any) {
-    this._XFields.push ( {name : value});
-  }
-
   public setXField (name: string, value: any): boolean {
     this._XFields[name] = value;
     return true;
@@ -214,12 +201,12 @@ export class MCObject {
 */
 
 //  public static getFieldType (f: string): string {
-  public getFieldType (f: string): string {
+  public getFieldType (f: string): MCType {
     switch (f) {
       case "id"         :
       case "class"      :  return "objid";
-      case "class#"     :
-      case "status"     :  return "number";  // TEMPORARY!!!
+      case "class#"     :  return "number";
+      case "status"     :  return "status";
       case "owner"      :  
       case "creator"    :  return "user";
       case "name"       :  

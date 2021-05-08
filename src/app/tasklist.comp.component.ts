@@ -498,12 +498,12 @@ export var TaskDBFields : MCDBField[] = [
 
   },
   {
-    FName: "statusName",
+    FName: "status",
     FCaption: "Status",
     Show:  true,
     Access: "ro",
     Width : 80,
-    Default: basicFlow[0].name,
+    Default: 0,
     FOptionality: "mandatory",
     MinWidth: 80,
     NewRecordCaption: "--"+basicFlow[0].name+'--'
