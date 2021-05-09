@@ -14,13 +14,6 @@ export interface MCParameter extends MCField {
   FValue: any;
 }
 
-export interface MCDBField extends MCField {
-  Show : boolean;
-  Access:  "ro" | "rw";
-  Width : number;
-  MinWidth: number;
-  NewRecordCaption: string;
-}
 
 export const UserList : string[] = ["Aitor", "Andrés", "Jaime", "Pedro"];
 export var currentUser : number = 0;
@@ -235,11 +228,6 @@ export class MCObject {
     return true;
   }
 
-  // Shouldn't be here
-  public PixelsToSize (n: number): string {
-    return n==0? '100%' : ''+n/10;
-  }
-
 }
 
 
@@ -253,6 +241,10 @@ export class MCUXObject extends MCObject {
 
     this.selected = false;
 
+  }
+
+  public PixelsToSize (n: number): string {
+    return n==0? '100%' : ''+n/8;
   }
 
 }

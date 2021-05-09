@@ -1,17 +1,29 @@
 import { Component, Input, OnInit, Inject } from "@angular/core";
-import {formatDate} from '@angular/common';
+//import {formatDate} from '@angular/common';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
-import { TaskObj, TasksCfg, MCUXList } from "./tasks";
+//import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
+
+import { MCField, UserList, currentUser, MCObject, MCUXObject } from "./MC.core";
 import { basicFlow, FlowActionObj, FlowStatusObj } from "./flows";
 import { TabObj } from "./app.component";
-import { MCDBField, UserList, currentUser, MCObject, MCUXObject } from "./MC.core";
-import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
+import { TaskObj, TasksCfg, MCUXList } from "./tasks";
+
 
 export interface DeleteDialogData {
   numberOfTasks: number;
   confirmation: boolean;
   doIt: boolean;
 }
+
+export interface MCDBField extends MCField {
+  Show : boolean;
+  Access:  "ro" | "rw";
+  Width : number;
+  MinWidth: number;
+  NewRecordCaption: string;
+}
+
+
 
 const ToolbarTABS: TabObj[] = [
   { id: "10", divname:"DBProps", caption: "Database"},
@@ -152,7 +164,9 @@ export class TaskList_comp implements OnInit {
   }
 
   createNewTaskTemplate () {
-    let d : Date = typeof(this.newTask) != "undefined" ? new Date (this.newTask.dueDate) : new Date("2020-01-01") ;
+
+    let d : Date = (typeof(this.newTask) != "undefined" && typeof(this.newTask.dueDate) != "undefined" && this.newTask.dueDate != null) ? new Date (this.newTask.dueDate) : null ;
+
 //    this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, new Date("2020-01-01") );
     this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, d);
   }
@@ -318,6 +332,7 @@ openToolbarTab (evt, tabId) {
     this.createNewTaskTemplate ();
     this.newTask.name = I.name;
     this.newTask.description = I.description;
+    this.newTask.owner = I.owner;
 
 // Se está copiando el X-Fields!
 /*
@@ -412,9 +427,11 @@ openToolbarTab (evt, tabId) {
       return this.TL.countIf (t => (this.applyFilter(t) && (t as TaskObj).dueTask()));
   }
 
+/*
   getDueDate (t): Date {
     return (t as TaskObj).dueDate;
   }
+*/
 
   isDueTask (t): boolean {
     return (t as TaskObj).dueTask();

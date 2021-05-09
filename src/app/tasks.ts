@@ -13,7 +13,7 @@ export class TaskObj extends MCUXObject {
     this.dueDate = DueDate;
 
     // DB.View.Obj init
-    this.selected = false;
+//    this.selected = false;
 
   }
 
@@ -26,7 +26,7 @@ export class TaskObj extends MCUXObject {
   }
 
   public dueTask(): boolean {
-    return this.dueDate < new Date() && !this.isTerminalStatus();
+    return this.dueDate != null && this.dueDate < new Date() && !this.isTerminalStatus();
   };
 
 }
@@ -112,6 +112,7 @@ export class MCUXList {
   public selected (): MCUXObject[] {
     return this.obj_l.filter(t => t.selected);
   }
+
 
 }
 
