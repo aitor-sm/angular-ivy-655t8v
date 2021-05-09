@@ -455,6 +455,7 @@ export var TaskDBFields : MCDBField[] = [
   {
     FName: "id",
     FCaption: "Task ID",
+    FType: "objid",
     Show:  false,
     Access: "ro",
     Width : 100,
@@ -466,6 +467,7 @@ export var TaskDBFields : MCDBField[] = [
   {
     FName: "name",
     FCaption: "Task",
+    FType: "string",
     Show:  true,
     Access: "rw",
     Width : 120,
@@ -477,6 +479,7 @@ export var TaskDBFields : MCDBField[] = [
   {
     FName: "owner",
     FCaption: "Assigned to",
+    FType: "user",
     Show:  true,
     Access: "rw",
     Width : 80,
@@ -488,6 +491,7 @@ export var TaskDBFields : MCDBField[] = [
   {
     FName: "creator",
     FCaption: "Reporter",
+    FType: "user",
     Show:  true,
     Access: "ro",
     Width : 80,
@@ -500,6 +504,7 @@ export var TaskDBFields : MCDBField[] = [
   {
     FName: "status",
     FCaption: "Status",
+    FType: "status",
     Show:  true,
     Access: "ro",
     Width : 80,
@@ -511,6 +516,7 @@ export var TaskDBFields : MCDBField[] = [
   {
     FName: "createdT",
     FCaption: "Created at",
+    FType: "date",
     Show:  true,
     Access: "ro",
     Width : 90,
@@ -523,6 +529,7 @@ export var TaskDBFields : MCDBField[] = [
   {
     FName: "resolvedT",
     FCaption: "Resolved at",
+    FType: "date",
     Show:  true,
     Access: "ro",
     Width : 90,
@@ -534,6 +541,7 @@ export var TaskDBFields : MCDBField[] = [
   {
     FName: "DueDate",
     FCaption: "Due by",
+    FType: "date",
     Show:  true,
     Access: "rw",
     Width : 125,
@@ -545,6 +553,7 @@ export var TaskDBFields : MCDBField[] = [
   {
     FName: "closedT",
     FCaption: "Closed at",
+    FType: "date",
     Show:  false,
     Access: "ro",
     Width : 90,
@@ -556,7 +565,8 @@ export var TaskDBFields : MCDBField[] = [
   {
     FName: "description",
     FCaption: "Description",
-    Show:  true,
+     FType: "string",
+   Show:  true,
     Access: "rw",
     Width : 280,
     Default: "",

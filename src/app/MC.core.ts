@@ -4,13 +4,13 @@ export type MCType = "objid" | "auto" | "boolean" | "number" | "string" |"date" 
 
 export interface MCField {
   FName: string;
+  FType: MCType;
   FCaption: string;
   FOptionality: "optional" | "mandatory";
   Default: any;
 }
 
 export interface MCParameter extends MCField {
-  FType: MCType;
   FValue: any;
 }
 
@@ -200,28 +200,6 @@ export class MCObject {
   }
 */
 
-//  public static getFieldType (f: string): string {
-  public getFieldType (f: string): MCType {
-    switch (f) {
-      case "id"         :
-      case "class"      :  return "objid";
-      case "class#"     :  return "number";
-      case "status"     :  return "status";
-      case "owner"      :  
-      case "creator"    :  return "user";
-      case "name"       :  
-      case "creatorName":
-      case "ownerName"  :
-      case "statusName" :   // TEMPORARY!!!
-      case "description":  return "string";
-      case "createdT"   :
-      case "resolvedT"  :
-      case "DueDate"    :  // TEMPORARY   X-Field!!!   
-      case "closedT"    :  return "date";
-      default           :  return "string";
-    }
-  }
-
   public getFieldValue (f: string): any {
     switch (f) {
       case "id"         :  return this.id;
@@ -231,9 +209,6 @@ export class MCObject {
       case "owner"      :  return this.owner;
       case "creator"    :  return this.creator;
       case "name"       :  return this.name;
-      case "creatorName":  return this.getCreatorName();
-      case "ownerName"  :  return this.getOwnerName();
-      case "statusName" :  return this.getStatusName();
       case "description":  return this.description;
       case "createdT"   :  return this.created;
       case "resolvedT"  :  return this.resolvedT;
@@ -247,13 +222,10 @@ export class MCObject {
       case "id"         :  return false;
       case "class"      :  return false;
       case "class#"     :  return false;
-      case "status"     :  return false;
+      case "status"     :  this.status = v; break;
       case "owner"      :  this.owner = v; break;
       case "creator"    :  return false;
       case "name"       :  this.name = v; break;
-      case "creatorName":  return false;
-      case "ownerName"  :  return false;
-      case "statusName" :  return false;
       case "description":  this.description = v; break;
       case "createdT"   :  return false;
       case "resolvedT"  :  return false;
