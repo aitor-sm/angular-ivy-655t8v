@@ -228,6 +228,11 @@ export class MCObject {
     return true;
   }
 
+  public validateNewObject(): boolean {
+    return this.name != "" ;
+  }
+
+
 }
 
 

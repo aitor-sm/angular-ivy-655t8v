@@ -42,7 +42,7 @@
           <!-- /// DB PROPERTIES TOOLBAR-->
 
           <div id="DBProps" class="toolbartabcontent" style="display:block">
-            <button type="button" class=toggleOff [class.toggleOn]="newTaskToggle" (click)="toggleNewTaskBar()">
+            <button type="button" class=toggleOff [class.toggleOn]="newRecordToggle" (click)="toggleNewRecordBar()">
               New {{Parameters["DBRecordName"]}}</button>
             <button type="button" class=toolbar disabled>Search</button>
             |
@@ -141,7 +141,7 @@
 
       <!--------- New Task ROW  ---->
 
-      <tr class=newitem *ngIf="newTaskToggle">
+      <tr class=newitem *ngIf="newRecordToggle">
         <td width="25px"></td>
 
 
@@ -215,9 +215,9 @@
 -->
 
         <td>
-          <button type="button"  [disabled]="!isValidNewTask()" (click)="addNewTaskButton()" class=inlined >Create task</button>
+          <button type="button"  [disabled]="!isValidNewRecord()" (click)="addNewTaskButton()" class=inlined >Create task</button>
           &nbsp;
-          <button type="button"  (click)="createNewTaskTemplate()" class=inlined >Clear fields</button>
+          <button type="button"  (click)="createNewRecordTemplate( true )" class=inlined >Clear fields</button>
         </td>
 
       </tr>

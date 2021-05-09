@@ -43,6 +43,9 @@ const ToolbarTABS: TabObj[] = [
 export class TaskList_comp implements OnInit {
   @Input() Parameters: object;
 
+
+  protected validateNewRecord : (t: MCUXObject) => boolean;
+
   ///////////////// PROPERTIES
 
   TL : MCUXList;
@@ -52,7 +55,7 @@ export class TaskList_comp implements OnInit {
   sel: MCUXObject; 
 
   // Controls for new task
-  newTaskToggle: boolean = false;
+  newRecordToggle: boolean = false;
   newTask: TaskObj;   // Template for new Task
 
   // Object properties specific
@@ -83,6 +86,8 @@ export class TaskList_comp implements OnInit {
 
     this.TL = new MCUXList(p);
     this.selectedSummary (null);
+
+    this.validateNewRecord = this.TL.validateNewTask;
 
     document.getElementById(this.Parameters["initToolbar"]).click();
 
@@ -157,22 +162,33 @@ export class TaskList_comp implements OnInit {
                    this.applyFilter );
   };
 
-  toggleNewTaskBar() {
-    this.newTaskToggle = !this.newTaskToggle;
-    if (this.newTaskToggle)
-      this.createNewTaskTemplate ();
+  toggleNewRecordBar() {
+    this.newRecordToggle = !this.newRecordToggle;
+    if (this.newRecordToggle)
+      this.createNewRecordTemplate ( true );
   }
 
-  createNewTaskTemplate () {
+  createNewRecordTemplate (clearFields: boolean) {
 
-    let d : Date = (typeof(this.newTask) != "undefined" && typeof(this.newTask.dueDate) != "undefined" && this.newTask.dueDate != null) ? new Date (this.newTask.dueDate) : null ;
+/*
+    if (typeof(this.newTask) == "undefined") {
+      this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, null);
+    }
+    else
+      this.newTask = (this.newTask.clone() as TaskObj);
+*/
+
+    let d : Date = (!clearFields && typeof(this.newTask) != "undefined" && typeof(this.newTask.dueDate) != "undefined" && this.newTask.dueDate != null) ? new Date (this.newTask.dueDate) : null ;
 
 //    this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, new Date("2020-01-01") );
     this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, d);
+
   }
 
-  isValidNewTask(): Boolean {
-    return this.newTask.name != "" && this.newTask.description != "";
+  isValidNewRecord(): boolean {
+    return this.newTask.validateNewObject() && this.validateNewRecord (this.newTask);
+    
+//    return this.newTask.name != "" && this.newTask.description != "";
   }
 
     findTabByID (findid: string): TabObj {
@@ -329,7 +345,7 @@ openToolbarTab (evt, tabId) {
     
     this.TL.addNewItem (this.newTask);
 
-    this.createNewTaskTemplate ();
+    this.createNewRecordTemplate ( false );
     this.newTask.name = I.name;
     this.newTask.description = I.description;
     this.newTask.owner = I.owner;

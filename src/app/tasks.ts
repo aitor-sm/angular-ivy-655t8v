@@ -113,6 +113,7 @@ export class MCUXList {
     return this.obj_l.filter(t => t.selected);
   }
 
+  public validateNewTask = (t: MCUXObject) => {return t.description != "";};
 
 }
 
