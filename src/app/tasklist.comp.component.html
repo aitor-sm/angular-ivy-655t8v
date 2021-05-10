@@ -154,7 +154,7 @@
               </ng-container>
               <ng-template #newrec_string_rw>
                 <input #newrec_text class=input_inlined 
-    (change)="newTask.setFieldValue(f.FName,newrec_text.value)" placeholder={{f.NewRecordCaption}} size={{newTask.PixelsToSize(f.Width)}}>
+    (change)="newTask.setFieldValue(f.FName,newrec_text.value)" placeholder={{f.NewRecordCaption}} size={{newTask.PixelsToSize(f.Width)}} [ngModel]="newTask.getFieldValue(f.FName)"  >
               </ng-template>
             </ng-container>
 
@@ -164,7 +164,7 @@
               </ng-container>
               <ng-template #newrec_user_rw>
 
-                <select required #t (change)="newTask.setFieldValue(f.FName,t.value)">
+                <select required #t (change)="newTask.setFieldValue(f.FName,t.value)" [ngModel]="newTask.getFieldValue(f.FName)">
                 <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i">{{Parameters['users'][i]}}</option>
                 </select>
 
@@ -177,7 +177,7 @@
               </ng-container>
               <ng-template #newrec_date_rw>
 
-              <input type="date" class=input_inlined style="width:120px"  [ngModel]="newTask.getFieldValue(f.FName) | date:'yyyy-MM-dd'"  (ngModelChange)="newTask.setFieldValue(f.FName,$event)">
+              <input type="date" class=input_inlined style="width:120px"  [ngModel]="newTask.getFieldValue(f.FName) | date:'yyyy-MM-dd'"  (ngModelChange)="writeDateField(newTask, f.FName,$event)">
               </ng-template>
             </ng-container>
 
@@ -235,7 +235,7 @@
       <ng-template #task_tableelements>
         <ng-container *ngFor="let task of TL.subFilter(applyFilter)">
           <tr *ngIf="applyFilter(task)" class=record (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)"
-            [class.highlight]="isDueTask(task)" [class.selected]="task.selected">
+            [class.highlight]="highlightRecord(task)" [class.selected]="task.selected">
 
 
             <!--------- LIST OF FIELDS  ---->

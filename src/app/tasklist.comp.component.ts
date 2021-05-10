@@ -45,6 +45,8 @@ export class TaskList_comp implements OnInit {
 
 
   protected validateNewRecord : (t: MCUXObject) => boolean;
+  highlightRecord: (t: MCUXObject) => boolean;
+  protected ClassID : number = 100;
 
   ///////////////// PROPERTIES
 
@@ -88,6 +90,7 @@ export class TaskList_comp implements OnInit {
     this.selectedSummary (null);
 
     this.validateNewRecord = this.TL.validateNewTask;
+    this.highlightRecord = this.TL.highlightTask;
 
     document.getElementById(this.Parameters["initToolbar"]).click();
 
@@ -171,8 +174,8 @@ export class TaskList_comp implements OnInit {
   createNewRecordTemplate (clearFields: boolean) {
 
 /*
-    if (typeof(this.newTask) == "undefined") {
-      this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, null);
+    if (clearFields || typeof(this.newTask) == "undefined") {
+      this.newTask = new MCUXObject (this.ClassID, "",this.Parameters["currentUser"],"", 0);
     }
     else
       this.newTask = (this.newTask.clone() as TaskObj);
@@ -180,11 +183,17 @@ export class TaskList_comp implements OnInit {
 
     let d : Date = (!clearFields && typeof(this.newTask) != "undefined" && typeof(this.newTask.dueDate) != "undefined" && this.newTask.dueDate != null) ? new Date (this.newTask.dueDate) : null ;
 
+
 //    this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, new Date("2020-01-01") );
+
+
+  if (clearFields)
     this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, d);
+  else
+    this.newTask = new TaskObj (this.newTask.name,this.newTask.owner,this.newTask.description, 0, d);
+
 
   }
-
   isValidNewRecord(): boolean {
     return this.newTask.validateNewObject() && this.validateNewRecord (this.newTask);
     
@@ -197,6 +206,10 @@ export class TaskList_comp implements OnInit {
       if (ToolbarTABS[i].id==findid)  return ToolbarTABS[i];
   }
 
+  writeDateField (t: TaskObj, fieldName: string, d: any) {
+//    console.log ("XX ", d, "|", typeof d);
+    t.setFieldValue (fieldName, new Date(d));
+  }
 
 
 openToolbarTab (evt, tabId) {
@@ -341,14 +354,16 @@ openToolbarTab (evt, tabId) {
   }
 
   addNewTaskButton () {
-    let I = this.newTask;
+//    let I = this.newTask;
     
     this.TL.addNewItem (this.newTask);
 
     this.createNewRecordTemplate ( false );
+/*
     this.newTask.name = I.name;
     this.newTask.description = I.description;
     this.newTask.owner = I.owner;
+*/
 
 // Se está copiando el X-Fields!
 /*
@@ -438,7 +453,7 @@ openToolbarTab (evt, tabId) {
     return this.applyFilter(t);
   }
 */
-
+  // Se usa para la barra de estados
   numDueTasks(): number {
       return this.TL.countIf (t => (this.applyFilter(t) && (t as TaskObj).dueTask()));
   }
@@ -449,6 +464,8 @@ openToolbarTab (evt, tabId) {
   }
 */
 
+
+  // Se usa para el highlight
   isDueTask (t): boolean {
     return (t as TaskObj).dueTask();
   }
