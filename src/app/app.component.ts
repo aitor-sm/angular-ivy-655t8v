@@ -1,6 +1,7 @@
-import { Component, VERSION, OnInit } from "@angular/core";
+import { Component, VERSION, OnInit, ViewChild } from "@angular/core";
 import { MCField, MCParameter, UserList, currentUser } from "./MC.core"
-import { TasksCfg } from "./tasks";
+import {TaskList_comp } from "./tasklist.comp.component";
+import { TaskObj, TasksCfg } from "./tasks";
 
 /*
 function TimeCtrl($scope, $timeout) {
@@ -47,18 +48,45 @@ export class AppComponent  implements OnInit {
 
   TaskVersion: string = "0.0.4";
 
-  TaskAppParams = { 
+  @ViewChild('MainTaskView') mainTaskViewCpt: TaskList_comp;
+
+  taskStatusBarMessage : () => string;
+
+  TaskAppParams: object;
+
+  numDueTasks(): number {
+      return this.mainTaskViewCpt.getFilteredRecords().filter( t => (t as TaskObj).dueTask()).length;
+//      TL.countIf (t => (this.applyFilter(t) && (t as TaskObj).dueTask()));
+  }
+
+
+
+/*
+Total: {{numFiltered()}} tasks, ({{numSelected()}} selected),
+          {{numDueTasks()}} are due
+*/
+
+  ngOnInit() {
+    document.getElementById("defaultOpen").click();
+
+  this.taskStatusBarMessage = () => {
+//          "Total: "+this.mainTaskViewCpt.numFiltered()+
+//          " tasks, ("+this.mainTaskViewCpt.numSelected()+
+        return  "selected), "+ this.numDueTasks()+" are due";
+  };
+
+  this.TaskAppParams = { 
     initSelect: [3,4],
     currentUser: currentUser,
     users: UserList,
     DBName: "Task List",
     DBRecordName: "Task",
-    initToolbar: "ToolBar_Item"
+    initToolbar: "ToolBar_Item",
+    statusBarMsg: this.taskStatusBarMessage
   };
 
 
-  ngOnInit() {
-    document.getElementById("defaultOpen").click();
+
   }
 
   findTabByID (findid: string): TabObj {
@@ -67,23 +95,23 @@ export class AppComponent  implements OnInit {
       if (TABS[i].id==findid)  return TABS[i];
   }
 
-openTab (evt, tabId) {
-  var i, tabcontent, tablinks;
+  openTab (evt, tabId) {
+    var i, tabcontent, tablinks;
 
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    
+    let T = this.findTabByID(tabId);
+    document.getElementById(T.divname).style.display = "block";
+    evt.currentTarget.className += " active";
+    this.MainViewName = T.caption;
   }
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
-  
-  let T = this.findTabByID(tabId);
-  document.getElementById(T.divname).style.display = "block";
-  evt.currentTarget.className += " active";
-  this.MainViewName = T.caption;
-}
 
 
 }

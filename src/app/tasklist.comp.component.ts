@@ -108,6 +108,13 @@ export class TaskList_comp implements OnInit {
     return this.TL.countSelIf(this.applyFilter);
  }
  
+ numFiltered () : number {
+   return this.TL.countIf(this.applyFilter);
+ }
+
+  getFilteredRecords () : MCUXObject[] {
+    return this.TL.subFilter(this.applyFilter);
+  }
 
   ///////////////// VISUAL EFFECTS
 
@@ -124,7 +131,7 @@ export class TaskList_comp implements OnInit {
       this.TL.doSel ( t => {if (t.isTerminalStatus()) t.selected=false})
   }
 
-  applyFilter = t => {
+  public applyFilter = t => {
     return this.vw_showTerminalTasks || !t.isTerminalStatus();
   }
 
@@ -464,12 +471,12 @@ openToolbarTab (evt, tabId) {
   }
 */
 
-
+/*
   // Se usa para el highlight
   isDueTask (t): boolean {
     return (t as TaskObj).dueTask();
   }
-
+*/
 
 }
 
