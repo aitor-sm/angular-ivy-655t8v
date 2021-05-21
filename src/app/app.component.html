@@ -29,10 +29,36 @@
 
 <div id="Task-All" class="tabcontent" style="display:block">
 
-      <tasklist_comp #MainTaskView [Parameters]="TaskAppParams"></tasklist_comp>
+      <div class="vbox">
+
+      <div class="row content">
+
+
+      <tasklist_comp #MainTaskView [Parameters]="TaskAppParams" (FinishRender)="activateTaskBar($event)"></tasklist_comp>
       <!--
       <tasklist_comp name="{{ name }}"  owner="aitor" desc="Descripción" initSelect="4,5"></tasklist_comp>
       -->
+
+      </div>
+
+  <!--------- STATUS BAR  ---->
+
+  <div class="row footer">
+
+    <table class=statusbar  height=20px>
+      <tr>
+        <td>
+            {{taskStatusBarMessage()}}
+
+<!--          Total: {{TL.countIf (this.applyFilter)}} tasks, ({{numSelected()}} selected),
+          {{numDueTasks()}} are due <!--,  {{selectedSum()["ClassName"]}} name-->
+        </td>
+      </tr>
+    </table>
+  </div>
+
+
+      </div>
 </div>
 
 <div id="TASKS-App" class="tabcontent"  style="display:none">

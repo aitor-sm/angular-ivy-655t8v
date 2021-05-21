@@ -45,12 +45,31 @@ export class AppComponent  implements OnInit {
   MainViewName: string = "All tasks";
 
   cfg : MCParameter[] = TasksCfg;
+  taskListRendered : boolean = false;
 
   TaskVersion: string = "0.0.4";
 
+  toDueDate: Date = new Date();
+
   @ViewChild('MainTaskView') mainTaskViewCpt: TaskList_comp;
 
-  taskStatusBarMessage : () => string;
+  taskStatusBarMessage () : string  {
+      if (this.taskListRendered)
+//      if (typeof this.mainTaskViewCpt === 'object')
+      return "Total: " +
+      this.mainTaskViewCpt.numFiltered()+
+      " tasks, ("+
+      this.mainTaskViewCpt.numSelected()+
+      " selected) "+
+      this.numDueTasks()+
+      " are due"
+      else 
+        return "Loading..."
+  };
+
+  activateTaskBar (b: boolean) {
+    this.taskListRendered = b;
+  }
 
   TaskAppParams: object;
 
@@ -59,21 +78,15 @@ export class AppComponent  implements OnInit {
 //      TL.countIf (t => (this.applyFilter(t) && (t as TaskObj).dueTask()));
   }
 
+  changeDueDateOnSelectedTasks(d: Date) {
+    this.mainTaskViewCpt.executeOnSelectedRecords ( t => (t as TaskObj).dueDate = new Date(this.toDueDate));
+  };
 
 
-/*
-Total: {{numFiltered()}} tasks, ({{numSelected()}} selected),
-          {{numDueTasks()}} are due
-*/
+
 
   ngOnInit() {
     document.getElementById("defaultOpen").click();
-
-  this.taskStatusBarMessage = () => {
-//          "Total: "+this.mainTaskViewCpt.numFiltered()+
-//          " tasks, ("+this.mainTaskViewCpt.numSelected()+
-        return  "selected), "+ this.numDueTasks()+" are due";
-  };
 
   this.TaskAppParams = { 
     initSelect: [3,4],
@@ -82,7 +95,7 @@ Total: {{numFiltered()}} tasks, ({{numSelected()}} selected),
     DBName: "Task List",
     DBRecordName: "Task",
     initToolbar: "ToolBar_Item",
-    statusBarMsg: this.taskStatusBarMessage
+  //  statusBarMsg: this.taskStatusBarMessage
   };
 
 

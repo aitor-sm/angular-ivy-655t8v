@@ -29,3 +29,36 @@ html, body {
     font-size: 14px;
     height: 40px;
 }
+
+/* Vertical filler */
+.vbox {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  /*border: 1px solid black;*/
+}
+.vbox .row.header {
+  flex: 0 1 auto;
+}
+.vbox .row.content {
+  flex: 1 1 auto;
+}
+.vbox .row.footer {
+/*  flex: 0 1 20px; */
+  flex: 0 1 auto;
+}
+
+table.statusbar {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #cccccc;
+  border: 1px solid black;
+  border-bottom: solid 1px black;
+  table-layout: fixed;
+  font-family: Lato;
+  font-size: small;
+}
+
+
+
+

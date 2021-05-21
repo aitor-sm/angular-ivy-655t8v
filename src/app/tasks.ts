@@ -56,9 +56,9 @@ export class MCUXList {
 
   // Retrieve specific to TAKS
   retrieveItems ()  {
-    this.obj_l.push (new TaskObj ("Programa Tasks", 0, "Crear la versión 0.4", 0, new Date('2021-05-21')));
-    this.obj_l.push (new TaskObj ("Clase alemán", 1, "Clase por la tarde", 1, new Date('2021-05-21')));
-    this.obj_l.push (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-05-21')));
+    this.obj_l.push (new TaskObj ("Programa Tasks", 0, "Crear la versión 0.4", 0, new Date('2021-08-21')));
+    this.obj_l.push (new TaskObj ("Clase alemán", 1, "Clase por la tarde", 1, new Date('2021-08-21')));
+    this.obj_l.push (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-08-21')));
   }
 
  

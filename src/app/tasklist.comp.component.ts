@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Inject } from "@angular/core";
+import { Component, Input, OnInit, Inject, Output, EventEmitter } from "@angular/core";
 //import {formatDate} from '@angular/common';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 //import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
@@ -42,6 +42,8 @@ const ToolbarTABS: TabObj[] = [
 
 export class TaskList_comp implements OnInit {
   @Input() Parameters: object;
+
+  @Output ()  FinishRender = new EventEmitter<boolean>();
 
 
   protected validateNewRecord : (t: MCUXObject) => boolean;
@@ -99,6 +101,12 @@ export class TaskList_comp implements OnInit {
 
   }
 
+ngAfterViewInit() {
+    setTimeout(() => {
+      this.FinishRender.emit(true);
+    })
+}
+
   constructor (public DeleteTasksDialog: MatDialog) {}
 
 
@@ -153,6 +161,15 @@ export class TaskList_comp implements OnInit {
     else 
       return null
   }
+
+/*
+  getStatusBarMessage () : string {
+    if (typeof this.Parameters["statusBarMsg"]() !== "undefined")
+    return this.Parameters["statusBarMsg"]()
+    else
+    return "Loading..."
+  }
+*/
 
   onSelectRecord (e: Event, r: MCUXObject) {
     const checkbox = e.target as HTMLInputElement;
@@ -438,6 +455,10 @@ openToolbarTab (evt, tabId) {
     this.TL.doSel (t => t.name = this.op_name);
   }
 
+  executeOnSelectedRecords ( e : (arg0: MCUXObject) => void) {
+    this.TL.doSel (e);
+  }
+
   ///////////////// TASK SPECIFIC METHODS
 
   changeDueDateOnSelectedTasks(d: Date) {
@@ -460,11 +481,12 @@ openToolbarTab (evt, tabId) {
     return this.applyFilter(t);
   }
 */
+/*
   // Se usa para la barra de estados
   numDueTasks(): number {
       return this.TL.countIf (t => (this.applyFilter(t) && (t as TaskObj).dueTask()));
   }
-
+*/
 /*
   getDueDate (t): Date {
     return (t as TaskObj).dueDate;
