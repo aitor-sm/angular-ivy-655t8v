@@ -1,7 +1,5 @@
 import { Component, Input, OnInit, Inject, Output, EventEmitter } from "@angular/core";
-//import {formatDate} from '@angular/common';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
-//import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
 
 import { MCField, UserList, currentUser, MCObject, MCUXObject } from "./MC.core";
 import { basicFlow, FlowActionObj, FlowStatusObj } from "./flows";
@@ -654,3 +652,6 @@ export var TaskDBFields : MCDBField[] = [
     NewRecordCaption: "Enter task description"
  }
 ]
+
+
+

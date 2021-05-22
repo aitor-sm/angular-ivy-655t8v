@@ -1,4 +1,4 @@
-import { Component, VERSION, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, OnChanges, SimpleChanges } from "@angular/core";
 import { MCField, MCParameter, UserList, currentUser } from "./MC.core"
 import {TaskList_comp } from "./tasklist.comp.component";
 import { TaskObj, TasksCfg } from "./tasks";
@@ -95,7 +95,6 @@ export class AppComponent  implements OnInit {
     DBName: "Task List",
     DBRecordName: "Task",
     initToolbar: "ToolBar_Item",
-  //  statusBarMsg: this.taskStatusBarMessage
   };
 
 
@@ -129,3 +128,42 @@ export class AppComponent  implements OnInit {
 
 }
 
+
+
+
+@Component({
+  selector: "task-properties",
+  templateUrl: "./task-properties.html",
+})
+
+export class TaskProperties  implements OnInit, OnChanges {
+
+  @Input() Parameters: object;
+
+
+  public toDueDate: Date = new Date();
+  disabled : boolean = true;
+
+
+  ngOnInit () {
+
+  }
+
+  ngOnChanges (changes: SimpleChanges): void {
+    let change = changes ["Parameters"];
+      this.disabled = change.currentValue["disabled"];
+  }
+/*  
+  public get toDueDate () : Date {
+    return this._toDueDate;
+  }
+
+  public set toDueDate (d:Date)  {
+    this._toDueDate = d;
+  }
+*/
+  changeV (e: Event){
+
+  }
+
+}

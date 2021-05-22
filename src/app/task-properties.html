@@ -1,0 +1,7 @@
+<div class="toolbar_section_title">Task specific</div>
+
+<span style = "vertical-align: top;">Due date: </span>
+
+<input type="date" class=input_inlined style="width:120px" name="toDueDate" [ngModel]="toDueDate | date:'yyyy-MM-dd'"  [disabled]="disabled">
+
+<!--  (ngModelChange)="changeV ($event)" -->
