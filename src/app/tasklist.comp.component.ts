@@ -53,8 +53,10 @@ export class TaskList_comp implements OnInit {
 
   ///////////////// PROPERTIES
 
-  factory: ComponentFactory<any>;
-  RecordPropsComponentRef: ComponentRef<any>;
+  factory: ComponentFactory<TaskProperties>;
+  RecordPropsComponentRef: ComponentRef<TaskProperties>;
+
+  RecordPropParams: object;
 
   TL : MCUXList;
 
@@ -100,6 +102,10 @@ export class TaskList_comp implements OnInit {
 
     document.getElementById(this.Parameters["initToolbar"]).click();
 
+    this.RecordPropParams = {
+      disabled: true
+    };
+
 
 //    this.visibleFields().forEach(t => {console.log (t.FName)});
 
@@ -111,9 +117,9 @@ ngAfterViewInit() {
     this.factory = this.resolver.resolveComponentFactory(TaskProperties);
     this.RecordPropsComponentRef = this.container.createComponent(this.factory);
 
-    this.RecordPropsComponentRef.instance.Properties = {
-      disabled: false
-    }
+    this.RecordPropParams["disabled"] = this.numSelected()==0;
+    
+    this.RecordPropsComponentRef.instance.Parameters = this.RecordPropParams;
 
     this.FinishRender.emit(true);
 
@@ -188,6 +194,8 @@ ngAfterViewInit() {
     const checkbox = e.target as HTMLInputElement;
 
     r.selected = checkbox.checked;
+
+    this.RecordPropParams["disabled"]= this.numSelected()==0;
 
     if (r.selected && this.numSelected()==1)
       this.selectedSummary (r)

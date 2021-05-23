@@ -139,11 +139,15 @@ export class TaskProperties implements OnInit, OnChanges {
   @Output() dueDate = new EventEmitter<Date>();
 
   _toDueDate: Date = new Date();
-  disabled: boolean = true;
+  disabled: boolean = false;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.disabled = this.Parameters["disabled"];
+    console.log (this.Parameters);
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log ("por aquí");
     let change = changes['Parameters'];
     this.disabled = change.currentValue['disabled'];
   }
