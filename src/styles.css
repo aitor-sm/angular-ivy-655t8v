@@ -66,4 +66,7 @@ input.input_inlined {
   font-family: Lato;
 }
 
-
+div.toolbar_section_title {
+  font-size: 8px;
+  font-variant: small-caps;
+}

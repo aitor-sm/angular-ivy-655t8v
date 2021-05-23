@@ -135,15 +135,21 @@ export class AppComponent implements OnInit {
   templateUrl: './task-properties.html'
 })
 export class TaskProperties implements OnInit, OnChanges {
-  @Input() Parameters: object;
+  @Input() set Parameters (o: object) {
+    if (typeof o === "undefined")
+      this.disabled = true;
+    else  {
+      this.disabled = o["disabled"];
+      let s = o["oneSelected"];
+      this.toDueDate = (s == null) ? null : (s as TaskObj).dueDate;
+    }
+  }
   @Output() dueDate = new EventEmitter<Date>();
 
   _toDueDate: Date = new Date();
   disabled: boolean = false;
 
   ngOnInit() {
-    this.disabled = this.Parameters["disabled"];
-    console.log (this.Parameters);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
