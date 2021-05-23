@@ -1,9 +1,9 @@
-import { Component, Input, OnInit, Inject, Output, EventEmitter } from "@angular/core";
+import { Component, Input, OnInit, Inject, Output, EventEmitter, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentFactory, ComponentRef } from "@angular/core";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 
 import { MCField, UserList, currentUser, MCObject, MCUXObject } from "./MC.core";
 import { basicFlow, FlowActionObj, FlowStatusObj } from "./flows";
-import { TabObj } from "./app.component";
+import { TabObj, TaskProperties } from "./app.component";
 import { TaskObj, TasksCfg, MCUXList } from "./tasks";
 
 
@@ -43,12 +43,18 @@ export class TaskList_comp implements OnInit {
 
   @Output ()  FinishRender = new EventEmitter<boolean>();
 
+  @ViewChild("RecordSpecificProps", { read: ViewContainerRef }) container;
+  
+
 
   protected validateNewRecord : (t: MCUXObject) => boolean;
   highlightRecord: (t: MCUXObject) => boolean;
   protected ClassID : number = 100;
 
   ///////////////// PROPERTIES
+
+  factory: ComponentFactory<any>;
+  RecordPropsComponentRef: ComponentRef<any>;
 
   TL : MCUXList;
 
@@ -101,11 +107,20 @@ export class TaskList_comp implements OnInit {
 
 ngAfterViewInit() {
     setTimeout(() => {
-      this.FinishRender.emit(true);
+
+    this.factory = this.resolver.resolveComponentFactory(TaskProperties);
+    this.RecordPropsComponentRef = this.container.createComponent(this.factory);
+
+    this.RecordPropsComponentRef.instance.Properties = {
+      disabled: false
+    }
+
+    this.FinishRender.emit(true);
+
     })
 }
 
-  constructor (public DeleteTasksDialog: MatDialog) {}
+  constructor (public DeleteTasksDialog?: MatDialog, private resolver?: ComponentFactoryResolver) {}
 
 
   ///////////////// GENERAL UTILITY

@@ -105,6 +105,11 @@
          <span style = "vertical-align: top;">Due date: </span>   <input type="date" class=input_inlined style="width:120px"
         [ngModel]="toDueDate | date:'yyyy-MM-dd'"  (ngModelChange)="toDueDate=$event; changeDueDateOnSelectedTasks (toDueDate)" [disabled]="TL.countSelIf(applyFilter)==0">
 
+          </td><td class="toolbar_section">
+
+            <template #RecordSpecificProps> </template>
+
+
           </td><td>
           </td></tr></table>
           </div>
