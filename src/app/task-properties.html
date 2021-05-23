@@ -2,6 +2,4 @@
 
 <span style = "vertical-align: top;">Due date: </span>
 
-<input type="date" class=input_inlined style="width:120px" name="toDueDate" [ngModel]="toDueDate | date:'yyyy-MM-dd'"  [disabled]="disabled">
-
-<!--  (ngModelChange)="changeV ($event)" -->
+<input type="date" class=input_inlined style="width:120px" name="toDueDate" [ngModel]="toDueDate | date:'yyyy-MM-dd'"  (ngModelChange)="toDueDate = $event" [disabled]="disabled">

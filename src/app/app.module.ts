@@ -25,7 +25,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 
-import { AppComponent } from "./app.component";
+import { AppComponent, TaskProperties } from "./app.component";
 import { HelloComponent } from "./hello.component";
 import { TaskList_comp, DialogDeleteTasks} from "./tasklist.comp.component";
 
@@ -62,7 +62,7 @@ import { StatusPipe } from './status.pipe';
     MatDialogModule,
     MatTooltipModule, 
     MatCheckboxModule ],
-  declarations: [AppComponent, HelloComponent, TaskList_comp, DialogDeleteTasks, UserPipe, StatusPipe],
+  declarations: [AppComponent, HelloComponent, TaskList_comp, DialogDeleteTasks, UserPipe, StatusPipe, TaskProperties],
   entryComponents: [DialogDeleteTasks],
   bootstrap: [AppComponent]
 })
