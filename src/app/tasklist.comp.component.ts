@@ -29,9 +29,10 @@ import { TabObj, TaskProperties } from './app.component';
 import { TaskObj, TasksCfg, MCUXList } from './tasks';
 
 export interface DeleteDialogData {
-  numberOfTasks: number;
+  numberOfRecords: number;
   confirmation: boolean;
   doIt: boolean;
+  recordName : string;
 }
 
 export interface MCDBField extends MCField {
@@ -68,7 +69,7 @@ export class TaskList_comp implements OnInit {
   ///////////////// PROPERTIES
 
 //  factory: ComponentFactory<TaskProperties>;
-  RecordPropsComponentRef: ComponentRef<TaskProperties>;
+  RecordPropsComponentRef: ComponentRef<any>;
 
   RecordPropParams: object;
 
@@ -80,6 +81,7 @@ export class TaskList_comp implements OnInit {
 
   // Controls for new task
   newRecordToggle: boolean = false;
+//  newTask: MCObject; // Template for new Task
   newTask: TaskObj; // Template for new Task
 
   // Object properties specific
@@ -92,7 +94,7 @@ export class TaskList_comp implements OnInit {
   op_closedT: Date;
   op_status: number;
   op_description: string;
-  toDueDate: Date = new Date();
+//  toDueDate: Date = new Date();
 
   // View options
   fields: MCDBField[] = TaskDBFields;
@@ -144,7 +146,8 @@ export class TaskList_comp implements OnInit {
         this.changeDueDateOnSelectedTasks(D);
       });
 */
-      this.RecordPropsComponentRef.instance.dueDate.subscribe(d => {console.log ("D1=",d);this.RecPropOutput.emit(new Date(d))});
+//      this.RecordPropsComponentRef.instance.dueDate.subscribe(d => {console.log ("D1=",d);this.RecPropOutput.emit(new Date(d))});
+      this.RecordPropsComponentRef.instance.dueDate.subscribe(d => {this.RecPropOutput.emit(new Date(d))});
 
 /*
       this.RecordPropParams['disabled'] = this.numSelected() == 0;
@@ -287,7 +290,10 @@ export class TaskList_comp implements OnInit {
 
     if (clearFields)
       this.newTask = new TaskObj('', this.Parameters['currentUser'], '', 0, d);
+//      this.newTask = new MCObject(this.Parameters["RecClassId"],'', this.Parameters['currentUser'], '', 0);
     else
+//      this.newTask = this.newTask.clone();
+
       this.newTask = new TaskObj(
         this.newTask.name,
         this.newTask.owner,
@@ -310,7 +316,7 @@ export class TaskList_comp implements OnInit {
       if (ToolbarTABS[i].id == findid) return ToolbarTABS[i];
   }
 
-  writeDateField(t: TaskObj, fieldName: string, d: any) {
+  writeDateField(t: MCUXObject, fieldName: string, d: any) {
     //    console.log ("XX ", d, "|", typeof d);
     t.setFieldValue(fieldName, new Date(d));
   }
@@ -351,7 +357,7 @@ export class TaskList_comp implements OnInit {
       this.op_status = -1;
       this.op_description = '';
 
-      this.toDueDate = new Date('2020-01-01');
+//      this.toDueDate = new Date('2020-01-01');
 
       return;
     }
@@ -368,7 +374,7 @@ export class TaskList_comp implements OnInit {
       this.op_owner = k.owner;
       this.op_creator = k.creator;
       this.op_createdT = k.created;
-      this.toDueDate = (k as TaskObj).dueDate;
+//      this.toDueDate = (k as TaskObj).dueDate;
       this.op_resolvedT = k.resolvedT;
       this.op_closedT = k.closedT;
       this.op_status = k.status;
@@ -409,11 +415,11 @@ export class TaskList_comp implements OnInit {
         s = l.reduce((p, c) => p.add(c.description), new Set());
         if (s.size > 1) this.op_description = '';
         else this.op_description = s.entries().next().value[0];
-
+/*
         s = l.reduce((p, c) => p.add((c as TaskObj).dueDate), new Set());
         if (s.size > 1) this.toDueDate = null;
         else this.toDueDate = s.entries().next().value[0];
-
+*/
         this.op_resolvedT = null;
         this.op_closedT = null;
 
@@ -467,9 +473,10 @@ export class TaskList_comp implements OnInit {
         height: '200px',
         width: '100%',
         data: {
-          numberOfTasks: o == 0 ? 1 : this.TL.countSelIf(this.applyFilter),
+          numberOfRecords: o == 0 ? 1 : this.TL.countSelIf(this.applyFilter),
           confirmation: true,
-          doIt: true
+          doIt: true,
+          recordName: this.Parameters["DBRecordName"]
         },
         panelClass: 'custom-modalbox-error'
       });
@@ -515,10 +522,12 @@ export class TaskList_comp implements OnInit {
 
   ///////////////// TASK SPECIFIC METHODS
 
+/*
   changeDueDateOnSelectedTasks(d: Date) {
 //    this.TL.doSel(t => (t.dueDate = new Date(this.toDueDate)));
     this.TL.doSel(t => (t.dueDate = new Date(d)));
   }
+*/
 
   checkOneSelectedTask(): boolean {
     if (this.TL.countSelIf(this.applyFilter) == 1) {
@@ -555,11 +564,17 @@ export class TaskList_comp implements OnInit {
 */
 }
 
+
+
+
+
 @Component({
   selector: 'DialogDeleteTasks',
   templateUrl: './delete-tasks-dialog.html'
 })
 export class DialogDeleteTasks {
+
+
   constructor(
     public dialogRef: MatDialogRef<DialogDeleteTasks>,
     @Inject(MAT_DIALOG_DATA) public data: DeleteDialogData

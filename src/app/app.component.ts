@@ -102,7 +102,7 @@ export class AppComponent implements OnInit {
   }
 
   changeDueDateOnSelectedTasks2 (o: object) {
-    console.log ("D2=", o);
+//    console.log ("D2=", o);
     this.changeDueDateOnSelectedTasks (o as Date)
   }
 
@@ -120,7 +120,8 @@ export class AppComponent implements OnInit {
       DBName: 'Task List',
       DBRecordName: 'Task',
       initToolbar: 'ToolBar_Item',
-      RecPropFactory: factory
+      RecPropFactory: factory,
+      RecClassId : 100
     };
 
 //    console.log ("factory: ", typeof factory);
@@ -154,7 +155,7 @@ export class AppComponent implements OnInit {
   selector: 'task-properties',
   templateUrl: './task-properties.html'
 })
-export class TaskProperties implements OnInit, OnChanges {
+export class TaskProperties implements OnInit {
   @Input() set Parameters (o: object) {
     if (typeof o === "undefined")
       this.disabled = true;
@@ -172,10 +173,12 @@ export class TaskProperties implements OnInit, OnChanges {
   ngOnInit() {
   }
 
+/*
   ngOnChanges(changes: SimpleChanges): void {
     console.log ("por aquí");
     let change = changes['Parameters'];
     this.disabled = change.currentValue['disabled'];
   }
+*/ 
 
 }
