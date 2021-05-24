@@ -99,12 +99,12 @@
             <span style = "vertical-align: top;">Description: </span><br>
             <input class="toolbar" style = "vertical-align: top;"
     [(ngModel)]="sel.description" placeholder="Enter description here" size="30" *ngIf="checkOneSelectedTask()">
+<!--
             </td><td class="toolbar_section">
-<!--            <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="changeDueDateOnSelectedTasks (toDueDate)">Change Due date to:</button>-->
          <div class="toolbar_section_title">{{Parameters["DBRecordName"]}}  specific</div>
          <span style = "vertical-align: top;">Due date: </span>   <input type="date" class=input_inlined style="width:120px"
         [ngModel]="toDueDate | date:'yyyy-MM-dd'"  (ngModelChange)="toDueDate=$event; changeDueDateOnSelectedTasks (toDueDate)" [disabled]="TL.countSelIf(applyFilter)==0">
-
+-->
           </td><td class="toolbar_section">
 
             <template #RecordSpecificProps> </template>

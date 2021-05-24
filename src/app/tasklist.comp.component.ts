@@ -131,7 +131,16 @@ export class TaskList_comp implements OnInit {
         this.factory
       );
 
-    this.updateCustomProperties ();
+      this.updateCustomProperties ();
+/*
+      this.RecordPropsComponentRef.instance.dueDate.subscribe(d => {console.log (typeof d)
+        console.log(d);
+        let D = new Date (d);
+        console.log(D);
+        this.changeDueDateOnSelectedTasks(D);
+      });
+*/
+      this.RecordPropsComponentRef.instance.dueDate.subscribe(d => this.changeDueDateOnSelectedTasks(new Date(d)));
 
 /*
       this.RecordPropParams['disabled'] = this.numSelected() == 0;
@@ -503,7 +512,8 @@ export class TaskList_comp implements OnInit {
   ///////////////// TASK SPECIFIC METHODS
 
   changeDueDateOnSelectedTasks(d: Date) {
-    this.TL.doSel(t => (t.dueDate = new Date(this.toDueDate)));
+//    this.TL.doSel(t => (t.dueDate = new Date(this.toDueDate)));
+    this.TL.doSel(t => (t.dueDate = new Date(d)));
   }
 
   checkOneSelectedTask(): boolean {

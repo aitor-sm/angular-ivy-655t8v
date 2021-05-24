@@ -146,7 +146,7 @@ export class TaskProperties implements OnInit, OnChanges {
   }
   @Output() dueDate = new EventEmitter<Date>();
 
-  _toDueDate: Date = new Date();
+  toDueDate: Date = new Date();
   disabled: boolean = false;
 
   ngOnInit() {
@@ -158,12 +158,4 @@ export class TaskProperties implements OnInit, OnChanges {
     this.disabled = change.currentValue['disabled'];
   }
 
-  public get toDueDate(): Date {
-    return this._toDueDate;
-  }
-
-  public set toDueDate(d: Date) {
-    this._toDueDate = d;
-    this.dueDate.emit(this._toDueDate);
-  }
 }
