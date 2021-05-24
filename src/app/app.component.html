@@ -34,7 +34,7 @@
       <div class="row content">
 
 
-      <tasklist_comp #MainTaskView [Parameters]="TaskAppParams" (FinishRender)="activateTaskBar($event)"></tasklist_comp>
+      <tasklist_comp #MainTaskView [Parameters]="TaskAppParams" (FinishRender)="activateTaskBar($event)" (RecPropOutput)="changeDueDateOnSelectedTasks2($event)"></tasklist_comp>
       <!--
       <tasklist_comp name="{{ name }}"  owner="aitor" desc="Descripción" initSelect="4,5"></tasklist_comp>
       -->

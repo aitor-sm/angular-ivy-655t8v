@@ -6,7 +6,7 @@ import {
   ViewChild,
   OnChanges,
   SimpleChanges,
-  EventEmitter
+  EventEmitter, ComponentFactoryResolver
 } from '@angular/core';
 import { MCField, MCParameter, UserList, currentUser } from './MC.core';
 import { TaskList_comp } from './tasklist.comp.component';
@@ -59,6 +59,14 @@ export class AppComponent implements OnInit {
 
   @ViewChild('MainTaskView') mainTaskViewCpt: TaskList_comp;
 
+
+  constructor(
+    private resolver?: ComponentFactoryResolver
+  ) {
+  //  console.log ("resolver:", typeof resolver)
+  }
+
+
   taskStatusBarMessage(): string {
     if (this.taskListRendered)
       //      if (typeof this.mainTaskViewCpt === 'object')
@@ -89,12 +97,21 @@ export class AppComponent implements OnInit {
 
   changeDueDateOnSelectedTasks(d: Date) {
     this.mainTaskViewCpt.executeOnSelectedRecords(
-      t => ((t as TaskObj).dueDate = new Date(this.toDueDate))
+      t => ((t as TaskObj).dueDate = new Date(d))
     );
   }
 
+  changeDueDateOnSelectedTasks2 (o: object) {
+    console.log ("D2=", o);
+    this.changeDueDateOnSelectedTasks (o as Date)
+  }
+
+
   ngOnInit() {
     document.getElementById('defaultOpen').click();
+
+    let factory = this.resolver.resolveComponentFactory(TaskProperties);
+
 
     this.TaskAppParams = {
       initSelect: [3, 4],
@@ -102,8 +119,11 @@ export class AppComponent implements OnInit {
       users: UserList,
       DBName: 'Task List',
       DBRecordName: 'Task',
-      initToolbar: 'ToolBar_Item'
+      initToolbar: 'ToolBar_Item',
+      RecPropFactory: factory
     };
+
+//    console.log ("factory: ", typeof factory);
   }
 
   findTabByID(findid: string): TabObj {

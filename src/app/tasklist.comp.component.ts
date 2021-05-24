@@ -57,8 +57,9 @@ export class TaskList_comp implements OnInit {
   @Input() Parameters: object;
 
   @Output() FinishRender = new EventEmitter<boolean>();
+  @Output() RecPropOutput = new EventEmitter<object>();
 
-  @ViewChild('RecordSpecificProps', { read: ViewContainerRef }) container;
+  @ViewChild('RecordSpecificProps', { read: ViewContainerRef }) RecPropContainer;
 
   protected validateNewRecord: (t: MCUXObject) => boolean;
   highlightRecord: (t: MCUXObject) => boolean;
@@ -66,7 +67,7 @@ export class TaskList_comp implements OnInit {
 
   ///////////////// PROPERTIES
 
-  factory: ComponentFactory<TaskProperties>;
+//  factory: ComponentFactory<TaskProperties>;
   RecordPropsComponentRef: ComponentRef<TaskProperties>;
 
   RecordPropParams: object;
@@ -126,9 +127,12 @@ export class TaskList_comp implements OnInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this.factory = this.resolver.resolveComponentFactory(TaskProperties);
-      this.RecordPropsComponentRef = this.container.createComponent(
-        this.factory
+//      this.factory = this.resolver.resolveComponentFactory(TaskProperties);
+
+      let factory = this.Parameters["RecPropFactory"];
+
+      this.RecordPropsComponentRef = this.RecPropContainer.createComponent(
+        factory
       );
 
       this.updateCustomProperties ();
@@ -140,7 +144,7 @@ export class TaskList_comp implements OnInit {
         this.changeDueDateOnSelectedTasks(D);
       });
 */
-      this.RecordPropsComponentRef.instance.dueDate.subscribe(d => this.changeDueDateOnSelectedTasks(new Date(d)));
+      this.RecordPropsComponentRef.instance.dueDate.subscribe(d => {console.log ("D1=",d);this.RecPropOutput.emit(new Date(d))});
 
 /*
       this.RecordPropParams['disabled'] = this.numSelected() == 0;
