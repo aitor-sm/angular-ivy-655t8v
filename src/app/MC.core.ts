@@ -33,7 +33,7 @@ export class MCObject {
   private _owner: number;
   private _description: string;
   
-  private _XFields : {[key: string]: any} = [];
+  public _XFields : {[key: string]: any} = [];
 
   // FLOW RELATED FIELDS: temporarily part of BASE
   private _status: number;
@@ -74,9 +74,11 @@ export class MCObject {
     a.resolvedT = new Date(this.resolvedT);
     a.closedT = new Date (this.closedT);
 
-//    a._XFields = this._XFields.clone();
+//    this._XFields.forEach(val => {console.log ("XX=",val); a._XFields.push(Object.assign({}, val))});
 
-    this._XFields.forEach(val => a._XFields.push(Object.assign({}, val)));
+  for (let key of Object.keys(this._XFields)) {
+    a._XFields[key] = JSON.parse(JSON.stringify(this._XFields[key]));
+  }
 
     return a;
   }
@@ -247,6 +249,14 @@ export class MCUXObject extends MCObject {
     this.selected = false;
 
   }
+
+  public clone () : MCUXObject {
+    let e : MCUXObject = super.clone() as MCUXObject;
+    e.selected = false;
+
+    return e;
+  }
+
 
   public PixelsToSize (n: number): string {
     return n==0? '100%' : ''+n/8;

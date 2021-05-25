@@ -27,10 +27,12 @@ export class TaskObj extends MCUXObject {
 
   public dueTask(): boolean {
   
+/*
     if (this.name == "aaa") { 
 //      console.log ("00", this.description, "|", typeof this.dueDate);
 
     };
+*/
     return this.dueDate != null && this.dueDate < new Date() && !this.isTerminalStatus();
   };
 
@@ -118,10 +120,11 @@ export class MCUXList {
     return this.obj_l.filter(t => t.selected);
   }
 
+/*
   public validateNewTask = (t: MCUXObject) => {return t.description != "";};
 
   public highlightTask = (t: MCUXObject) => {return (t as TaskObj).dueTask()};
-
+*/
 
 }
 

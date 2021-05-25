@@ -8,7 +8,7 @@ import {
   SimpleChanges,
   EventEmitter, ComponentFactoryResolver
 } from '@angular/core';
-import { MCField, MCParameter, UserList, currentUser } from './MC.core';
+import { MCUXObject, MCField, MCParameter, UserList, currentUser } from './MC.core';
 import { TaskList_comp } from './tasklist.comp.component';
 import { TaskObj, TasksCfg } from './tasks';
 
@@ -121,7 +121,10 @@ export class AppComponent implements OnInit {
       DBRecordName: 'Task',
       initToolbar: 'ToolBar_Item',
       RecPropFactory: factory,
-      RecClassId : 100
+      RecClassId : 100,
+      validateNewRecord : this.validateNewTask,
+      highlightRecord : this.highlightTask
+
     };
 
 //    console.log ("factory: ", typeof factory);
@@ -149,6 +152,12 @@ export class AppComponent implements OnInit {
     evt.currentTarget.className += ' active';
     this.MainViewName = T.caption;
   }
+
+  public validateNewTask = (t: MCUXObject) => {return t.description != "";};
+
+  public highlightTask = (t: MCUXObject) => {return (t as TaskObj).dueTask()};
+
+
 }
 
 @Component({

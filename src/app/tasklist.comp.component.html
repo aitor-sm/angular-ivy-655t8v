@@ -240,7 +240,7 @@
       <ng-template #task_tableelements>
         <ng-container *ngFor="let task of TL.subFilter(applyFilter)">
           <tr *ngIf="applyFilter(task)" class=record (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)"
-            [class.highlight]="highlightRecord(task)" [class.selected]="task.selected">
+            [class.highlight]="Parameters['highlightRecord'](task)" [class.selected]="task.selected">
 
 
             <!--------- LIST OF FIELDS  ---->

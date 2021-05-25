@@ -62,9 +62,9 @@ export class TaskList_comp implements OnInit {
 
   @ViewChild('RecordSpecificProps', { read: ViewContainerRef }) RecPropContainer;
 
-  protected validateNewRecord: (t: MCUXObject) => boolean;
-  highlightRecord: (t: MCUXObject) => boolean;
-  protected ClassID: number = 100;
+//  protected validateNewRecord: (t: MCUXObject) => boolean;
+//  highlightRecord: (t: MCUXObject) => boolean;
+//  protected ClassID: number = 100; // NO! debe venir de propiedades
 
   ///////////////// PROPERTIES
 
@@ -81,7 +81,7 @@ export class TaskList_comp implements OnInit {
 
   // Controls for new task
   newRecordToggle: boolean = false;
-//  newTask: MCObject; // Template for new Task
+//  newTask: MCUXObject; // Template for new Task
   newTask: TaskObj; // Template for new Task
 
   // Object properties specific
@@ -112,8 +112,8 @@ export class TaskList_comp implements OnInit {
     this.TL = new MCUXList(p);
     this.selectedSummary(null);
 
-    this.validateNewRecord = this.TL.validateNewTask;
-    this.highlightRecord = this.TL.highlightTask;
+//    this.validateNewRecord = this.TL.validateNewTask;
+//    this.highlightRecord = this.TL.highlightTask;
 
     document.getElementById(this.Parameters['initToolbar']).click();
 
@@ -278,6 +278,23 @@ export class TaskList_comp implements OnInit {
       this.newTask = (this.newTask.clone() as TaskObj);
 */
 
+/*
+    if (clearFields)  {
+      this.newTask = new TaskObj('', this.Parameters['currentUser'], '', 0, null);
+      return;      
+    }
+
+
+  if (clearFields ||
+      (typeof this.newTask == 'undefined')) {
+      this.newTask = new TaskObj('', this.Parameters['currentUser'], '', 0, null);
+    }
+  else 
+      this.newTask = (this.newTask as MCUXObject).clone() as TaskObj;
+
+  return;
+*/
+
     let d: Date =
       !clearFields &&
       typeof this.newTask != 'undefined' &&
@@ -288,10 +305,17 @@ export class TaskList_comp implements OnInit {
 
     //    this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, new Date("2020-01-01") );
 
+/*
+    if (typeof this.newTask != 'undefined') {
+    let e = (this.newTask as MCUXObject).clone();
+    }
+*/
+
+
     if (clearFields)
-      this.newTask = new TaskObj('', this.Parameters['currentUser'], '', 0, d);
-//      this.newTask = new MCObject(this.Parameters["RecClassId"],'', this.Parameters['currentUser'], '', 0);
-    else
+      this.newTask = new TaskObj('', this.Parameters['currentUser'], '', 0, null);
+//      this.newTask = new MCUXObject(this.Parameters["RecClassId"],'', this.Parameters['currentUser'], '', 0);
+    else 
 //      this.newTask = this.newTask.clone();
 
       this.newTask = new TaskObj(
@@ -301,10 +325,14 @@ export class TaskList_comp implements OnInit {
         0,
         d
       );
+
   }
+
+
   isValidNewRecord(): boolean {
     return (
-      this.newTask.validateNewObject() && this.validateNewRecord(this.newTask)
+      this.newTask.validateNewObject() && this.Parameters["validateNewRecord"](this.newTask)
+//      this.newTask.validateNewObject() && this.validateNewRecord(this.newTask)
     );
 
     //    return this.newTask.name != "" && this.newTask.description != "";
@@ -516,7 +544,7 @@ export class TaskList_comp implements OnInit {
     this.TL.doSel(t => (t.name = this.op_name));
   }
 
-  executeOnSelectedRecords(e: (arg0: MCUXObject) => void) {
+  public executeOnSelectedRecords(e: (arg0: MCUXObject) => void) {
     this.TL.doSel(e);
   }
 
