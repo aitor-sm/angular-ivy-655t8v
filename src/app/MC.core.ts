@@ -259,6 +259,7 @@ export class MCUXObject extends MCObject {
 
 
   public PixelsToSize (n: number): string {
+    console.log ("pixel2size", n);
     return n==0? '100%' : ''+n/8;
   }
 
