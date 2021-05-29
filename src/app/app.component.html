@@ -34,7 +34,7 @@
       <div class="row content">
 
 
-      <tasklist_comp #MainTaskView [Parameters]="TaskAppParams"  (FinishRender)="onFinishRender($event)" (RecPropOutput)="changeDueDateOnSelectedTasks2($event)" (AddRecordCallBack)="addTask($event)" (DeleteRecordCallBack)="deleteTasks($event)"></tasklist_comp>
+      <tasklist_comp #MainTaskView [Parameters]="TaskAppParams"  [fields]="Fields" (FinishRender)="onFinishRender($event)" (RecPropOutput)="changeDueDateOnSelectedTasks2($event)" (AddRecordCallBack)="addTask($event)" (DeleteRecordCallBack)="deleteTasks($event)"></tasklist_comp>
       <!--
       <tasklist_comp name="{{ name }}"  owner="aitor" desc="Descripción" initSelect="4,5"></tasklist_comp>
       -->

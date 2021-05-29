@@ -13,7 +13,8 @@ import {
 } from '@angular/material/dialog';
 
 import { MCUXObject, MCField, MCParameter, UserList, currentUser, MCUXList } from './MC.core';
-import { TaskList_comp } from './tasklist.comp.component';
+import { basicFlow } from './flows';
+import { TaskList_comp, MCDBField } from './tasklist.comp.component';
 import { TaskObj, TasksCfg } from './tasks';
 import { DialogDeleteTasks } from './delete-task-dialog.component';
  
@@ -54,6 +55,8 @@ export class AppComponent implements OnInit {
 
   MainAppName: string = 'TASKS';
   MainViewName: string = 'All tasks';
+
+  Fields: MCDBField[] = TaskDBFields;
 
   cfg: MCParameter[] = TasksCfg;
   taskListRendered: boolean = false;
@@ -245,4 +248,129 @@ export class TaskProperties implements OnInit {
 }
 
 
+/// CAMPOS DE LA BBDD
+
+export var TaskDBFields: MCDBField[] = [
+  {
+    FName: 'id',
+    FCaption: 'Task ID',
+    FType: 'objid',
+    Show: false,
+    Access: 'ro',
+    Width: 100,
+    Default: null,
+    FOptionality: 'mandatory',
+    MinWidth: 100,
+    NewRecordCaption: ''
+  },
+  {
+    FName: 'name',
+    FCaption: 'Task',
+    FType: 'string',
+    Show: true,
+    Access: 'rw',
+    Width: 120,
+    Default: '',
+    FOptionality: 'mandatory',
+    MinWidth: 120,
+    NewRecordCaption: 'Enter task name here'
+  },
+  {
+    FName: 'owner',
+    FCaption: 'Assigned to',
+    FType: 'user',
+    Show: true,
+    Access: 'rw',
+    Width: 80,
+    Default: UserList[currentUser],
+    FOptionality: 'mandatory',
+    MinWidth: 80,
+    NewRecordCaption: ''
+  },
+  {
+    FName: 'creator',
+    FCaption: 'Reporter',
+    FType: 'user',
+    Show: true,
+    Access: 'ro',
+    Width: 80,
+    Default: UserList[currentUser],
+    FOptionality: 'mandatory',
+    MinWidth: 80,
+    NewRecordCaption: UserList[currentUser]
+  },
+  {
+    FName: 'status',
+    FCaption: 'Status',
+    FType: 'status',
+    Show: true,
+    Access: 'ro',
+    Width: 80,
+    Default: 0,
+    FOptionality: 'mandatory',
+    MinWidth: 80,
+    NewRecordCaption: '--' + basicFlow[0].name + '--'
+  },
+  {
+    FName: 'createdT',
+    FCaption: 'Created at',
+    FType: 'date',
+    Show: true,
+    Access: 'ro',
+    Width: 90,
+    Default: 'now',
+    FOptionality: 'mandatory',
+    MinWidth: 90,
+    NewRecordCaption: 'now'
+    //    NewRecordCaption: formatDate(new Date(), 'yyyy/MM/dd', 'en')
+  },
+  {
+    FName: 'resolvedT',
+    FCaption: 'Resolved at',
+    FType: 'date',
+    Show: true,
+    Access: 'ro',
+    Width: 90,
+    Default: null,
+    FOptionality: 'optional',
+    MinWidth: 90,
+    NewRecordCaption: ''
+  },
+  {
+    FName: 'DueDate',
+    FCaption: 'Due by',
+    FType: 'date',
+    Show: true,
+    Access: 'rw',
+    Width: 125,
+    Default: new Date('2020-01-01'),
+    FOptionality: 'mandatory',
+    MinWidth: 125,
+    NewRecordCaption: ''
+  },
+  {
+    FName: 'closedT',
+    FCaption: 'Closed at',
+    FType: 'date',
+    Show: false,
+    Access: 'ro',
+    Width: 90,
+    Default: null,
+    FOptionality: 'optional',
+    MinWidth: 90,
+    NewRecordCaption: ''
+  },
+  {
+    FName: 'description',
+    FCaption: 'Description',
+    FType: 'string',
+    Show: true,
+    Access: 'rw',
+    Width: 280,
+    Default: '',
+    FOptionality: 'optional',
+    MinWidth: 0,
+    NewRecordCaption: 'Enter task description'
+  }
+];
 
