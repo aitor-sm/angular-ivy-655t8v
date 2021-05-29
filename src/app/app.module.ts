@@ -27,7 +27,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent, TaskProperties } from "./app.component";
 import { HelloComponent } from "./hello.component";
-import { TaskList_comp, DialogDeleteTasks} from "./tasklist.comp.component";
+import { TaskList_comp} from "./tasklist.comp.component";
+import { DialogDeleteTasks} from "./delete-task-dialog.component";
 
 import { UserPipe } from './user.pipe';
 import { StatusPipe } from './status.pipe';

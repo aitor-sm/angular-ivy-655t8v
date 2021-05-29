@@ -11,11 +11,6 @@ import {
   ComponentFactory,
   ComponentRef
 } from '@angular/core';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA
-} from '@angular/material/dialog';
 
 import {
   MCField,
@@ -26,7 +21,6 @@ import {
 } from './MC.core';
 import { basicFlow, FlowActionObj, FlowStatusObj } from './flows';
 import { TabObj } from './app.component';
-import { TasksCfg } from './tasks';
 
 
 export interface MCDBField extends MCField {
@@ -173,7 +167,7 @@ export class TaskList_comp implements OnInit {
   }
 
   constructor(
-    public DeleteTasksDialog: MatDialog  ) {}
+     ) {}
 
   ///////////////// GENERAL UTILITY
 
@@ -519,30 +513,10 @@ export class TaskList_comp implements OnInit {
   }
 
   deleteSelectedTasksButton(o: number): void {
-    if (TasksCfg.find(a => a.FName == 'WarnOnDelete').FValue) {
-      let dialogRef = this.DeleteTasksDialog.open(DialogDeleteTasks, {
-        height: '200px',
-        width: '100%',
-        data: {
-          numberOfRecords: o == 0 ? 1 : this.TL.countSelIf(this.applyFilter),
-          confirmation: true,
-          doIt: true,
-          recordName: this.Parameters["DBRecordName"]
-        },
-        panelClass: 'custom-modalbox-error'
-      });
 
-      dialogRef.afterClosed().subscribe(result => {
-        if (typeof result != 'undefined') {
-          TasksCfg.find(a => a.FName == 'WarnOnDelete').FValue =
-            result.confirmation;
 
-//          if (result.doIt) this.doDeleteTasks(o);
-          if (result.doIt) this.DeleteRecordCallBack.emit(o);
-        }
-      });
-    } else this.DeleteRecordCallBack.emit(o);
-//    } else this.doDeleteTasks(o);
+    this.DeleteRecordCallBack.emit(o);
+
   }
 
 
@@ -622,44 +596,6 @@ export class TaskList_comp implements OnInit {
 */
 }
 
-
-export interface DeleteDialogData {
-  numberOfRecords: number;
-  confirmation: boolean;
-  doIt: boolean;
-  recordName : string;
-}
-
-
-
-
-@Component({
-  selector: 'DialogDeleteTasks',
-  templateUrl: './delete-tasks-dialog.html'
-})
-export class DialogDeleteTasks {
-
-
-  constructor(
-    public dialogRef: MatDialogRef<DialogDeleteTasks>,
-    @Inject(MAT_DIALOG_DATA) public data: DeleteDialogData
-  ) {
-    this.data.confirmation = true;
-  }
-
-/*
-  showAgain: boolean;
-
-  toggelSwitchAgain(event) {
-    this.showAgain = event.target.checked;
-  }
-*/
-
-  onNoClick(): void {
-    this.data.doIt = false;
-    this.dialogRef.close();
-  }
-}
 
 
 

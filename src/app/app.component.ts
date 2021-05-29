@@ -8,9 +8,14 @@ import {
   SimpleChanges,
   EventEmitter, ComponentFactoryResolver
 } from '@angular/core';
+import {
+  MatDialog
+} from '@angular/material/dialog';
+
 import { MCUXObject, MCField, MCParameter, UserList, currentUser, MCUXList } from './MC.core';
 import { TaskList_comp } from './tasklist.comp.component';
 import { TaskObj, TasksCfg } from './tasks';
+import { DialogDeleteTasks } from './delete-task-dialog.component';
  
 /*
 function TimeCtrl($scope, $timeout) {
@@ -61,7 +66,7 @@ export class AppComponent implements OnInit {
   @ViewChild('MainTaskView') mainTaskViewCpt: TaskList_comp;
 
 
-  constructor(
+  constructor( public DeleteTasksDialog: MatDialog, 
     private resolver?: ComponentFactoryResolver
   ) {
   //  console.log ("resolver:", typeof resolver)
@@ -146,8 +151,35 @@ export class AppComponent implements OnInit {
 
   }
 
-  deleteTasks (n: number) {
-    this.mainTaskViewCpt.doDeleteTasks (n);
+  deleteTasks (o: number) {
+    if (TasksCfg.find(a => a.FName == 'WarnOnDelete').FValue) {
+      let dialogRef = this.DeleteTasksDialog.open(DialogDeleteTasks, {
+        height: '200px',
+        width: '100%',
+        data: {
+          numberOfRecords: o == 0 ? 1 : this.mainTaskViewCpt.numSelected(),
+          confirmation: true,
+          doIt: true,
+          recordName: this.TaskAppParams["DBRecordName"]
+        },
+        panelClass: 'custom-modalbox-error'
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (typeof result != 'undefined') {
+          TasksCfg.find(a => a.FName == 'WarnOnDelete').FValue =
+            result.confirmation;
+
+//          if (result.doIt) this.doDeleteTasks(o);
+          if (result.doIt) this.mainTaskViewCpt.doDeleteTasks (o);
+        }
+      });
+    } else this.mainTaskViewCpt.doDeleteTasks (o);
+//    } else this.doDeleteTasks(o);
+
+
+
+    
   }
 
   findTabByID(findid: string): TabObj {
