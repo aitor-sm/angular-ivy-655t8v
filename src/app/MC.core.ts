@@ -234,6 +234,10 @@ export class MCObject {
     return this.name != "" ;
   }
 
+  writeDateField(fieldName: string, d: any) {
+    this.setFieldValue(fieldName, new Date(d));
+  }
+
 
 }
 
@@ -278,9 +282,8 @@ export class MCUXList {
   constructor (p: object) {
 
 //    this.retrieveItems();
-
-  this.bulkSelect (p["initSelect"]);
-
+    if ( typeof p != 'undefined')
+    this.bulkSelect (p["initSelect"]);
   }
 
   // Retrieve specific to TAKS
@@ -294,9 +297,10 @@ export class MCUXList {
 */
 
   bulkSelect (a: number[]) {
-    a.forEach((n: number) => {
-      if (n <= this.obj_l.length) this.obj_l[n - 1].selected = true;
-    });
+    if (typeof a != 'undefined')
+      a.forEach((n: number) => {
+        if (n <= this.obj_l.length) this.obj_l[n - 1].selected = true;
+      });
   }
 
  

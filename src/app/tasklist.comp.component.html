@@ -46,7 +46,7 @@
               New {{Parameters["DBRecordName"]}}</button>
             <button type="button" class=toolbar disabled>Search</button>
             |
-            <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="deleteSelectedTasksButton(1)">Delete</button>
+            <button type="button"  class=toolbar [disabled]="numSelected()==0" (click)="deleteSelectedTasksButton(1)">Delete</button>
           </div>
 
           <!-- /// DB RECORD PROPERTIES TOOLBAR-->
@@ -76,12 +76,11 @@
             </tr></table>
 
             </td><td class="toolbar_section">
-<!--            <button type="button"  class=toolbar [disabled]="TL.countSelIf(applyFilter)==0" (click)="reassignSelectedTasks (op_owner )">Reassign to:</button>-->
             <span style = "vertical-align: top;">Name: </span>
             <input class="toolbar" style = "vertical-align: top;"
-    [(ngModel)]="op_name" placeholder="Name for selected" size="12" (change)="renameSelectedTasks()" [disabled]="TL.countSelIf(applyFilter)==0"><br><br>
+    [(ngModel)]="op_name" placeholder="Name for selected" size="12" (change)="renameSelectedTasks()" [disabled]="numSelected()==0"><br><br>
             <span style = "vertical-align: top;">Owner: </span>
-            <select class="toolbarbox" required size=2 [(ngModel)]='op_owner' [disabled]="TL.countSelIf(applyFilter)==0" >
+            <select class="toolbarbox" required size=2 [(ngModel)]='op_owner' [disabled]="numSelected()==0" >
       <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i" (click)="onChangeOwner()">{{Parameters['users'][i]}}</option>
       </select>
             &nbsp;
@@ -99,12 +98,7 @@
             <span style = "vertical-align: top;">Description: </span><br>
             <input class="toolbar" style = "vertical-align: top;"
     [(ngModel)]="sel.description" placeholder="Enter description here" size="30" *ngIf="checkOneSelectedTask()">
-<!--
-            </td><td class="toolbar_section">
-         <div class="toolbar_section_title">{{Parameters["DBRecordName"]}}  specific</div>
-         <span style = "vertical-align: top;">Due date: </span>   <input type="date" class=input_inlined style="width:120px"
-        [ngModel]="toDueDate | date:'yyyy-MM-dd'"  (ngModelChange)="toDueDate=$event; changeDueDateOnSelectedTasks (toDueDate)" [disabled]="TL.countSelIf(applyFilter)==0">
--->
+
           </td><td class="toolbar_section">
 
             <template #RecordSpecificProps> </template>
@@ -136,6 +130,7 @@
       <!--------- FIELDS NAME  ---->
 
       <thead>
+        
       <tr *ngIf="vw_showHeaders" class=header>
         <td width="25"><input type="checkbox" (change)="onSelectAll($event)"></td>
 
@@ -155,21 +150,21 @@
 
             <ng-container *ngSwitchCase="'string'">
               <ng-container *ngIf="f.Access == 'ro'; else newrec_string_rw"> 
-              {{newTask.getFieldValue(f.FName)}}
+              {{newRec.getFieldValue(f.FName)}}
               </ng-container>
               <ng-template #newrec_string_rw>
                 <input #newrec_text class=input_inlined 
-    (change)="newTask.setFieldValue(f.FName,newrec_text.value)" placeholder={{f.NewRecordCaption}} size={{newTask.PixelsToSize(f.Width)}} [ngModel]="newTask.getFieldValue(f.FName)"  >
+    (change)="newRec.setFieldValue(f.FName,newrec_text.value)" placeholder={{f.NewRecordCaption}} size={{newRec.PixelsToSize(f.Width)}} [ngModel]="newRec.getFieldValue(f.FName)"  >
               </ng-template>
             </ng-container>
 
             <ng-container *ngSwitchCase="'user'">
               <ng-container *ngIf="f.Access == 'ro'; else newrec_user_rw"> 
-              {{newTask.getFieldValue(f.FName) | user}}
+              {{newRec.getFieldValue(f.FName) | user}}
               </ng-container>
               <ng-template #newrec_user_rw>
 
-                <select required #t (change)="newTask.setFieldValue(f.FName,t.value)" [ngModel]="newTask.getFieldValue(f.FName)">
+                <select required #t (change)="newRec.setFieldValue(f.FName,t.value)" [ngModel]="newRec.getFieldValue(f.FName)">
                 <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i">{{Parameters['users'][i]}}</option>
                 </select>
 
@@ -178,61 +173,41 @@
 
             <ng-container *ngSwitchCase="'date'">
               <ng-container *ngIf="f.Access == 'ro'; else newrec_date_rw"> 
-              {{newTask.getFieldValue(f.FName) | date: 'dd/MM/y'}}
+              {{newRec.getFieldValue(f.FName) | date: 'dd/MM/y'}}
               </ng-container>
               <ng-template #newrec_date_rw>
 
-              <input type="date" class=input_inlined style="width:120px"  [ngModel]="newTask.getFieldValue(f.FName) | date:'yyyy-MM-dd'"  (ngModelChange)="writeDateField(newTask, f.FName,$event)">
+              <input type="date" class=input_inlined style="width:120px"  [ngModel]="newRec.getFieldValue(f.FName) | date:'yyyy-MM-dd'"  (ngModelChange)="newRec.writeDateField(f.FName,$event)">
               </ng-template>
             </ng-container>
 
             <ng-container *ngSwitchCase="'status'">
-              {{newTask.getFieldValue(f.FName) |status }}
+              {{newRec.getFieldValue(f.FName) |status }}
             </ng-container>
 
-            <ng-container *ngSwitchDefault> {{newTask.getFieldValue(f.FName)}}</ng-container>
+            <ng-container *ngSwitchDefault> {{newRec.getFieldValue(f.FName)}}</ng-container>
 
           </div>
         </td>
 
-<!--
-
-        <td><input class=input_inlined 
-    [(ngModel)]="newTask.name" placeholder="New task name" size="12"></td>
-
-        <td>
-          <select required [(ngModel)]='newTask.owner'>
-          <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i">{{Parameters['users'][i]}}</option>
-          </select>
-        </td>
-
-        <td><i>{{newTask.getCreatorName()}}</i></td>
-        <td><i>{{newTask.getStatusName()}}</i></td>
-        <td><i>--Now--</i></td>
-        <td><i>Empty</i></td>
-
-        <td><input type="date" class=input_inlined style="width:120px"
-        [ngModel]="newTask.dueDate | date:'yyyy-MM-dd'"  (ngModelChange)="newTask.dueDate = $event"></td>
-
-        <td><input class=input_inlined 
-    [(ngModel)]="newTask.description" placeholder="Enter the task description" size="45%"></td>
-
--->
-
         <td>
           <button type="button"  [disabled]="!isValidNewRecord()" (click)="addNewTaskButton()" class=inlined >Create task</button>
           &nbsp;
-          <button type="button"  (click)="createNewRecordTemplate( true )" class=inlined >Clear fields</button>
+          <button type="button"  (click)="createNewRecordTemplate()" class=inlined >Clear fields</button>
         </td>
 
       </tr>
       </thead>
 
+
+
+
+
       <!--------- TABLE ELEMENTS  ---->
 
       <tbody>
 
-      <ng-container *ngIf="TL.countIf(applyFilter) > 0; then task_tableelements else no_elements">
+      <ng-container *ngIf="numFiltered() > 0; then task_tableelements else no_elements">
       </ng-container>
 
       <!--------- Non-empty TABLE  ---->
@@ -248,51 +223,15 @@
             <td width="25px" [class.grid] = "vw_showGrid"><input type="checkbox" (change)="onSelectRecord($event, task)" [(ngModel)]="task.selected" ></td>
 
             <!--------- Customizatble FIELDS  ---->
-<!--
-            <td *ngIf="task==focus; else name_no_focus"><input class=input_inlined id="name"
-    [(ngModel)]="task.name" placeholder="Edit your name here" size="12"></td>
-            <ng-template #name_no_focus>
-              <td>&nbsp;{{task.name}}</td>
-            </ng-template>
--->
 
-        <td *ngFor="let f of visibleFields()" width={{f.Width}}  [class.grid] = "vw_showGrid">
-          <div [ngSwitch]="f.FType">
-            <ng-container *ngSwitchCase="'date'">{{task.getFieldValue(f.FName) | date: 'dd/MM/y'}}</ng-container>
-            <ng-container *ngSwitchCase="'user'">{{task.getFieldValue(f.FName) | user }}</ng-container>
-            <ng-container *ngSwitchCase="'status'">{{task.getFieldValue(f.FName) | status }}</ng-container>
-            <ng-container *ngSwitchDefault> {{task.getFieldValue(f.FName)}}</ng-container>
-          </div>
-        </td>
-
-<!--
-        <td *ngFor="let f of visibleFields()" width={{f.Width}} >
-          <div *ngIf="task.getFieldType(f.FName) == 'date'">
-          {{task.getFieldValue(f.FName) | date: 'dd/MM/y'}}
-          </div>
-          <div *ngIf="task.getFieldType(f.FName) != 'date'">
-          {{task.getFieldValue(f.FName)}}
-          </div>
-        </td>
--->
-
-<!--
-            <td>{{task.name}}</td>
-            <td>{{task.getOwnerName()}}</td>
-            <td>{{task.getCreatorName()}}</td>
-            <td>{{task.getStatusName()}}</td>
-            <td>{{task.created | date: 'dd/MM/y'}}</td>
-            <td>{{task.resolvedT | date: 'dd/MM/y'}}</td>
-            <td>{{getDueDate(task) | date: 'dd/MM/y'}}</td>
-            <td>{{task.description}}</td>
--->
-<!--
-            <td *ngIf="task==focus; else description_no_focus"><input class=input_inlined id="desc"
-    [(ngModel)]="task.description" placeholder="Edit your description here" size="45%"></td>
-            <ng-template #description_no_focus>
-              <td>&nbsp;{{task.description}}</td>
-            </ng-template>
--->
+            <td *ngFor="let f of visibleFields()" width={{f.Width}}  [class.grid] = "vw_showGrid">
+              <div [ngSwitch]="f.FType">
+                <ng-container *ngSwitchCase="'date'">{{task.getFieldValue(f.FName) | date: 'dd/MM/y'}}</ng-container>
+                <ng-container *ngSwitchCase="'user'">{{task.getFieldValue(f.FName) | user }}</ng-container>
+                <ng-container *ngSwitchCase="'status'">{{task.getFieldValue(f.FName) | status }}</ng-container>
+                <ng-container *ngSwitchDefault> {{task.getFieldValue(f.FName)}}</ng-container>
+              </div>
+            </td>
 
 
             <!--------- Action Buttons  ---->

@@ -2,23 +2,14 @@ import {
   Component,
   Input,
   OnInit,
-  Inject,
   Output,
   EventEmitter,
   ViewChild,
   ViewContainerRef,
-  ComponentFactoryResolver,
-  ComponentFactory,
   ComponentRef
 } from '@angular/core';
 
-import {
-  MCField,
-  UserList,
-  currentUser,
-  MCObject,
-  MCUXObject, MCUXList
-} from './MC.core';
+import { MCField, MCUXObject, MCUXList } from './MC.core';
 import { basicFlow, FlowActionObj, FlowStatusObj } from './flows';
 import { TabObj } from './app.component';
 
@@ -46,8 +37,6 @@ export class TaskList_comp implements OnInit {
   @Input() Parameters: object;
   @Input() fields: MCDBField[];
 
-//  @Input() ObjectList: MCUXList;
-
   @Output() FinishRender = new EventEmitter<boolean>();
   @Output() RecPropOutput = new EventEmitter<object>();
   @Output() AddRecordCallBack = new EventEmitter<MCUXObject>();
@@ -55,27 +44,24 @@ export class TaskList_comp implements OnInit {
 
   @ViewChild('RecordSpecificProps', { read: ViewContainerRef }) RecPropContainer;
 
-//  protected validateNewRecord: (t: MCUXObject) => boolean;
-//  highlightRecord: (t: MCUXObject) => boolean;
-//  protected ClassID: number = 100; // NO! debe venir de propiedades
-
   ///////////////// PROPERTIES
 
-//  factory: ComponentFactory<TaskProperties>;
   RecordPropsComponentRef: ComponentRef<any>;
 
-  RecordPropParams: object;
+  RecordPropParams: object = {
+      disabled:    true,
+      oneSelected: null
+    };
 
   TL: MCUXList;
 
   // Visual components
-  focus: MCUXObject; // Focused task
-  sel: MCUXObject;
+  focus:   MCUXObject; // Focused record (mouse)
+  sel:     MCUXObject; // Selected record (when one selected)
+  newRec:  MCUXObject; // Template for new record
 
   // Controls for new task
   newRecordToggle: boolean = false;
-  newTask: MCUXObject; // Template for new Task
-//  newTask: TaskObj; // Template for new Task
  
   // Object properties specific
   op_classname: string = '';
@@ -87,124 +73,104 @@ export class TaskList_comp implements OnInit {
   op_closedT: Date;
   op_status: number;
   op_description: string;
-//  toDueDate: Date = new Date();
 
   // View options
-//  fields: MCDBField[] = TaskDBFields;
   vw_showTerminalTasks: boolean = true;
   vw_showHeaders: boolean = true;
   vw_showGrid: boolean = false;
 
-  ///////////////// CONSTRUCTORS
+  ///////////////// INITIALISATION
 
   ngOnInit() {
 
-    // OJO que esto no va a funcionar
-    let p = {
-      initSelect: this.Parameters['initSelect']
-    };
-
-    this.TL = new MCUXList(p);
-    // end_OJO
-
-/*
-    this.TL.addNewItem (new TaskObj ("Programa Tasks", 0, "Crear la versión 0.4", 0, new Date('2021-08-21')));
-    this.TL.addNewItem (new TaskObj ("Clase alemán", 1, "Clase por la tarde", 1, new Date('2021-08-21')));
-    this.TL.addNewItem (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-08-21')));
-*/
-
-
-//    this.obj_l.push (new MCUXObject (100, "Deberes", 0, "Descripción 3", 2));
-
-//    this.TL = this.ObjectList;
-
+    this.TL = new MCUXList({});
     this.selectedSummary(null);
 
-//    this.validateNewRecord = this.TL.validateNewTask;
-//    this.highlightRecord = this.TL.highlightTask;
-
     document.getElementById(this.Parameters['initToolbar']).click();
-
-
-    this.RecordPropParams = {
-      disabled:    true,
-      oneSelected: null
-
-    };
 
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
-//      this.factory = this.resolver.resolveComponentFactory(TaskProperties);
 
-      let factory = this.Parameters["RecPropFactory"];
-
-      this.RecordPropsComponentRef = this.RecPropContainer.createComponent(
-        factory
-      );
-
-      this.updateCustomProperties ();
-/*
-      this.RecordPropsComponentRef.instance.dueDate.subscribe(d => {console.log (typeof d)
-        console.log(d);
-        let D = new Date (d);
-        console.log(D);
-        this.changeDueDateOnSelectedTasks(D);
-      });
-*/
-//      this.RecordPropsComponentRef.instance.dueDate.subscribe(d => {console.log ("D1=",d);this.RecPropOutput.emit(new Date(d))});
+      // Prepare the specific record properties dialog
+      this.RecordPropsComponentRef = this.RecPropContainer.createComponent( this.Parameters["RecPropFactory"] );
       this.RecordPropsComponentRef.instance.dueDate.subscribe(d => {this.RecPropOutput.emit(new Date(d))});
 
-/*
-      this.RecordPropParams['disabled'] = this.numSelected() == 0;
-
-      this.RecordPropsComponentRef.instance.Parameters = this.RecordPropParams;
-*/
+      // Notify parent, rendered and ready to accept records
       this.FinishRender.emit(true);
+
+      // Actions once records have loaded
       this.TL.bulkSelect(this.Parameters['initSelect']);
       this.selectedSummary(null);
+
+      this.updateCustomProperties ();
 
     });
   }
 
-  constructor(
-     ) {}
+  constructor() {}
 
-  ///////////////// GENERAL UTILITY
+  ///////////////// PUBLIC METHODS TO BE USED OUTSIDE
 
-  numSelected(): number {
+  // Record Set
+
+  public numSelected(): number {
     return this.TL.countSelIf(this.applyFilter);
   }
 
-  numFiltered(): number {
+  public numFiltered(): number {
     return this.TL.countIf(this.applyFilter);
   }
 
-  getFilteredRecords(): MCUXObject[] {
+  public getFilteredRecords(): MCUXObject[] {
     return this.TL.subFilter(this.applyFilter);
   }
 
-  ///////////////// VISUAL EFFECTS
-
-  visibleFields(): MCDBField[] {
+  // View
+  public visibleFields(): MCDBField[] {
     return this.fields.filter(t => {
       return t.Show;
     });
   }
 
+
+
+  ///////////////// TEMPLATE UI METHODS
+
+  // View
   vw_toggleTerminalTasks(e) {
-    //    const checkbox = e.target as HTMLInputElement;
-
-    //    this.vw_showTerminalTasks = checkbox.checked;
-
     if (!this.vw_showTerminalTasks)
       this.TL.doSel(t => {
         if (t.isTerminalStatus()) t.selected = false;
       });
   }
 
-  public applyFilter = t => {
+
+
+
+  ///////////////// PRIVATE METHODS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  ///////////////// VISUAL EFFECTS
+
+
+
+  applyFilter = t => {
     return this.vw_showTerminalTasks || !t.isTerminalStatus();
   };
 
@@ -225,15 +191,6 @@ export class TaskList_comp implements OnInit {
     else return null;
   }
 
-  /*
-  getStatusBarMessage () : string {
-    if (typeof this.Parameters["statusBarMsg"]() !== "undefined")
-    return this.Parameters["statusBarMsg"]()
-    else
-    return "Loading..."
-  }
-*/
-
   updateCustomProperties () {
     this.RecordPropParams['disabled'] = this.numSelected() == 0;
 
@@ -243,14 +200,6 @@ export class TaskList_comp implements OnInit {
       this.RecordPropParams['oneSelected'] = null;
 
     this.RecordPropsComponentRef.instance.Parameters = this.RecordPropParams;
-
-    // NgOnChange will not get this well unless we do this
-    /*
-    let clone =  { ...this.RecordPropParams };
-    clone["disabled"]= this.numSelected()==0;
-    this.RecordPropParams = clone;
-    this.RecordPropsComponentRef.instance.Parameters=clone;
-*/
 
   }
 
@@ -274,91 +223,24 @@ export class TaskList_comp implements OnInit {
 
   toggleNewRecordBar() {
     this.newRecordToggle = !this.newRecordToggle;
-    if (this.newRecordToggle) this.createNewRecordTemplate(true);
+    if (this.newRecordToggle) this.createNewRecordTemplate();
   }
 
-  createNewRecordTemplate(clearFields: boolean) {
-    /*
-    if (clearFields || typeof(this.newTask) == "undefined") {
-      this.newTask = new MCUXObject (this.ClassID, "",this.Parameters["currentUser"],"", 0);
-    }
-    else
-      this.newTask = (this.newTask.clone() as TaskObj);
-*/
-
-/*
-    if (clearFields)  {
-      this.newTask = new TaskObj('', this.Parameters['currentUser'], '', 0, null);
-      return;      
-    }
-
-
-  if (clearFields ||
-      (typeof this.newTask == 'undefined')) {
-      this.newTask = new TaskObj('', this.Parameters['currentUser'], '', 0, null);
-    }
-  else 
-      this.newTask = (this.newTask as MCUXObject).clone() as TaskObj;
-
-  return;
-*/
-
-/*
-    let d: Date =
-      !clearFields &&
-      typeof this.newTask != 'undefined' &&
-      typeof this.newTask.dueDate != 'undefined' &&
-      this.newTask.dueDate != null
-        ? new Date(this.newTask.dueDate)
-        : null;
-*/
-
-    //    this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, new Date("2020-01-01") );
-
-/*
-    if (typeof this.newTask != 'undefined') {
-    let e = (this.newTask as MCUXObject).clone();
-    }
-*/
-
-
-    if (clearFields)
-//      this.newTask = new TaskObj('', this.Parameters['currentUser'], '', 0, null);
-      this.newTask = new MCUXObject(this.Parameters["RecClassId"],'', this.Parameters['currentUser'], '', 0);
-
-/*
-    else 
-//      this.newTask = this.newTask.clone();
-
-      this.newTask = new TaskObj(
-        this.newTask.name,
-        this.newTask.owner,
-        this.newTask.description,
-        0,
-        d
-      );
-*/
+  createNewRecordTemplate() {
+    this.newRec = new MCUXObject(this.Parameters["RecClassId"],'', this.Parameters['currentUser'], '', 0);
   }
 
 
   isValidNewRecord(): boolean {
     return (
-      this.newTask.validateNewObject() && this.Parameters["validateNewRecord"](this.newTask)
-//      this.newTask.validateNewObject() && this.validateNewRecord(this.newTask)
+      this.newRec.validateNewObject() && this.Parameters["validateNewRecord"](this.newRec)
     );
-
-    //    return this.newTask.name != "" && this.newTask.description != "";
   }
 
   findTabByID(findid: string): TabObj {
     let i: number;
     for (i = 0; i < ToolbarTABS.length; i++)
       if (ToolbarTABS[i].id == findid) return ToolbarTABS[i];
-  }
-
-  writeDateField(t: MCUXObject, fieldName: string, d: any) {
-    //    console.log ("XX ", d, "|", typeof d);
-    t.setFieldValue(fieldName, new Date(d));
   }
 
   openToolbarTab(evt, tabId) {
@@ -414,16 +296,13 @@ export class TaskList_comp implements OnInit {
       this.op_owner = k.owner;
       this.op_creator = k.creator;
       this.op_createdT = k.created;
-//      this.toDueDate = (k as TaskObj).dueDate;
       this.op_resolvedT = k.resolvedT;
       this.op_closedT = k.closedT;
       this.op_status = k.status;
       this.op_description = k.description;
     } else {
-      //      let o = {};
 
       if (l.length > 0) {
-        //        console.log ("ll=", l.length);
 
         /* class names */
         let s: Set<any>;
@@ -455,29 +334,11 @@ export class TaskList_comp implements OnInit {
         s = l.reduce((p, c) => p.add(c.description), new Set());
         if (s.size > 1) this.op_description = '';
         else this.op_description = s.entries().next().value[0];
-/*
-        s = l.reduce((p, c) => p.add((c as TaskObj).dueDate), new Set());
-        if (s.size > 1) this.toDueDate = null;
-        else this.toDueDate = s.entries().next().value[0];
-*/
+
         this.op_resolvedT = null;
         this.op_closedT = null;
 
-        /*
-        s = l.reduce ((p,c) => (p.add(c.getClassName())),new Set());
-        if (s.size > 1) o["ClassName"] = "*";
-        else  o["ClassName"] = s.entries().next().value[0];
-
-        s = l.reduce ((p,c) => (p.add(c.owner)),new Set());
-        if (s.size > 1) o["Owner"] = "*";
-        else  o["Owner"] = s.entries().next().value[0];
-
-        s = l.reduce ((p,c) => (p.add((c as TaskObj).dueDate)),new Set());
-        if (s.size > 1) o["DueDate"] = "*";
-        else  o["DueDate"] = s.entries().next().value[0];
-*/
       }
-      //      console.log ("o=",o);
     }
   }
 
@@ -491,34 +352,11 @@ export class TaskList_comp implements OnInit {
   }
 
   addNewTaskButton() {
-    //    let I = this.newTask;
-
-//      this.addRecord (this.newTask);
-
-      this.AddRecordCallBack.emit (this.newTask);
-//    this.TL.addNewItem(this.newTask);
-
-//    this.createNewRecordTemplate(false);
-    /*
-    this.newTask.name = I.name;
-    this.newTask.description = I.description;
-    this.newTask.owner = I.owner;
-*/
-
-    // Se está copiando el X-Fields!
-    /*
-  console.log (I.getXField("DueDate"));
-  console.log (this.newTask.getXField("DueDate"));
-  console.log (I.getXField("DueDate") == this.newTask.getXField("DueDate"));
-  console.log (I.getXField("DueDate") === this.newTask.getXField("DueDate"));
-*/
+      this.AddRecordCallBack.emit (this.newRec);
   }
 
   deleteSelectedTasksButton(o: number): void {
-
-
     this.DeleteRecordCallBack.emit(o);
-
   }
 
 
@@ -554,15 +392,6 @@ export class TaskList_comp implements OnInit {
     this.TL.doSel(e);
   }
 
-  ///////////////// TASK SPECIFIC METHODS
-
-/*
-  changeDueDateOnSelectedTasks(d: Date) {
-//    this.TL.doSel(t => (t.dueDate = new Date(this.toDueDate)));
-    this.TL.doSel(t => (t.dueDate = new Date(d)));
-  }
-*/
-
   checkOneSelectedTask(): boolean {
     if (this.TL.countSelIf(this.applyFilter) == 1) {
       this.sel = this.TL.selected()[0];
@@ -573,29 +402,6 @@ export class TaskList_comp implements OnInit {
     }
   }
 
-  /*
-  f : Function = (t: MCUXObject) : boolean => {
-    return this.applyFilter(t);
-  }
-*/
-  /*
-  // Se usa para la barra de estados
-  numDueTasks(): number {
-      return this.TL.countIf (t => (this.applyFilter(t) && (t as TaskObj).dueTask()));
-  }
-*/
-  /*
-  getDueDate (t): Date {
-    return (t as TaskObj).dueDate;
-  }
-*/
-
-  /*
-  // Se usa para el highlight
-  isDueTask (t): boolean {
-    return (t as TaskObj).dueTask();
-  }
-*/
 }
 
 
