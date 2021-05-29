@@ -11,7 +11,7 @@ import {
 import { MCUXObject, MCField, MCParameter, UserList, currentUser, MCUXList } from './MC.core';
 import { TaskList_comp } from './tasklist.comp.component';
 import { TaskObj, TasksCfg } from './tasks';
-
+ 
 /*
 function TimeCtrl($scope, $timeout) {
     $scope.clock = "loading clock..."; // initialise the time variable
