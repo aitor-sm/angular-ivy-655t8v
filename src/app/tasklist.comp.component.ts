@@ -28,12 +28,6 @@ import { basicFlow, FlowActionObj, FlowStatusObj } from './flows';
 import { TabObj } from './app.component';
 import { TasksCfg } from './tasks';
 
-export interface DeleteDialogData {
-  numberOfRecords: number;
-  confirmation: boolean;
-  doIt: boolean;
-  recordName : string;
-}
 
 export interface MCDBField extends MCField {
   Show: boolean;
@@ -61,6 +55,7 @@ export class TaskList_comp implements OnInit {
   @Output() FinishRender = new EventEmitter<boolean>();
   @Output() RecPropOutput = new EventEmitter<object>();
   @Output() AddRecordCallBack = new EventEmitter<MCUXObject>();
+  @Output() DeleteRecordCallBack = new EventEmitter<number>();
 
   @ViewChild('RecordSpecificProps', { read: ViewContainerRef }) RecPropContainer;
 
@@ -85,7 +80,7 @@ export class TaskList_comp implements OnInit {
   newRecordToggle: boolean = false;
   newTask: MCUXObject; // Template for new Task
 //  newTask: TaskObj; // Template for new Task
-
+ 
   // Object properties specific
   op_classname: string = '';
   op_name: string = '';
@@ -178,9 +173,7 @@ export class TaskList_comp implements OnInit {
   }
 
   constructor(
-    public DeleteTasksDialog?: MatDialog,
-    private resolver?: ComponentFactoryResolver
-  ) {}
+    public DeleteTasksDialog: MatDialog  ) {}
 
   ///////////////// GENERAL UTILITY
 
@@ -544,11 +537,18 @@ export class TaskList_comp implements OnInit {
           TasksCfg.find(a => a.FName == 'WarnOnDelete').FValue =
             result.confirmation;
 
-          if (result.doIt) this.doDeleteTasks(o);
+//          if (result.doIt) this.doDeleteTasks(o);
+          if (result.doIt) this.DeleteRecordCallBack.emit(o);
         }
       });
-    } else this.doDeleteTasks(o);
+    } else this.DeleteRecordCallBack.emit(o);
+//    } else this.doDeleteTasks(o);
   }
+
+
+
+
+  // MÁS MÉTODOS INTERNOS
 
   doDeleteTasks(o: number): void {
     switch (o) {
@@ -623,6 +623,13 @@ export class TaskList_comp implements OnInit {
 }
 
 
+export interface DeleteDialogData {
+  numberOfRecords: number;
+  confirmation: boolean;
+  doIt: boolean;
+  recordName : string;
+}
+
 
 
 
@@ -640,17 +647,23 @@ export class DialogDeleteTasks {
     this.data.confirmation = true;
   }
 
+/*
   showAgain: boolean;
 
   toggelSwitchAgain(event) {
     this.showAgain = event.target.checked;
   }
+*/
 
   onNoClick(): void {
     this.data.doIt = false;
     this.dialogRef.close();
   }
 }
+
+
+
+/// CAMPOS DE LA BBDD
 
 export var TaskDBFields: MCDBField[] = [
   {

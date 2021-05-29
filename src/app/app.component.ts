@@ -139,11 +139,15 @@ export class AppComponent implements OnInit {
 
   addTask (o: MCUXObject) {
     let t = new TaskObj (o.name, o.owner, o.description, o.status, o.getXField("DueDate"));
-    console.log ("D=", o.getXField("DueDate"));
-    console.log ("T=", t.getXField("DueDate"));
+//    console.log ("D=", o.getXField("DueDate"));
+//    console.log ("T=", t.getXField("DueDate"));
 
     this.mainTaskViewCpt.addRecord (t);
 
+  }
+
+  deleteTasks (n: number) {
+    this.mainTaskViewCpt.doDeleteTasks (n);
   }
 
   findTabByID(findid: string): TabObj {
