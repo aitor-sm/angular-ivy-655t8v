@@ -8,7 +8,7 @@ import {
   SimpleChanges,
   EventEmitter, ComponentFactoryResolver
 } from '@angular/core';
-import { MCUXObject, MCField, MCParameter, UserList, currentUser } from './MC.core';
+import { MCUXObject, MCField, MCParameter, UserList, currentUser, MCUXList } from './MC.core';
 import { TaskList_comp } from './tasklist.comp.component';
 import { TaskObj, TasksCfg } from './tasks';
 
@@ -54,6 +54,7 @@ export class AppComponent implements OnInit {
   taskListRendered: boolean = false;
 
   TaskVersion: string = '0.0.4';
+//  TaskList: MCUXList;
 
   toDueDate: Date = new Date();
 
@@ -82,8 +83,15 @@ export class AppComponent implements OnInit {
     else return 'Loading...';
   }
 
-  activateTaskBar(b: boolean) {
+  onFinishRender(b: boolean) {
     this.taskListRendered = b;
+
+    this.mainTaskViewCpt.addRecord (new TaskObj ("Programa Tasks", 0, "Crear la versión 0.4", 0, new Date('2021-08-21')));
+    this.mainTaskViewCpt.addRecord (new TaskObj ("Clase alemán", 1, "Clase por la tarde", 1, new Date('2021-08-21')));
+    this.mainTaskViewCpt.addRecord (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-08-21')));
+
+//    this.TaskList.bulkSelect(this.TaskAppParams['initSelect']);
+
   }
 
   TaskAppParams: object;
@@ -127,7 +135,15 @@ export class AppComponent implements OnInit {
 
     };
 
-//    console.log ("factory: ", typeof factory);
+  }
+
+  addTask (o: MCUXObject) {
+    let t = new TaskObj (o.name, o.owner, o.description, o.status, o.getXField("DueDate"));
+    console.log ("D=", o.getXField("DueDate"));
+    console.log ("T=", t.getXField("DueDate"));
+
+    this.mainTaskViewCpt.addRecord (t);
+
   }
 
   findTabByID(findid: string): TabObj {
@@ -191,3 +207,6 @@ export class TaskProperties implements OnInit {
 */ 
 
 }
+
+
+

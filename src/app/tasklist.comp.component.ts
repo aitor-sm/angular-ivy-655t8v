@@ -22,11 +22,11 @@ import {
   UserList,
   currentUser,
   MCObject,
-  MCUXObject
+  MCUXObject, MCUXList
 } from './MC.core';
 import { basicFlow, FlowActionObj, FlowStatusObj } from './flows';
-import { TabObj, TaskProperties } from './app.component';
-import { TaskObj, TasksCfg, MCUXList } from './tasks';
+import { TabObj } from './app.component';
+import { TasksCfg } from './tasks';
 
 export interface DeleteDialogData {
   numberOfRecords: number;
@@ -56,9 +56,11 @@ const ToolbarTABS: TabObj[] = [
 })
 export class TaskList_comp implements OnInit {
   @Input() Parameters: object;
+//  @Input() ObjectList: MCUXList;
 
   @Output() FinishRender = new EventEmitter<boolean>();
   @Output() RecPropOutput = new EventEmitter<object>();
+  @Output() AddRecordCallBack = new EventEmitter<MCUXObject>();
 
   @ViewChild('RecordSpecificProps', { read: ViewContainerRef }) RecPropContainer;
 
@@ -81,8 +83,8 @@ export class TaskList_comp implements OnInit {
 
   // Controls for new task
   newRecordToggle: boolean = false;
-//  newTask: MCUXObject; // Template for new Task
-  newTask: TaskObj; // Template for new Task
+  newTask: MCUXObject; // Template for new Task
+//  newTask: TaskObj; // Template for new Task
 
   // Object properties specific
   op_classname: string = '';
@@ -105,11 +107,26 @@ export class TaskList_comp implements OnInit {
   ///////////////// CONSTRUCTORS
 
   ngOnInit() {
+
+    // OJO que esto no va a funcionar
     let p = {
       initSelect: this.Parameters['initSelect']
     };
 
     this.TL = new MCUXList(p);
+    // end_OJO
+
+/*
+    this.TL.addNewItem (new TaskObj ("Programa Tasks", 0, "Crear la versión 0.4", 0, new Date('2021-08-21')));
+    this.TL.addNewItem (new TaskObj ("Clase alemán", 1, "Clase por la tarde", 1, new Date('2021-08-21')));
+    this.TL.addNewItem (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-08-21')));
+*/
+
+
+//    this.obj_l.push (new MCUXObject (100, "Deberes", 0, "Descripción 3", 2));
+
+//    this.TL = this.ObjectList;
+
     this.selectedSummary(null);
 
 //    this.validateNewRecord = this.TL.validateNewTask;
@@ -124,7 +141,6 @@ export class TaskList_comp implements OnInit {
 
     };
 
-    //    this.visibleFields().forEach(t => {console.log (t.FName)});
   }
 
   ngAfterViewInit() {
@@ -155,6 +171,9 @@ export class TaskList_comp implements OnInit {
       this.RecordPropsComponentRef.instance.Parameters = this.RecordPropParams;
 */
       this.FinishRender.emit(true);
+      this.TL.bulkSelect(this.Parameters['initSelect']);
+      this.selectedSummary(null);
+
     });
   }
 
@@ -295,6 +314,7 @@ export class TaskList_comp implements OnInit {
   return;
 */
 
+/*
     let d: Date =
       !clearFields &&
       typeof this.newTask != 'undefined' &&
@@ -302,6 +322,7 @@ export class TaskList_comp implements OnInit {
       this.newTask.dueDate != null
         ? new Date(this.newTask.dueDate)
         : null;
+*/
 
     //    this.newTask = new TaskObj ("",this.Parameters["currentUser"],"", 0, new Date("2020-01-01") );
 
@@ -313,8 +334,10 @@ export class TaskList_comp implements OnInit {
 
 
     if (clearFields)
-      this.newTask = new TaskObj('', this.Parameters['currentUser'], '', 0, null);
-//      this.newTask = new MCUXObject(this.Parameters["RecClassId"],'', this.Parameters['currentUser'], '', 0);
+//      this.newTask = new TaskObj('', this.Parameters['currentUser'], '', 0, null);
+      this.newTask = new MCUXObject(this.Parameters["RecClassId"],'', this.Parameters['currentUser'], '', 0);
+
+/*
     else 
 //      this.newTask = this.newTask.clone();
 
@@ -325,7 +348,7 @@ export class TaskList_comp implements OnInit {
         0,
         d
       );
-
+*/
   }
 
 
@@ -474,12 +497,19 @@ export class TaskList_comp implements OnInit {
     else return basicFlow[this.op_status].name;
   }
 
+  addRecord (o: MCUXObject) {
+    this.TL.addNewItem(o);
+  }
+
   addNewTaskButton() {
     //    let I = this.newTask;
 
-    this.TL.addNewItem(this.newTask);
+//      this.addRecord (this.newTask);
 
-    this.createNewRecordTemplate(false);
+      this.AddRecordCallBack.emit (this.newTask);
+//    this.TL.addNewItem(this.newTask);
+
+//    this.createNewRecordTemplate(false);
     /*
     this.newTask.name = I.name;
     this.newTask.description = I.description;
