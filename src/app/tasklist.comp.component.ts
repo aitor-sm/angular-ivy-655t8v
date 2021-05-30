@@ -77,8 +77,8 @@ export class TaskList_comp implements OnInit {
   op_description: string;
 
   // Sorting options (temporary)
-  ascending : boolean = true;
-  sortField : number  = 1;
+//  ascending : boolean = true;
+//  sortField : number  = 1;
 
 
   ///////////////// INITIALISATION
@@ -158,12 +158,11 @@ export class TaskList_comp implements OnInit {
   }
 
   showArrow (name: string): string {
-    if (name == (this.fields[this.sortField].FName))
-      return this.ascending ? ' ▲' : ' ▼';
+    if (name == (this.fields[this.currentView.sortField].FName))
+      return this.currentView.ascending ? '▲' : '▼';
     else
       return "";
   }
-
 
 
 
@@ -445,6 +444,21 @@ export class DBViewObject extends MCObject {
 
     public set showHeaders (b: boolean) {
       this.setXField ("showHeaders", b);
+    }
+
+    public get sortField () : number {
+      return this.getXField ("sortField");
+    }
+
+    public set sortField (b: number) {
+      this.setXField ("sortField", b);
+    }
+    public get ascending () : boolean {
+      return this.getXField ("ascending");
+    }
+
+    public set ascending (b: boolean) {
+      this.setXField ("ascending", b);
     }
 
 

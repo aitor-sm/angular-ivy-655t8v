@@ -33,6 +33,8 @@ export class NCobjectS {
       a[0].setXField ("showTerminal", true);
       a[0].setXField ("showGrid", false);
       a[0].setXField ("showHeaders", true);
+      a[0].setXField ("sortField", 0);
+      a[0].setXField ("ascending", true);
       break;
     }
 

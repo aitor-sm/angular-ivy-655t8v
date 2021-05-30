@@ -114,16 +114,16 @@
           <div id="ViewProps" class="toolbartabcontent" style="display:block">
           <table height=100%><tr><td class="toolbar_section" width=150px>
 
-          &nbsp;<input type="checkbox" [(ngModel)]="this.currentView.showTerminal" (change)="vw_toggleTerminalTasks($event)">Show completed tasks<br>
-          &nbsp;<input type="checkbox" [(ngModel)]="this.currentView.showHeaders" >Show headers<br>
-          &nbsp;<input type="checkbox" [(ngModel)]="this.currentView.showGrid" >Show grid<br>
+          &nbsp;<input type="checkbox" [(ngModel)]="currentView.showTerminal" (change)="vw_toggleTerminalTasks($event)">Show completed tasks<br>
+          &nbsp;<input type="checkbox" [(ngModel)]="currentView.showHeaders" >Show headers<br>
+          &nbsp;<input type="checkbox" [(ngModel)]="currentView.showGrid" >Show grid<br>
 
           </td><td class="toolbar_section" width=300px>
-          &nbsp;Sort field:  <select class="toolbarbox" required size=0 [(ngModel)]='sortField' >
+          &nbsp;Sort field:  <select class="toolbarbox" required size=0 [(ngModel)]='currentView.sortField' >
       <option *ngFor="let item of [].constructor(fields.length); let i = index" [value]="i">{{fields[i].FCaption}}</option>
       </select>
           <br>
-          &nbsp;<input type="checkbox" [(ngModel)]="ascending" >Ascending?<br>
+          &nbsp;<input type="checkbox" [(ngModel)]="currentView.ascending" >Ascending?<br>
 
 
 
@@ -226,7 +226,7 @@
       <!--------- Non-empty TABLE  ---->
 
       <ng-template #task_tableelements>
-        <ng-container *ngFor="let task of TL.subFilter(applyFilter) | DBsort:ascending:fields[sortField].FName:fields[sortField].FType ">
+        <ng-container *ngFor="let task of TL.subFilter(applyFilter) | DBsort:currentView.ascending:fields[currentView.sortField].FName:fields[currentView.sortField].FType ">
           <tr *ngIf="applyFilter(task)" class=record (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)"
             [class.highlight]="Parameters['highlightRecord'](task)" [class.selected]="task.selected">
 
