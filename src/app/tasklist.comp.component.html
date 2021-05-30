@@ -110,11 +110,24 @@
 
           <!-- /// VIEW PROPERTIES TOOLBAR-->
 
+
           <div id="ViewProps" class="toolbartabcontent" style="display:block">
+          <table height=100%><tr><td class="toolbar_section" width=150px>
+
           &nbsp;<input type="checkbox" [(ngModel)]="this.currentView.showTerminal" (change)="vw_toggleTerminalTasks($event)">Show completed tasks<br>
           &nbsp;<input type="checkbox" [(ngModel)]="this.currentView.showHeaders" >Show headers<br>
           &nbsp;<input type="checkbox" [(ngModel)]="this.currentView.showGrid" >Show grid<br>
 
+          </td><td class="toolbar_section" width=300px>
+          &nbsp;Sort field:  <select class="toolbarbox" required size=0 [(ngModel)]='sortField' >
+      <option *ngFor="let item of [].constructor(fields.length); let i = index" [value]="i">{{fields[i].FCaption}}</option>
+      </select>
+          <br>
+          &nbsp;<input type="checkbox" [(ngModel)]="ascending" >Ascending?<br>
+
+
+
+          </td></tr></table>
           
           </div>
           <!-- /// END OF TOOLBAR TABS-->
@@ -134,7 +147,7 @@
       <tr *ngIf="this.currentView.showHeaders" class=header>
         <td width="25"><input type="checkbox" (change)="onSelectAll($event)"></td>
 
-        <td *ngFor="let f of visibleFields()" width={{f.Width}}>{{f.FCaption}}</td>
+        <td *ngFor="let f of visibleFields(); let i = index" width={{f.Width}}>{{showArrow(f.FName)+" "+f.FCaption}}</td>
 
         <td>Actions</td>
       </tr>
@@ -213,7 +226,7 @@
       <!--------- Non-empty TABLE  ---->
 
       <ng-template #task_tableelements>
-        <ng-container *ngFor="let task of TL.subFilter(applyFilter)">
+        <ng-container *ngFor="let task of TL.subFilter(applyFilter) | DBsort:ascending:fields[sortField].FName:fields[sortField].FType ">
           <tr *ngIf="applyFilter(task)" class=record (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)"
             [class.highlight]="Parameters['highlightRecord'](task)" [class.selected]="task.selected">
 

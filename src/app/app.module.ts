@@ -32,6 +32,7 @@ import { DialogDeleteTasks} from "./delete-task-dialog.component";
 
 import { UserPipe } from './user.pipe';
 import { StatusPipe } from './status.pipe';
+import { DBsortPipe} from './DBsort.pipe';
 
 
 @NgModule({
@@ -63,7 +64,7 @@ import { StatusPipe } from './status.pipe';
     MatDialogModule,
     MatTooltipModule, 
     MatCheckboxModule ],
-  declarations: [AppComponent, HelloComponent, TaskList_comp, DialogDeleteTasks, UserPipe, StatusPipe, TaskProperties],
+  declarations: [AppComponent, HelloComponent, TaskList_comp, DialogDeleteTasks, UserPipe, StatusPipe, DBsortPipe, TaskProperties],
   entryComponents: [DialogDeleteTasks],
   bootstrap: [AppComponent]
 })

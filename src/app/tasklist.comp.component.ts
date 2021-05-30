@@ -76,6 +76,10 @@ export class TaskList_comp implements OnInit {
   op_status: number;
   op_description: string;
 
+  // Sorting options (temporary)
+  ascending : boolean = true;
+  sortField : number  = 1;
+
 
   ///////////////// INITIALISATION
 
@@ -151,6 +155,13 @@ export class TaskList_comp implements OnInit {
       this.TL.doSel(t => {
         if (t.isTerminalStatus()) t.selected = false;
       });
+  }
+
+  showArrow (name: string): string {
+    if (name == (this.fields[this.sortField].FName))
+      return this.ascending ? ' ▲' : ' ▼';
+    else
+      return "";
   }
 
 
@@ -403,9 +414,13 @@ export class DBViewObject extends MCObject {
 
     constructor (o: MCObject) {
       super(o.nid, o.name, o.owner, o.description, o.status);
+      this._XFields = o._XFields;
+
+      /*
       this.showHeaders = o.getXField ("showHeaders");
       this.showGrid = o.getXField ("showGrid");
       this.showTerminal = o.getXField ("showTerminal");
+      */
     }
 
     public get showTerminal () : boolean {
