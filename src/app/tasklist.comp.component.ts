@@ -9,7 +9,7 @@ import {
   ComponentRef
 } from '@angular/core';
 
-import { MCField, MCUXObject, MCUXList } from './MC.core';
+import { MCField, MCUXObject, MCUXList, MCObject } from './MC.core';
 import { basicFlow, FlowActionObj, FlowStatusObj } from './flows';
 import { TabObj } from './app.component';
 import { NCobjectS } from './NCobject.service';
@@ -37,6 +37,7 @@ const ToolbarTABS: TabObj[] = [
 export class TaskList_comp implements OnInit {
   @Input() Parameters: object;
   @Input() fields: MCDBField[];
+  @Input() currentView: DBViewObject;
 
   @Output() FinishRender = new EventEmitter<boolean>();
   @Output() RecPropOutput = new EventEmitter<object>();
@@ -75,10 +76,6 @@ export class TaskList_comp implements OnInit {
   op_status: number;
   op_description: string;
 
-  // View options
-  vw_showTerminalTasks: boolean = true;
-  vw_showHeaders: boolean = true;
-  vw_showGrid: boolean = false;
 
   ///////////////// INITIALISATION
 
@@ -150,7 +147,7 @@ export class TaskList_comp implements OnInit {
 
   // View
   vw_toggleTerminalTasks(e) {
-    if (!this.vw_showTerminalTasks)
+    if (!this.currentView.showTerminal )
       this.TL.doSel(t => {
         if (t.isTerminalStatus()) t.selected = false;
       });
@@ -165,23 +162,12 @@ export class TaskList_comp implements OnInit {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
   ///////////////// VISUAL EFFECTS
 
 
 
   applyFilter = t => {
-    return this.vw_showTerminalTasks || !t.isTerminalStatus();
+    return this.currentView.showTerminal || !t.isTerminalStatus();
   };
 
 
@@ -410,3 +396,41 @@ export class TaskList_comp implements OnInit {
 
 
 
+
+
+
+export class DBViewObject extends MCObject {
+
+    constructor (o: MCObject) {
+      super(o.nid, o.name, o.owner, o.description, o.status);
+      this.showHeaders = o.getXField ("showHeaders");
+      this.showGrid = o.getXField ("showGrid");
+      this.showTerminal = o.getXField ("showTerminal");
+    }
+
+    public get showTerminal () : boolean {
+      return this.getXField ("showTerminal");
+    }
+
+    public set showTerminal (b: boolean) {
+      this.setXField ("showTerminal", b);
+    }
+
+    public get showGrid () : boolean {
+      return this.getXField ("showGrid");
+    }
+
+    public set showGrid (b: boolean) {
+      this.setXField ("showGrid", b);
+    }
+
+    public get showHeaders () : boolean {
+      return this.getXField ("showHeaders");
+    }
+
+    public set showHeaders (b: boolean) {
+      this.setXField ("showHeaders", b);
+    }
+
+
+}

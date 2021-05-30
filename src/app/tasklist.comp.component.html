@@ -111,9 +111,9 @@
           <!-- /// VIEW PROPERTIES TOOLBAR-->
 
           <div id="ViewProps" class="toolbartabcontent" style="display:block">
-          &nbsp;<input type="checkbox" [(ngModel)]="vw_showTerminalTasks" (change)="vw_toggleTerminalTasks($event)">Show completed tasks<br>
-          &nbsp;<input type="checkbox" [(ngModel)]="vw_showHeaders" >Show headers<br>
-          &nbsp;<input type="checkbox" [(ngModel)]="vw_showGrid" >Show grid<br>
+          &nbsp;<input type="checkbox" [(ngModel)]="this.currentView.showTerminal" (change)="vw_toggleTerminalTasks($event)">Show completed tasks<br>
+          &nbsp;<input type="checkbox" [(ngModel)]="this.currentView.showHeaders" >Show headers<br>
+          &nbsp;<input type="checkbox" [(ngModel)]="this.currentView.showGrid" >Show grid<br>
 
           
           </div>
@@ -131,7 +131,7 @@
 
       <thead>
 
-      <tr *ngIf="vw_showHeaders" class=header>
+      <tr *ngIf="this.currentView.showHeaders" class=header>
         <td width="25"><input type="checkbox" (change)="onSelectAll($event)"></td>
 
         <td *ngFor="let f of visibleFields()" width={{f.Width}}>{{f.FCaption}}</td>
@@ -145,7 +145,7 @@
         <td width="25px"></td>
 
 
-        <td *ngFor="let f of visibleFields()" width={{f.Width}}  [class.grid] = "vw_showGrid">
+        <td *ngFor="let f of visibleFields()" width={{f.Width}}  [class.grid] = "this.currentView.showGrid">
           <div [ngSwitch]="f.FType">
 
             <ng-container *ngSwitchCase="'string'">
@@ -220,11 +220,11 @@
 
             <!--------- LIST OF FIELDS  ---->
 
-            <td width="25px" [class.grid] = "vw_showGrid"><input type="checkbox" (change)="onSelectRecord($event, task)" [(ngModel)]="task.selected" ></td>
+            <td width="25px" [class.grid] = "this.currentView.showGrid"><input type="checkbox" (change)="onSelectRecord($event, task)" [(ngModel)]="task.selected" ></td>
 
             <!--------- Customizatble FIELDS  ---->
 
-            <td *ngFor="let f of visibleFields()" width={{f.Width}}  [class.grid] = "vw_showGrid">
+            <td *ngFor="let f of visibleFields()" width={{f.Width}}  [class.grid] = "this.currentView.showGrid">
               <div [ngSwitch]="f.FType">
                 <ng-container *ngSwitchCase="'date'">{{task.getFieldValue(f.FName) | date: 'dd/MM/y'}}</ng-container>
                 <ng-container *ngSwitchCase="'user'">{{task.getFieldValue(f.FName) | user }}</ng-container>
@@ -236,7 +236,7 @@
 
             <!--------- Action Buttons  ---->
 
-            <td *ngIf="task==focus; else actions_no_focus"  [class.grid] = "vw_showGrid">
+            <td *ngIf="task==focus; else actions_no_focus"  [class.grid] = "this.currentView.showGrid">
               <button type="button"(click)="deleteSelectedTasksButton(0)" class=inlined >Delete</button>
               <ng-container *ngFor="let action of task.availableActions()">
                 &nbsp;
@@ -244,7 +244,7 @@
               </ng-container>
             </td>
             <ng-template #actions_no_focus>
-              <td [class.grid] = "vw_showGrid"></td>
+              <td [class.grid] = "this.currentView.showGrid"></td>
             </ng-template>
 
             <!--------- END LIST OF FIELDS  ---->

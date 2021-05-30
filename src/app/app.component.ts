@@ -15,7 +15,7 @@ import {
 import { MCUXObject, MCField, MCParameter, UserList, currentUser, MCUXList, MCObject } from './MC.core';
 import {NCobjectS} from './NCobject.service'
 import { basicFlow } from './flows';
-import { TaskList_comp, MCDBField } from './tasklist.comp.component';
+import { TaskList_comp, MCDBField , DBViewObject} from './tasklist.comp.component';
 import { TaskObj, TasksCfg } from './tasks';
 import { DialogDeleteTasks } from './delete-task-dialog.component';
  
@@ -60,6 +60,7 @@ export class AppComponent implements OnInit {
   Fields: MCDBField[] = TaskDBFields;
 
   cfg: MCParameter[] = TasksCfg;
+  curView: DBViewObject;
   taskListRendered: boolean = false;
 
   TaskVersion: string = '0.0.4';
@@ -74,6 +75,7 @@ export class AppComponent implements OnInit {
     private resolver: ComponentFactoryResolver,
     public NCobject: NCobjectS
   ) {
+    this.curView = new DBViewObject (this.NCobject.getObjectOfClass(10)[0]);
   //  console.log ("resolver:", typeof resolver)
   }
 

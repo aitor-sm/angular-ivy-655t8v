@@ -89,6 +89,10 @@ export class MCObject {
     return this.getClassName() + this._id.toString().padStart(12,"0");
   };
 
+  public get nid (): number {
+    return this._id;
+  }
+
   public get created (): Date {
     return this._createdT;
   }
