@@ -104,7 +104,8 @@ export class MCObject {
   public getClassName (): string {
   const SysClasses: string[] = [
     "CLAS", "RELT", "TAG_", "FOLD", "USER", 
-    "STAT", "AUDT", "CONF", "PROC", "PROT"];
+    "STAT", "AUDT", "CONF", "PROC", "PROT",
+    "VIEW"];
   const AppClasses: string[] = [
     "TASK"];
 

@@ -12,6 +12,7 @@ import {
 import { MCField, MCUXObject, MCUXList } from './MC.core';
 import { basicFlow, FlowActionObj, FlowStatusObj } from './flows';
 import { TabObj } from './app.component';
+import { NCobjectS } from './NCobject.service';
 
 
 export interface MCDBField extends MCField {
@@ -138,6 +139,15 @@ export class TaskList_comp implements OnInit {
 
   ///////////////// TEMPLATE UI METHODS
 
+  // Table
+  onMouseOver(t: MCUXObject): void {
+    this.focus = t;
+  }
+
+  onMouseOut(t: MCUXObject): void {
+    this.focus = null;
+  }
+
   // View
   vw_toggleTerminalTasks(e) {
     if (!this.vw_showTerminalTasks)
@@ -174,13 +184,6 @@ export class TaskList_comp implements OnInit {
     return this.vw_showTerminalTasks || !t.isTerminalStatus();
   };
 
-  onMouseOver(t: MCUXObject): void {
-    this.focus = t;
-  }
-
-  onMouseOut(t: MCUXObject): void {
-    this.focus = null;
-  }
 
   onChangeOwner() {
     this.reassignSelectedTasks(this.op_owner);
@@ -237,7 +240,7 @@ export class TaskList_comp implements OnInit {
     );
   }
 
-  findTabByID(findid: string): TabObj {
+  private findTabByID(findid: string): TabObj {
     let i: number;
     for (i = 0; i < ToolbarTABS.length; i++)
       if (ToolbarTABS[i].id == findid) return ToolbarTABS[i];

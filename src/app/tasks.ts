@@ -17,6 +17,10 @@ export class TaskObj extends MCUXObject {
 
   }
 
+  public static fromMCObject (o: MCObject): TaskObj {
+      return new TaskObj ( o.name, o.owner, o.description, o.status, o.getXField ("DueDate"));
+  }
+
   public get dueDate () {
       return this.getXField ("DueDate");
   }

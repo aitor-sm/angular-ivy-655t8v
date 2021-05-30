@@ -12,7 +12,8 @@ import {
   MatDialog
 } from '@angular/material/dialog';
 
-import { MCUXObject, MCField, MCParameter, UserList, currentUser, MCUXList } from './MC.core';
+import { MCUXObject, MCField, MCParameter, UserList, currentUser, MCUXList, MCObject } from './MC.core';
+import {NCobjectS} from './NCobject.service'
 import { basicFlow } from './flows';
 import { TaskList_comp, MCDBField } from './tasklist.comp.component';
 import { TaskObj, TasksCfg } from './tasks';
@@ -70,7 +71,8 @@ export class AppComponent implements OnInit {
 
 
   constructor( public DeleteTasksDialog: MatDialog, 
-    private resolver?: ComponentFactoryResolver
+    private resolver: ComponentFactoryResolver,
+    public NCobject: NCobjectS
   ) {
   //  console.log ("resolver:", typeof resolver)
   }
@@ -94,12 +96,17 @@ export class AppComponent implements OnInit {
   onFinishRender(b: boolean) {
     this.taskListRendered = b;
 
+/*
     this.mainTaskViewCpt.addRecord (new TaskObj ("Programa Tasks", 0, "Crear la versión 0.4", 0, new Date('2021-08-21')));
     this.mainTaskViewCpt.addRecord (new TaskObj ("Clase alemán", 1, "Clase por la tarde", 1, new Date('2021-08-21')));
     this.mainTaskViewCpt.addRecord (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-08-21')));
+*/
 
-//    this.TaskList.bulkSelect(this.TaskAppParams['initSelect']);
+    let a : MCObject[] = this.NCobject.getObjectOfClass(100);
+    a.forEach ( o => this.mainTaskViewCpt.addRecord ( TaskObj.fromMCObject(o)));
 
+        
+    
   }
 
   TaskAppParams: object;
