@@ -147,7 +147,7 @@
       <tr *ngIf="this.currentView.showHeaders" class=header>
         <td width="25"><input type="checkbox" (change)="onSelectAll($event)"></td>
 
-        <td *ngFor="let f of visibleFields(); let i = index" width={{f.Width}} (click)="sortByThisField(f.FName)">{{showArrow(f.FName)+" "+f.FCaption}}</td>
+        <td *ngFor="let f of visibleFields(); let i = index" width={{f.Width}} (click)="sortByThisField(f.FName)" class=DBHeader>{{showArrow(f.FName)+" "+f.FCaption}}</td>
 
         <td>Actions</td>
       </tr>

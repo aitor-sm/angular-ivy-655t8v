@@ -138,6 +138,10 @@ td.grid {
   border: 1px dashed gray
 }
 
+td.DBHeader {
+ cursor: pointer;
+}
+
 
 /* DBView - inlined controls */
 input.input_inlined {
