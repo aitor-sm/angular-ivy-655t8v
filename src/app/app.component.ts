@@ -155,7 +155,7 @@ export class AppComponent implements OnInit {
   }
 
   addTask (o: MCUXObject) {
-    let t = new TaskObj (o.name, o.owner, o.description, o.status, o.getXField("DueDate"));
+    let t = new TaskObj (o.name, o.type, o.owner, o.description, o.status, o.getXField("DueDate"));
 //    console.log ("D=", o.getXField("DueDate"));
 //    console.log ("T=", t.getXField("DueDate"));
 

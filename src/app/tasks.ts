@@ -6,9 +6,9 @@ import { MCField, MCParameter, MCObject, MCUXObject } from "./MC.core";
 export class TaskObj extends MCUXObject {
 
 
-  public constructor (Name: string, Owner: number, Desc: string, Status: number, DueDate: Date) {
+  public constructor (Name: string, Type: number, Owner: number, Desc: string, Status: number, DueDate: Date) {
 
-    super( 100, Name, Owner, Desc, Status);
+    super( 100, Type, Name, Owner, Desc, Status);
 
     this.dueDate = DueDate;
 
@@ -18,7 +18,7 @@ export class TaskObj extends MCUXObject {
   }
 
   public static fromMCObject (o: MCObject): TaskObj {
-      return new TaskObj ( o.name, o.owner, o.description, o.status, o.getXField ("DueDate"));
+      return new TaskObj ( o.name, o.type, o.owner, o.description, o.status, o.getXField ("DueDate"));
   }
 
   public get dueDate () {

@@ -240,7 +240,7 @@ export class TaskList_comp implements OnInit {
   }
 
   createNewRecordTemplate() {
-    this.newRec = new MCUXObject(this.Parameters["RecClassId"],'', this.Parameters['currentUser'], '', 0);
+    this.newRec = new MCUXObject(this.Parameters["RecClassId"],0, '', this.Parameters['currentUser'], '', 0);
   }
 
 
@@ -426,7 +426,7 @@ export class TaskList_comp implements OnInit {
 export class DBViewObject extends MCObject {
 
     constructor (o: MCObject) {
-      super(o.nid, o.name, o.owner, o.description, o.status);
+      super(o.nid, o.type, o.name, o.owner, o.description, o.status);
       this._XFields = o._XFields;
 
       /*

@@ -3,9 +3,9 @@ import { FlowActionObj, FlowStatusObj, basicFlow } from "./flows";
 export type MCType = "objid" | "auto" | "boolean" | "number" | "string" |"date" | "user" | "status";
 
 export interface MCField {
-  FName: string;
-  FType: MCType;
-  FCaption: string;
+  FName: string;  //name
+  FType: MCType;   // type (new)
+  FCaption: string;   //description
   FOptionality: "optional" | "mandatory";
   Default: any;
 }
@@ -32,6 +32,7 @@ export class MCObject {
   private _name: string;
   private _owner: number;
   private _description: string;
+  private _type: number;
   
   public _XFields : {[key: string]: any} = [];
 
@@ -45,7 +46,7 @@ export class MCObject {
   private static sequence: number = 0; // there should be one per class
 
 
-  constructor (ClassId: number, Name: string, Owner: number, Desc: string, Status: number) {
+  constructor (ClassId: number, TypeId: number, Name: string, Owner: number, Desc: string, Status: number) {
     this._id = MCObject.sequence;
     MCObject.sequence ++;
     
@@ -60,6 +61,7 @@ export class MCObject {
     this.owner = Owner;
     this.description = Desc;
     this.status = Status;
+    this.type = TypeId;
 
     // Temporarily, flow options
     this.resolvedT = null;
@@ -69,16 +71,16 @@ export class MCObject {
   }
 
   public clone (): MCObject {
-    let a : MCObject = new MCObject (this._class, this._name, this._owner, this._description, this._status);
+    let a : MCObject = new MCObject (this._class, this.type, this._name, this._owner, this._description, this._status);
     
     a.resolvedT = new Date(this.resolvedT);
     a.closedT = new Date (this.closedT);
 
 //    this._XFields.forEach(val => {console.log ("XX=",val); a._XFields.push(Object.assign({}, val))});
 
-  for (let key of Object.keys(this._XFields)) {
-    a._XFields[key] = JSON.parse(JSON.stringify(this._XFields[key]));
-  }
+    for (let key of Object.keys(this._XFields)) {
+      a._XFields[key] = JSON.parse(JSON.stringify(this._XFields[key]));
+    }
 
     return a;
   }
@@ -144,6 +146,16 @@ export class MCObject {
   public set description (d: string) {
     this._description = d;
   }
+
+  public get type (): number {
+    return this._type;
+  }
+
+  public set type (n: number) {
+    this._type = n;
+  }
+
+
 
 
   // X-Fields
@@ -251,9 +263,9 @@ export class MCUXObject extends MCObject {
 
   public selected: boolean;
 
-  public constructor (ClassId: number, Name: string, Owner: number, Desc: string, Status: number) {
+  public constructor (ClassId: number, Type: number, Name: string, Owner: number, Desc: string, Status: number) {
 
-    super( ClassId, Name, Owner, Desc, Status);
+    super( ClassId, Type, Name, Owner, Desc, Status);
 
     this.selected = false;
 

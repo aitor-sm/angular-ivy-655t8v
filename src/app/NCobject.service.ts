@@ -21,15 +21,15 @@ export class NCobjectS {
     {
     case 100:
       a = [
-        new MCObject (100, "Programa Tasks", 0, "Crear la versión 0.4", 0),
-        new MCObject (100, "Clase alemán", 0, "Clase por la tarde", 0),
-        new MCObject (100, "Deberes", 0, "Descripción 3", 0),
+        new MCObject (100, 0, "Programa Tasks", 0, "Crear la versión 0.4", 0),
+        new MCObject (100, 0, "Clase alemán", 0, "Clase por la tarde", 0),
+        new MCObject (100, 0, "Deberes", 0, "Descripción 3", 0),
       ]
 
       a.forEach (o => o.setXField("DueDate", new Date('2021-08-21')));
       break;
     case 10:
-      a = [ new MCObject (10, "Main view", 0, "Main tasks view", 0)];
+      a = [ new MCObject (10, 0, "Main view", 0, "Main tasks view", 0)];
       a[0].setXField ("showTerminal", true);
       a[0].setXField ("showGrid", false);
       a[0].setXField ("showHeaders", true);
