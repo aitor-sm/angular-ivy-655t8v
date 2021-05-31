@@ -164,6 +164,20 @@ export class TaskList_comp implements OnInit {
       return "";
   }
 
+  sortByThisField ( name: string) {
+//    console.log ("name=",name);
+    if (name == (this.fields[this.currentView.sortField].FName)) 
+      this.currentView.ascending = !this.currentView.ascending;
+    else {
+      this.currentView.ascending = true;
+      for (let i=this.fields.length-1; i>=0; i--) {
+        if (name == (this.fields[i].FName))
+          this.currentView.sortField = i;
+      }
+    }
+//    console.log ("sortfield=",this.currentView.sortField);
+//    console.log ("ascending=",this.currentView.ascending);
+  }
 
 
   ///////////////// PRIVATE METHODS
