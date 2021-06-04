@@ -120,7 +120,7 @@
 
           </td><td class="toolbar_section" width=300px>
           &nbsp;Sort field:  <select class="toolbarbox" required size=0 [(ngModel)]='currentView.sortField' >
-      <option *ngFor="let item of [].constructor(fields.length); let i = index" [value]="i">{{fields[i].FCaption}}</option>
+      <option *ngFor="let item of [].constructor(fields.length); let i = index" [value]="i">{{fields[i].description}}</option>
       </select>
           <br>
           &nbsp;<input type="checkbox" [(ngModel)]="currentView.ascending" >Ascending?<br>
@@ -147,7 +147,7 @@
       <tr *ngIf="this.currentView.showHeaders" class=header>
         <td width="25"><input type="checkbox" (change)="onSelectAll($event)"></td>
 
-        <td *ngFor="let f of visibleFields(); let i = index" width={{f.Width}} (click)="sortByThisField(f.FName)" class=DBHeader>{{showArrow(f.FName)+" "+f.FCaption}}</td>
+        <td *ngFor="let f of visibleFields(); let i = index" width={{f.Width}} (click)="sortByThisField(f.name)" class=DBHeader>{{showArrow(f.name)+" "+f.description}}</td>
 
         <td>Actions</td>
       </tr>
@@ -159,25 +159,25 @@
 
 
         <td *ngFor="let f of visibleFields()" width={{f.Width}}  [class.grid] = "this.currentView.showGrid">
-          <div [ngSwitch]="f.FType">
+          <div [ngSwitch]="f.type">
 
             <ng-container *ngSwitchCase="'string'">
               <ng-container *ngIf="f.Access == 'ro'; else newrec_string_rw"> 
-              {{newRec.getFieldValue(f.FName)}}
+              {{newRec.getFieldValue(f.name)}}
               </ng-container>
               <ng-template #newrec_string_rw>
                 <input #newrec_text class=input_inlined 
-    (change)="newRec.setFieldValue(f.FName,newrec_text.value)" placeholder={{f.NewRecordCaption}} size={{newRec.PixelsToSize(f.Width)}} [ngModel]="newRec.getFieldValue(f.FName)"  >
+    (change)="newRec.setFieldValue(f.name,newrec_text.value)" placeholder={{f.NewRecordCaption}} size={{newRec.PixelsToSize(f.Width)}} [ngModel]="newRec.getFieldValue(f.name)"  >
               </ng-template>
             </ng-container>
 
             <ng-container *ngSwitchCase="'user'">
               <ng-container *ngIf="f.Access == 'ro'; else newrec_user_rw"> 
-              {{newRec.getFieldValue(f.FName) | user}}
+              {{newRec.getFieldValue(f.name) | user}}
               </ng-container>
               <ng-template #newrec_user_rw>
 
-                <select required #t (change)="newRec.setFieldValue(f.FName,t.value)" [ngModel]="newRec.getFieldValue(f.FName)">
+                <select required #t (change)="newRec.setFieldValue(f.name,t.value)" [ngModel]="newRec.getFieldValue(f.name)">
                 <option *ngFor="let item of [].constructor(Parameters['users'].length); let i = index" [value]="i">{{Parameters['users'][i]}}</option>
                 </select>
 
@@ -186,19 +186,19 @@
 
             <ng-container *ngSwitchCase="'date'">
               <ng-container *ngIf="f.Access == 'ro'; else newrec_date_rw"> 
-              {{newRec.getFieldValue(f.FName) | date: 'dd/MM/y'}}
+              {{newRec.getFieldValue(f.name) | date: 'dd/MM/y'}}
               </ng-container>
               <ng-template #newrec_date_rw>
 
-              <input type="date" class=input_inlined style="width:120px"  [ngModel]="newRec.getFieldValue(f.FName) | date:'yyyy-MM-dd'"  (ngModelChange)="newRec.writeDateField(f.FName,$event)">
+              <input type="date" class=input_inlined style="width:120px"  [ngModel]="newRec.getFieldValue(f.name) | date:'yyyy-MM-dd'"  (ngModelChange)="newRec.writeDateField(f.name,$event)">
               </ng-template>
             </ng-container>
 
             <ng-container *ngSwitchCase="'status'">
-              {{newRec.getFieldValue(f.FName) |status }}
+              {{newRec.getFieldValue(f.name) |status }}
             </ng-container>
 
-            <ng-container *ngSwitchDefault> {{newRec.getFieldValue(f.FName)}}</ng-container>
+            <ng-container *ngSwitchDefault> {{newRec.getFieldValue(f.name)}}</ng-container>
 
           </div>
         </td>
@@ -226,7 +226,7 @@
       <!--------- Non-empty TABLE  ---->
 
       <ng-template #task_tableelements>
-        <ng-container *ngFor="let task of TL.subFilter(applyFilter) | DBsort:currentView.ascending:fields[currentView.sortField].FName:fields[currentView.sortField].FType ">
+        <ng-container *ngFor="let task of TL.subFilter(applyFilter) | DBsort:currentView.ascending:fields[currentView.sortField].name:fields[currentView.sortField].type ">
           <tr *ngIf="applyFilter(task)" class=record (mouseover)="onMouseOver(task)" (mouseout)="onMouseOut(task)"
             [class.highlight]="Parameters['highlightRecord'](task)" [class.selected]="task.selected">
 
@@ -238,11 +238,11 @@
             <!--------- Customizatble FIELDS  ---->
 
             <td *ngFor="let f of visibleFields()" width={{f.Width}}  [class.grid] = "this.currentView.showGrid">
-              <div [ngSwitch]="f.FType">
-                <ng-container *ngSwitchCase="'date'">{{task.getFieldValue(f.FName) | date: 'dd/MM/y'}}</ng-container>
-                <ng-container *ngSwitchCase="'user'">{{task.getFieldValue(f.FName) | user }}</ng-container>
-                <ng-container *ngSwitchCase="'status'">{{task.getFieldValue(f.FName) | status }}</ng-container>
-                <ng-container *ngSwitchDefault> {{task.getFieldValue(f.FName)}}</ng-container>
+              <div [ngSwitch]="f.type">
+                <ng-container *ngSwitchCase="'date'">{{task.getFieldValue(f.name) | date: 'dd/MM/y'}}</ng-container>
+                <ng-container *ngSwitchCase="'user'">{{task.getFieldValue(f.name) | user }}</ng-container>
+                <ng-container *ngSwitchCase="'status'">{{task.getFieldValue(f.name) | status }}</ng-container>
+                <ng-container *ngSwitchDefault> {{task.getFieldValue(f.name)}}</ng-container>
               </div>
             </td>
 

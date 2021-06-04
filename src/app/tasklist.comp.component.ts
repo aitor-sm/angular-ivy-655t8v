@@ -158,7 +158,7 @@ export class TaskList_comp implements OnInit {
   }
 
   showArrow (name: string): string {
-    if (name == (this.fields[this.currentView.sortField].FName))
+    if (name == (this.fields[this.currentView.sortField].name))
       return this.currentView.ascending ? '▲' : '▼';
     else
       return "";
@@ -166,12 +166,12 @@ export class TaskList_comp implements OnInit {
 
   sortByThisField ( name: string) {
 //    console.log ("name=",name);
-    if (name == (this.fields[this.currentView.sortField].FName)) 
+    if (name == (this.fields[this.currentView.sortField].name)) 
       this.currentView.ascending = !this.currentView.ascending;
     else {
       this.currentView.ascending = true;
       for (let i=this.fields.length-1; i>=0; i--) {
-        if (name == (this.fields[i].FName))
+        if (name == (this.fields[i].name))
           this.currentView.sortField = i;
       }
     }

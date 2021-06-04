@@ -164,7 +164,7 @@ export class AppComponent implements OnInit {
   }
 
   deleteTasks (o: number) {
-    if (TasksCfg.find(a => a.FName == 'WarnOnDelete').FValue) {
+    if (TasksCfg.find(a => a.name == 'WarnOnDelete').FValue) {
       let dialogRef = this.DeleteTasksDialog.open(DialogDeleteTasks, {
         height: '200px',
         width: '100%',
@@ -179,7 +179,7 @@ export class AppComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         if (typeof result != 'undefined') {
-          TasksCfg.find(a => a.FName == 'WarnOnDelete').FValue =
+          TasksCfg.find(a => a.name == 'WarnOnDelete').FValue =
             result.confirmation;
 
 //          if (result.doIt) this.doDeleteTasks(o);
@@ -261,9 +261,9 @@ export class TaskProperties implements OnInit {
 
 export var TaskDBFields: MCDBField[] = [
   {
-    FName: 'id',
-    FCaption: 'Task ID',
-    FType: 'objid',
+    name: 'id',
+    description: 'Task ID',
+    type: 'objid',
     Show: false,
     Access: 'ro',
     Width: 100,
@@ -273,9 +273,9 @@ export var TaskDBFields: MCDBField[] = [
     NewRecordCaption: ''
   },
   {
-    FName: 'name',
-    FCaption: 'Task',
-    FType: 'string',
+    name: 'name',
+    description: 'Task',
+    type: 'string',
     Show: true,
     Access: 'rw',
     Width: 120,
@@ -285,9 +285,9 @@ export var TaskDBFields: MCDBField[] = [
     NewRecordCaption: 'Enter task name here'
   },
   {
-    FName: 'owner',
-    FCaption: 'Assigned to',
-    FType: 'user',
+    name: 'owner',
+    description: 'Assigned to',
+    type: 'user',
     Show: true,
     Access: 'rw',
     Width: 80,
@@ -297,9 +297,9 @@ export var TaskDBFields: MCDBField[] = [
     NewRecordCaption: ''
   },
   {
-    FName: 'creator',
-    FCaption: 'Reporter',
-    FType: 'user',
+    name: 'creator',
+    description: 'Reporter',
+    type: 'user',
     Show: true,
     Access: 'ro',
     Width: 80,
@@ -309,9 +309,9 @@ export var TaskDBFields: MCDBField[] = [
     NewRecordCaption: UserList[currentUser]
   },
   {
-    FName: 'status',
-    FCaption: 'Status',
-    FType: 'status',
+    name: 'status',
+    description: 'Status',
+    type: 'status',
     Show: true,
     Access: 'ro',
     Width: 80,
@@ -321,9 +321,9 @@ export var TaskDBFields: MCDBField[] = [
     NewRecordCaption: '--' + basicFlow[0].name + '--'
   },
   {
-    FName: 'createdT',
-    FCaption: 'Created at',
-    FType: 'date',
+    name: 'createdT',
+    description: 'Created at',
+    type: 'date',
     Show: true,
     Access: 'ro',
     Width: 90,
@@ -334,9 +334,9 @@ export var TaskDBFields: MCDBField[] = [
     //    NewRecordCaption: formatDate(new Date(), 'yyyy/MM/dd', 'en')
   },
   {
-    FName: 'resolvedT',
-    FCaption: 'Resolved at',
-    FType: 'date',
+    name: 'resolvedT',
+    description: 'Resolved at',
+    type: 'date',
     Show: true,
     Access: 'ro',
     Width: 90,
@@ -346,9 +346,9 @@ export var TaskDBFields: MCDBField[] = [
     NewRecordCaption: ''
   },
   {
-    FName: 'DueDate',
-    FCaption: 'Due by',
-    FType: 'date',
+    name: 'DueDate',
+    description: 'Due by',
+    type: 'date',
     Show: true,
     Access: 'rw',
     Width: 125,
@@ -358,9 +358,9 @@ export var TaskDBFields: MCDBField[] = [
     NewRecordCaption: ''
   },
   {
-    FName: 'closedT',
-    FCaption: 'Closed at',
-    FType: 'date',
+    name: 'closedT',
+    description: 'Closed at',
+    type: 'date',
     Show: false,
     Access: 'ro',
     Width: 90,
@@ -370,9 +370,9 @@ export var TaskDBFields: MCDBField[] = [
     NewRecordCaption: ''
   },
   {
-    FName: 'description',
-    FCaption: 'Description',
-    FType: 'string',
+    name: 'description',
+    description: 'Description',
+    type: 'string',
     Show: true,
     Access: 'rw',
     Width: 280,

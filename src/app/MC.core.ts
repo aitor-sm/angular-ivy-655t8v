@@ -3,9 +3,9 @@ import { FlowActionObj, FlowStatusObj, basicFlow } from "./flows";
 export type MCType = "objid" | "auto" | "boolean" | "number" | "string" |"date" | "user" | "status";
 
 export interface MCField {
-  FName: string;  //name
-  FType: MCType;   // type (new)
-  FCaption: string;   //description
+  name: string;  
+  type: MCType;   // type (new)
+  description: string; 
   FOptionality: "optional" | "mandatory";
   Default: any;
 }

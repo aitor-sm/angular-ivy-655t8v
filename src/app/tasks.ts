@@ -43,10 +43,10 @@ export class TaskObj extends MCUXObject {
 
 export var TasksCfg : MCParameter[] = [
   {
-    FName: "WarnOnDelete",
-    FType: "boolean",
+    name: "WarnOnDelete",
+    type: "boolean",
     FOptionality: "mandatory",
-    FCaption: "Alert me before deleting a task",
+    description: "Alert me before deleting a task",
     FValue: true,
     Default: true
   }
