@@ -19,6 +19,7 @@ export class NCobjectS {
     
     switch (classid)
     {
+      
     case 100:
       a = [
         new MCObject (100, 0, "Programa Tasks", 0, "Crear la versión 0.4", 0),
@@ -28,6 +29,7 @@ export class NCobjectS {
 
       a.forEach (o => o.setXField("DueDate", new Date('2021-08-21')));
       break;
+
     case 10:
       a = [ new MCObject (10, 0, "Main view", 0, "Main tasks view", 0)];
       a[0].setXField ("showTerminal", true);

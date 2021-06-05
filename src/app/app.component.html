@@ -105,7 +105,7 @@
       
       <ng-container *ngFor="let cfgItem of cfg;let i=index">
 
-        <ng-container *ngIf="cfgItem.type=='boolean'">
+        <ng-container *ngIf="typeStr(cfgItem.type)=='boolean'">
           <input type="checkbox" id="name-{{i}}" [(ngModel)]="cfgItem.FValue">
           <label for="name-{{i}}">{{cfgItem.description}}</label><br>
         </ng-container>

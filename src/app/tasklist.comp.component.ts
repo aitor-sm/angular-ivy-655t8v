@@ -9,18 +9,49 @@ import {
   ComponentRef
 } from '@angular/core';
 
-import { MCField, MCUXObject, MCUXList, MCObject } from './MC.core';
+import { MCField, MCUXObject, MCUXList, MCObject, MCFieldType, currentUser } from './MC.core';
 import { basicFlow, FlowActionObj, FlowStatusObj } from './flows';
 import { TabObj } from './app.component';
 import { NCobjectS } from './NCobject.service';
 
 
-export interface MCDBField extends MCField {
+export class MCDBField extends MCObject implements MCField {
+//export interface MCDBField extends MCField {
+  ParentView: string;
   Show: boolean;
   Access: 'ro' | 'rw';
   Width: number;
   MinWidth: number;
   NewRecordCaption: string;
+  Default: any;
+  FOptionality: "optional" | "mandatory";
+
+  constructor (name: string, description: string, type: MCFieldType, parentView: string, show: boolean, access: 'ro' | 'rw', width: number, Default: any, foptionality: "optional" | "mandatory", minwidth: number, newRecCaption: string) {
+  
+    super( 11, type, name, currentUser, description, 0 );
+    this.ParentView = parentView;
+    this.Show = show;
+    this.Access = access;
+    this.Width = width;
+    this.Default = Default;
+    this.FOptionality = foptionality;
+    this.MinWidth = minwidth;
+    this.NewRecordCaption = newRecCaption
+
+  }
+
+/*
+      name: 'id',
+    description: 'Task ID',
+    type: MCFieldType.MCFTobjid,
+    Show: false,
+    Access: 'ro',
+    Width: 100,
+    Default: null,
+    FOptionality: 'mandatory',
+    MinWidth: 100,
+    NewRecordCaption: ''
+*/
 }
 
 const ToolbarTABS: TabObj[] = [
@@ -304,7 +335,7 @@ export class TaskList_comp implements OnInit {
     }
 
     if (k !== null) {
-      this.op_classname = k.getClassName();
+      this.op_classname = MCObject.getClassName(k.getFieldValue("class#"));
       this.op_name = k.name;
       this.op_owner = k.owner;
       this.op_creator = k.creator;
@@ -332,7 +363,7 @@ export class TaskList_comp implements OnInit {
         if (s.size > 1) this.op_createdT = null;
         else this.op_createdT = s.entries().next().value[0];
 
-        s = l.reduce((p, c) => p.add(c.getClassName()), new Set());
+        s = l.reduce((p, c) => p.add(MCObject.getClassName( c.getFieldValue("class#"))), new Set());
         if (s.size > 1) this.op_classname = 'several';
         else this.op_classname = s.entries().next().value[0];
 
@@ -414,6 +445,19 @@ export class TaskList_comp implements OnInit {
       return false;
     }
   }
+
+    typeStr (o: MCFieldType): string {
+    switch (o) {
+      case  MCFieldType.MCFTobjid:   return "objid";
+      case  MCFieldType.MCFTboolean: return "boolean";
+      case  MCFieldType.MCFTnumber:  return "number";
+      case  MCFieldType.MCFTstring:  return "string";
+      case  MCFieldType.MCFTdate:    return "date";
+      case  MCFieldType.MCFTstatus:  return "status";
+      case  MCFieldType.MCFTuser:    return "user";
+    }
+  }
+
 
 }
 

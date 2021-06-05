@@ -6,19 +6,31 @@ import {
   ViewChild,
   OnChanges,
   SimpleChanges,
-  EventEmitter, ComponentFactoryResolver
+  EventEmitter,
+  ComponentFactoryResolver
 } from '@angular/core';
-import {
-  MatDialog
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
-import { MCUXObject, MCField, MCParameter, UserList, currentUser, MCUXList, MCObject } from './MC.core';
-import {NCobjectS} from './NCobject.service'
+import {
+  MCUXObject,
+  MCField,
+  MCParameter,
+  UserList,
+  currentUser,
+  MCUXList,
+  MCObject,
+  MCFieldType
+} from './MC.core';
+import { NCobjectS } from './NCobject.service';
 import { basicFlow } from './flows';
-import { TaskList_comp, MCDBField , DBViewObject} from './tasklist.comp.component';
+import {
+  TaskList_comp,
+  MCDBField,
+  DBViewObject
+} from './tasklist.comp.component';
 import { TaskObj, TasksCfg } from './tasks';
 import { DialogDeleteTasks } from './delete-task-dialog.component';
- 
+
 /*
 function TimeCtrl($scope, $timeout) {
     $scope.clock = "loading clock..."; // initialise the time variable
@@ -64,21 +76,20 @@ export class AppComponent implements OnInit {
   taskListRendered: boolean = false;
 
   TaskVersion: string = '0.0.4';
-//  TaskList: MCUXList;
+  //  TaskList: MCUXList;
 
   toDueDate: Date = new Date();
 
   @ViewChild('MainTaskView') mainTaskViewCpt: TaskList_comp;
 
-
-  constructor( public DeleteTasksDialog: MatDialog, 
+  constructor(
+    public DeleteTasksDialog: MatDialog,
     private resolver: ComponentFactoryResolver,
     public NCobject: NCobjectS
   ) {
-    this.curView = new DBViewObject (this.NCobject.getObjectOfClass(10)[0]);
-  //  console.log ("resolver:", typeof resolver)
+    this.curView = new DBViewObject(this.NCobject.getObjectOfClass(10)[0]);
+    //  console.log ("resolver:", typeof resolver)
   }
-
 
   taskStatusBarMessage(): string {
     if (this.taskListRendered)
@@ -98,17 +109,14 @@ export class AppComponent implements OnInit {
   onFinishRender(b: boolean) {
     this.taskListRendered = b;
 
-/*
+    /*
     this.mainTaskViewCpt.addRecord (new TaskObj ("Programa Tasks", 0, "Crear la versión 0.4", 0, new Date('2021-08-21')));
     this.mainTaskViewCpt.addRecord (new TaskObj ("Clase alemán", 1, "Clase por la tarde", 1, new Date('2021-08-21')));
     this.mainTaskViewCpt.addRecord (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-08-21')));
 */
 
-    let a : MCObject[] = this.NCobject.getObjectOfClass(100);
-    a.forEach ( o => this.mainTaskViewCpt.addRecord ( TaskObj.fromMCObject(o)));
-
-        
-    
+    let a: MCObject[] = this.NCobject.getObjectOfClass(100);
+    a.forEach(o => this.mainTaskViewCpt.addRecord(TaskObj.fromMCObject(o)));
   }
 
   TaskAppParams: object;
@@ -126,17 +134,15 @@ export class AppComponent implements OnInit {
     );
   }
 
-  changeDueDateOnSelectedTasks2 (o: object) {
-//    console.log ("D2=", o);
-    this.changeDueDateOnSelectedTasks (o as Date)
+  changeDueDateOnSelectedTasks2(o: object) {
+    //    console.log ("D2=", o);
+    this.changeDueDateOnSelectedTasks(o as Date);
   }
-
 
   ngOnInit() {
     document.getElementById('defaultOpen').click();
 
     let factory = this.resolver.resolveComponentFactory(TaskProperties);
-
 
     this.TaskAppParams = {
       initSelect: [3, 4],
@@ -146,24 +152,28 @@ export class AppComponent implements OnInit {
       DBRecordName: 'Task',
       initToolbar: 'ToolBar_Item',
       RecPropFactory: factory,
-      RecClassId : 100,
-      validateNewRecord : this.validateNewTask,
-      highlightRecord : this.highlightTask
-
+      RecClassId: 100,
+      validateNewRecord: this.validateNewTask,
+      highlightRecord: this.highlightTask
     };
-
   }
 
-  addTask (o: MCUXObject) {
-    let t = new TaskObj (o.name, o.type, o.owner, o.description, o.status, o.getXField("DueDate"));
-//    console.log ("D=", o.getXField("DueDate"));
-//    console.log ("T=", t.getXField("DueDate"));
+  addTask(o: MCUXObject) {
+    let t = new TaskObj(
+      o.name,
+      o.type,
+      o.owner,
+      o.description,
+      o.status,
+      o.getXField('DueDate')
+    );
+    //    console.log ("D=", o.getXField("DueDate"));
+    //    console.log ("T=", t.getXField("DueDate"));
 
-    this.mainTaskViewCpt.addRecord (t);
-
+    this.mainTaskViewCpt.addRecord(t);
   }
 
-  deleteTasks (o: number) {
+  deleteTasks(o: number) {
     if (TasksCfg.find(a => a.name == 'WarnOnDelete').FValue) {
       let dialogRef = this.DeleteTasksDialog.open(DialogDeleteTasks, {
         height: '200px',
@@ -172,7 +182,7 @@ export class AppComponent implements OnInit {
           numberOfRecords: o == 0 ? 1 : this.mainTaskViewCpt.numSelected(),
           confirmation: true,
           doIt: true,
-          recordName: this.TaskAppParams["DBRecordName"]
+          recordName: this.TaskAppParams['DBRecordName']
         },
         panelClass: 'custom-modalbox-error'
       });
@@ -182,16 +192,12 @@ export class AppComponent implements OnInit {
           TasksCfg.find(a => a.name == 'WarnOnDelete').FValue =
             result.confirmation;
 
-//          if (result.doIt) this.doDeleteTasks(o);
-          if (result.doIt) this.mainTaskViewCpt.doDeleteTasks (o);
+          //          if (result.doIt) this.doDeleteTasks(o);
+          if (result.doIt) this.mainTaskViewCpt.doDeleteTasks(o);
         }
       });
-    } else this.mainTaskViewCpt.doDeleteTasks (o);
-//    } else this.doDeleteTasks(o);
-
-
-
-    
+    } else this.mainTaskViewCpt.doDeleteTasks(o);
+    //    } else this.doDeleteTasks(o);
   }
 
   findTabByID(findid: string): TabObj {
@@ -217,11 +223,32 @@ export class AppComponent implements OnInit {
     this.MainViewName = T.caption;
   }
 
-  public validateNewTask = (t: MCUXObject) => {return t.description != "";};
+  public validateNewTask = (t: MCUXObject) => {
+    return t.description != '';
+  };
 
-  public highlightTask = (t: MCUXObject) => {return (t as TaskObj).dueTask()};
+  public highlightTask = (t: MCUXObject) => {
+    return (t as TaskObj).dueTask();
+  };
 
-
+  typeStr(o: MCFieldType): string {
+    switch (o) {
+      case MCFieldType.MCFTobjid:
+        return 'objid';
+      case MCFieldType.MCFTboolean:
+        return 'boolean';
+      case MCFieldType.MCFTnumber:
+        return 'number';
+      case MCFieldType.MCFTstring:
+        return 'string';
+      case MCFieldType.MCFTdate:
+        return 'date';
+      case MCFieldType.MCFTstatus:
+        return 'status';
+      case MCFieldType.MCFTuser:
+        return 'user';
+    }
+  }
 }
 
 @Component({
@@ -229,13 +256,12 @@ export class AppComponent implements OnInit {
   templateUrl: './task-properties.html'
 })
 export class TaskProperties implements OnInit {
-  @Input() set Parameters (o: object) {
-    if (typeof o === "undefined")
-      this.disabled = true;
-    else  {
-      this.disabled = o["disabled"];
-      let s = o["oneSelected"];
-      this.toDueDate = (s == null) ? null : (s as TaskObj).dueDate;
+  @Input() set Parameters(o: object) {
+    if (typeof o === 'undefined') this.disabled = true;
+    else {
+      this.disabled = o['disabled'];
+      let s = o['oneSelected'];
+      this.toDueDate = s == null ? null : (s as TaskObj).dueDate;
     }
   }
   @Output() dueDate = new EventEmitter<Date>();
@@ -243,143 +269,149 @@ export class TaskProperties implements OnInit {
   toDueDate: Date = new Date();
   disabled: boolean = false;
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-/*
+  /*
   ngOnChanges(changes: SimpleChanges): void {
     console.log ("por aquí");
     let change = changes['Parameters'];
     this.disabled = change.currentValue['disabled'];
   }
-*/ 
-
+*/
 }
-
 
 /// CAMPOS DE LA BBDD
 
 export var TaskDBFields: MCDBField[] = [
-  {
-    name: 'id',
-    description: 'Task ID',
-    type: 'objid',
-    Show: false,
-    Access: 'ro',
-    Width: 100,
-    Default: null,
-    FOptionality: 'mandatory',
-    MinWidth: 100,
-    NewRecordCaption: ''
-  },
-  {
-    name: 'name',
-    description: 'Task',
-    type: 'string',
-    Show: true,
-    Access: 'rw',
-    Width: 120,
-    Default: '',
-    FOptionality: 'mandatory',
-    MinWidth: 120,
-    NewRecordCaption: 'Enter task name here'
-  },
-  {
-    name: 'owner',
-    description: 'Assigned to',
-    type: 'user',
-    Show: true,
-    Access: 'rw',
-    Width: 80,
-    Default: UserList[currentUser],
-    FOptionality: 'mandatory',
-    MinWidth: 80,
-    NewRecordCaption: ''
-  },
-  {
-    name: 'creator',
-    description: 'Reporter',
-    type: 'user',
-    Show: true,
-    Access: 'ro',
-    Width: 80,
-    Default: UserList[currentUser],
-    FOptionality: 'mandatory',
-    MinWidth: 80,
-    NewRecordCaption: UserList[currentUser]
-  },
-  {
-    name: 'status',
-    description: 'Status',
-    type: 'status',
-    Show: true,
-    Access: 'ro',
-    Width: 80,
-    Default: 0,
-    FOptionality: 'mandatory',
-    MinWidth: 80,
-    NewRecordCaption: '--' + basicFlow[0].name + '--'
-  },
-  {
-    name: 'createdT',
-    description: 'Created at',
-    type: 'date',
-    Show: true,
-    Access: 'ro',
-    Width: 90,
-    Default: 'now',
-    FOptionality: 'mandatory',
-    MinWidth: 90,
-    NewRecordCaption: 'now'
+  new MCDBField(
+    'id',
+    'Task ID',
+    MCFieldType.MCFTobjid,
+    MCObject.getObjid (10,1),
+    false,
+    'ro',
+    100,
+    null,
+    'mandatory',
+    100,
+    ''
+  ),
+  new MCDBField(
+    'name',
+    'Task',
+    MCFieldType.MCFTstring,
+    MCObject.getObjid (10,1),
+    true,
+    'rw',
+    120,
+    '',
+    'mandatory',
+    120,
+    'Enter task name here'
+  ),
+  new MCDBField(
+    'owner',
+    'Assigned to',
+    MCFieldType.MCFTuser,
+    MCObject.getObjid (10,1),
+    true,
+    'rw',
+    80,
+    UserList[currentUser],
+    'mandatory',
+    80,
+    ''
+  ),
+  new MCDBField(
+    'creator',
+    'Reporter',
+    MCFieldType.MCFTuser,
+    MCObject.getObjid (10,1),
+    true,
+    'ro',
+    80,
+    UserList[currentUser],
+    'mandatory',
+    80,
+    UserList[currentUser]
+  ),
+  new MCDBField(
+    'status',
+    'Status',
+    MCFieldType.MCFTstatus,
+    MCObject.getObjid (10,1),
+    true,
+    'ro',
+    80,
+    0,
+    'mandatory',
+    80,
+    '--' + basicFlow[0].name + '--'
+  ),
+  new MCDBField(
+    'createdT',
+    'Created at',
+    MCFieldType.MCFTdate,
+    MCObject.getObjid (10,1),
+    true,
+    'ro',
+    90,
+    'now',
+    'mandatory',
+    90,
+    'now'
     //    NewRecordCaption: formatDate(new Date(), 'yyyy/MM/dd', 'en')
-  },
-  {
-    name: 'resolvedT',
-    description: 'Resolved at',
-    type: 'date',
-    Show: true,
-    Access: 'ro',
-    Width: 90,
-    Default: null,
-    FOptionality: 'optional',
-    MinWidth: 90,
-    NewRecordCaption: ''
-  },
-  {
-    name: 'DueDate',
-    description: 'Due by',
-    type: 'date',
-    Show: true,
-    Access: 'rw',
-    Width: 125,
-    Default: new Date('2020-01-01'),
-    FOptionality: 'mandatory',
-    MinWidth: 125,
-    NewRecordCaption: ''
-  },
-  {
-    name: 'closedT',
-    description: 'Closed at',
-    type: 'date',
-    Show: false,
-    Access: 'ro',
-    Width: 90,
-    Default: null,
-    FOptionality: 'optional',
-    MinWidth: 90,
-    NewRecordCaption: ''
-  },
-  {
-    name: 'description',
-    description: 'Description',
-    type: 'string',
-    Show: true,
-    Access: 'rw',
-    Width: 280,
-    Default: '',
-    FOptionality: 'optional',
-    MinWidth: 0,
-    NewRecordCaption: 'Enter task description'
-  }
+  ),
+  new MCDBField(
+    'resolvedT',
+    'Resolved at',
+    MCFieldType.MCFTdate,
+    MCObject.getObjid (10,1),
+    true,
+    'ro',
+    90,
+    null,
+    'optional',
+    90,
+    ''
+  ),
+  new MCDBField(
+    'DueDate',
+    'Due by',
+    MCFieldType.MCFTdate,
+    MCObject.getObjid (10,1),
+    true,
+    'rw',
+    125,
+    new Date('2020-01-01'),
+    'mandatory',
+    125,
+    ''
+  ),
+  new MCDBField(
+    'closedT',
+    'Closed at',
+    MCFieldType.MCFTdate,
+    MCObject.getObjid (10,1),
+    false,
+    'ro',
+    90,
+    null,
+    'optional',
+    90,
+    ''
+  ),
+  new MCDBField(
+    'description',
+    'Description',
+    MCFieldType.MCFTstring,
+    MCObject.getObjid (10,1),
+    true,
+    'rw',
+    280,
+    '',
+    'optional',
+    0,
+    'Enter task description'
+  )
 ];
-

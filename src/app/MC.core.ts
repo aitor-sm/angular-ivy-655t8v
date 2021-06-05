@@ -1,10 +1,20 @@
 import { FlowActionObj, FlowStatusObj, basicFlow } from "./flows";
 
-export type MCType = "objid" | "auto" | "boolean" | "number" | "string" |"date" | "user" | "status";
+//export type MCType = "objid" | "auto" | "boolean" | "number" | "string" |"date" | "user" | "status";
+
+export enum MCFieldType {
+  MCFTobjid,
+  MCFTboolean,
+  MCFTnumber,
+  MCFTstring,
+  MCFTdate,
+  MCFTstatus,
+  MCFTuser = 100
+}
 
 export interface MCField {
   name: string;  
-  type: MCType;   // type (new)
+  type: number;   // type (new)
   description: string; 
   FOptionality: "optional" | "mandatory";
   Default: any;
@@ -88,8 +98,13 @@ export class MCObject {
   // READONLY GETTERS
 
   public get id (): string {
-    return this.getClassName() + this._id.toString().padStart(12,"0");
+      return MCObject.getObjid (this._class, this._id);
+//    return MCObject.getClassName(this._class) + this._id.toString().padStart(12,"0");
   };
+
+  public static getObjid (classId: number, NobjId: number) : string {
+    return MCObject.getClassName(classId) + NobjId.toString().padStart(12,"0");
+  }
 
   public get nid (): number {
     return this._id;
@@ -104,21 +119,21 @@ export class MCObject {
   }
 
   public get classId (): string {
-    return "CLAS-" +  this.getClassName();
+    return "CLAS-" +  MCObject.getClassName(this._class);
   }
 
-  public getClassName (): string {
+  public static getClassName (c: number): string {
   const SysClasses: string[] = [
     "CLAS", "RELT", "TAG_", "FOLD", "USER", 
     "STAT", "AUDT", "CONF", "PROC", "PROT",
-    "VIEW"];
+    "VIEW", "FELD"];
   const AppClasses: string[] = [
     "TASK"];
 
-    if (this._class <100)
-      return SysClasses [this._class];
+    if (c <100)
+      return SysClasses [c];
     else
-      return AppClasses [this._class-100];
+      return AppClasses [c-100];
   }
 
 

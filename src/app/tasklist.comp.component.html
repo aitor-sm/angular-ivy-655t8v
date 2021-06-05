@@ -159,7 +159,7 @@
 
 
         <td *ngFor="let f of visibleFields()" width={{f.Width}}  [class.grid] = "this.currentView.showGrid">
-          <div [ngSwitch]="f.type">
+          <div [ngSwitch]="typeStr(f.type)">
 
             <ng-container *ngSwitchCase="'string'">
               <ng-container *ngIf="f.Access == 'ro'; else newrec_string_rw"> 
@@ -238,7 +238,7 @@
             <!--------- Customizatble FIELDS  ---->
 
             <td *ngFor="let f of visibleFields()" width={{f.Width}}  [class.grid] = "this.currentView.showGrid">
-              <div [ngSwitch]="f.type">
+              <div [ngSwitch]="typeStr(f.type)">
                 <ng-container *ngSwitchCase="'date'">{{task.getFieldValue(f.name) | date: 'dd/MM/y'}}</ng-container>
                 <ng-container *ngSwitchCase="'user'">{{task.getFieldValue(f.name) | user }}</ng-container>
                 <ng-container *ngSwitchCase="'status'">{{task.getFieldValue(f.name) | status }}</ng-container>

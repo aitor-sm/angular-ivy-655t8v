@@ -1,4 +1,4 @@
-import { MCField, MCParameter, MCObject, MCUXObject } from "./MC.core";
+import { MCField, MCParameter, MCObject, MCUXObject, MCFieldType } from "./MC.core";
 
 
 ////////////// TASK OBJECT ////////////////
@@ -44,7 +44,7 @@ export class TaskObj extends MCUXObject {
 export var TasksCfg : MCParameter[] = [
   {
     name: "WarnOnDelete",
-    type: "boolean",
+    type: MCFieldType.MCFTboolean,
     FOptionality: "mandatory",
     description: "Alert me before deleting a task",
     FValue: true,
