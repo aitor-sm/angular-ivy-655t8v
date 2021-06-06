@@ -87,10 +87,10 @@ export class AppComponent implements OnInit {
     private resolver: ComponentFactoryResolver,
     public NCobject: NCobjectS
   ) {
-    console.log ("cons-call");
+//    console.log ("cons-call");
     if (this.curView == null)
       this.curView = new DBViewObject(this.NCobject.getObjectOfClass(10)[0]);
-    console.log ("end-cons-call");
+//    console.log ("end-cons-call");
   }
 
   taskStatusBarMessage(): string {
@@ -117,9 +117,9 @@ export class AppComponent implements OnInit {
     this.mainTaskViewCpt.addRecord (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-08-21')));
 */
 
-    console.log ("finishrender");
+//    console.log ("finishrender");
     let a: MCObject[] = this.NCobject.getObjectOfClass(100);
-    console.log ("end-finishrender");
+//    console.log ("end-finishrender");
     a.forEach(o => this.mainTaskViewCpt.addRecord(TaskObj.fromMCObject(o)));
   }
 
@@ -160,7 +160,7 @@ export class AppComponent implements OnInit {
       validateNewRecord: this.validateNewTask,
       highlightRecord: this.highlightTask
     };
-    console.log ("view:", this.curView.id);
+//    console.log ("view:", this.curView.id);
   }
 
   addTask(o: MCUXObject) {

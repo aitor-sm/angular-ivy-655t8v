@@ -83,7 +83,7 @@ export class MCObject {
     this.resolvedT = null;
     this.closedT = null;
 
-    console.log ("constr:", this._id, this.name);
+//    console.log ("constr:", this._id, this.name);
 
 
   }
