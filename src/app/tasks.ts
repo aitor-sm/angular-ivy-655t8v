@@ -6,11 +6,11 @@ import { MCField, MCParameter, MCObject, MCUXObject, MCFieldType } from "./MC.co
 export class TaskObj extends MCUXObject {
 
 
-  public constructor (Name: string, Type: number, Owner: number, Desc: string, Status: number, DueDate: Date) {
+  public constructor (oid: number, Name: string, Type: number, Owner: number, Desc: string, Status: number, DueDate: Date, xf: {[key: string]: any}) {
 
-    super( 100, Type, Name, Owner, Desc, Status);
+    super( 100, oid, Type, Name, Owner, Desc, Status, xf);
 
-    this.dueDate = DueDate;
+//    this.dueDate = DueDate;
 
     // DB.View.Obj init
 //    this.selected = false;
@@ -18,7 +18,7 @@ export class TaskObj extends MCUXObject {
   }
 
   public static fromMCObject (o: MCObject): TaskObj {
-      return new TaskObj ( o.name, o.type, o.owner, o.description, o.status, o.getXField ("DueDate"));
+      return new TaskObj ( o.nid, o.name, o.type, o.owner, o.description, o.status, o.getXField ("DueDate"), o._XFields);
   }
 
   public get dueDate () {

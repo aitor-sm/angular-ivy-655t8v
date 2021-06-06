@@ -44,7 +44,7 @@ export class MCObject {
   private _description: string;
   private _type: number;
   
-  public _XFields : {[key: string]: any} = [];
+  public _XFields : {[key: string]: any} = {};
 
   // FLOW RELATED FIELDS: temporarily part of BASE
   private _status: number;
@@ -56,15 +56,21 @@ export class MCObject {
   private static sequence: number = 0; // there should be one per class
 
 
-  constructor (ClassId: number, TypeId: number, Name: string, Owner: number, Desc: string, Status: number) {
-    this._id = MCObject.sequence;
-    MCObject.sequence ++;
+  constructor (ClassId: number, oid: number, TypeId: number, Name: string, Owner: number, Desc: string, Status: number, xf: {[key: string]: any}) {
+    
+    if (oid < 0 ) {
+      this._id = MCObject.sequence;
+      MCObject.sequence ++;
+    }
+    else
+      this._id = oid;
     
     this._createdT = new Date();
     this._creator = currentUser;
 
     this._class = ClassId;
     this._XFields = [];
+    this.copyXFields (xf);
 
     // accessor properties
     this.name = Name;
@@ -77,32 +83,47 @@ export class MCObject {
     this.resolvedT = null;
     this.closedT = null;
 
+    console.log ("constr:", this._id, this.name);
+
 
   }
 
+  public copyXFields ( xf: {[key: string]: any}) {
+    for (let key of Object.keys(xf)) {
+      this._XFields[key] = JSON.parse(JSON.stringify(xf[key]));
+    }
+  }
+
   public clone (): MCObject {
-    let a : MCObject = new MCObject (this._class, this.type, this._name, this._owner, this._description, this._status);
+    let a : MCObject = new MCObject (this._class, this.nid, this.type, this._name, this._owner, this._description, this._status, this._XFields);
     
     a.resolvedT = new Date(this.resolvedT);
     a.closedT = new Date (this.closedT);
 
 //    this._XFields.forEach(val => {console.log ("XX=",val); a._XFields.push(Object.assign({}, val))});
 
+//    a.copyXFields (this._XFields);
+
+/*
     for (let key of Object.keys(this._XFields)) {
       a._XFields[key] = JSON.parse(JSON.stringify(this._XFields[key]));
     }
-
+*/
     return a;
   }
 
   // READONLY GETTERS
 
   public get id (): string {
+//      console.log ("CLID=",this._class);
+//      console.log ("ID=",this._id);
       return MCObject.getObjid (this._class, this._id);
 //    return MCObject.getClassName(this._class) + this._id.toString().padStart(12,"0");
   };
 
   public static getObjid (classId: number, NobjId: number) : string {
+//    console.log ("classId=", classId);
+//    console.log ("objID=", NobjId);
     return MCObject.getClassName(classId) + NobjId.toString().padStart(12,"0");
   }
 
@@ -278,21 +299,22 @@ export class MCUXObject extends MCObject {
 
   public selected: boolean;
 
-  public constructor (ClassId: number, Type: number, Name: string, Owner: number, Desc: string, Status: number) {
+  public constructor (ClassId: number, oid: number, Type: number, Name: string, Owner: number, Desc: string, Status: number, xf: {[key: string]: any}) {
 
-    super( ClassId, Type, Name, Owner, Desc, Status);
+    super( ClassId, oid, Type, Name, Owner, Desc, Status, xf);
 
     this.selected = false;
 
   }
 
+/*
   public clone () : MCUXObject {
     let e : MCUXObject = super.clone() as MCUXObject;
     e.selected = false;
 
     return e;
   }
-
+*/
 
   public PixelsToSize (n: number): string {
 //    console.log ("pixel2size", n);

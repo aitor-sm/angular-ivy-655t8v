@@ -72,7 +72,7 @@ export class AppComponent implements OnInit {
   Fields: MCDBField[] = TaskDBFields;
 
   cfg: MCParameter[] = TasksCfg;
-  curView: DBViewObject;
+  curView: DBViewObject = null;
   taskListRendered: boolean = false;
 
   TaskVersion: string = '0.0.4';
@@ -87,8 +87,10 @@ export class AppComponent implements OnInit {
     private resolver: ComponentFactoryResolver,
     public NCobject: NCobjectS
   ) {
-    this.curView = new DBViewObject(this.NCobject.getObjectOfClass(10)[0]);
-    //  console.log ("resolver:", typeof resolver)
+    console.log ("cons-call");
+    if (this.curView == null)
+      this.curView = new DBViewObject(this.NCobject.getObjectOfClass(10)[0]);
+    console.log ("end-cons-call");
   }
 
   taskStatusBarMessage(): string {
@@ -115,7 +117,9 @@ export class AppComponent implements OnInit {
     this.mainTaskViewCpt.addRecord (new TaskObj ("Deberes", 0, "Descripción 3", 2, new Date('2021-08-21')));
 */
 
+    console.log ("finishrender");
     let a: MCObject[] = this.NCobject.getObjectOfClass(100);
+    console.log ("end-finishrender");
     a.forEach(o => this.mainTaskViewCpt.addRecord(TaskObj.fromMCObject(o)));
   }
 
@@ -156,21 +160,28 @@ export class AppComponent implements OnInit {
       validateNewRecord: this.validateNewTask,
       highlightRecord: this.highlightTask
     };
+    console.log ("view:", this.curView.id);
   }
 
   addTask(o: MCUXObject) {
-    let t = new TaskObj(
+    let t = this.NCobject.createObject (100, o.type, o.name, o.owner, o.description, o.status, o._XFields);
+
+/*    
+    new TaskObj(
+      -1,
       o.name,
       o.type,
       o.owner,
       o.description,
       o.status,
-      o.getXField('DueDate')
+      o.getXField('DueDate'),
+      []
     );
+*/
     //    console.log ("D=", o.getXField("DueDate"));
     //    console.log ("T=", t.getXField("DueDate"));
 
-    this.mainTaskViewCpt.addRecord(t);
+    this.mainTaskViewCpt.addRecord(TaskObj.fromMCObject(t));
   }
 
   deleteTasks(o: number) {
@@ -284,10 +295,11 @@ export class TaskProperties implements OnInit {
 
 export var TaskDBFields: MCDBField[] = [
   new MCDBField(
+    1,
     'id',
     'Task ID',
     MCFieldType.MCFTobjid,
-    MCObject.getObjid (10,1),
+    MCObject.getObjid(10, 1),
     false,
     'ro',
     100,
@@ -297,10 +309,11 @@ export var TaskDBFields: MCDBField[] = [
     ''
   ),
   new MCDBField(
+    2,
     'name',
     'Task',
     MCFieldType.MCFTstring,
-    MCObject.getObjid (10,1),
+    MCObject.getObjid(10, 1),
     true,
     'rw',
     120,
@@ -310,10 +323,11 @@ export var TaskDBFields: MCDBField[] = [
     'Enter task name here'
   ),
   new MCDBField(
+    3,
     'owner',
     'Assigned to',
     MCFieldType.MCFTuser,
-    MCObject.getObjid (10,1),
+    MCObject.getObjid(10, 1),
     true,
     'rw',
     80,
@@ -323,10 +337,11 @@ export var TaskDBFields: MCDBField[] = [
     ''
   ),
   new MCDBField(
+    4,
     'creator',
     'Reporter',
     MCFieldType.MCFTuser,
-    MCObject.getObjid (10,1),
+    MCObject.getObjid(10, 1),
     true,
     'ro',
     80,
@@ -336,10 +351,11 @@ export var TaskDBFields: MCDBField[] = [
     UserList[currentUser]
   ),
   new MCDBField(
+    5,
     'status',
     'Status',
     MCFieldType.MCFTstatus,
-    MCObject.getObjid (10,1),
+    MCObject.getObjid(10, 1),
     true,
     'ro',
     80,
@@ -349,10 +365,11 @@ export var TaskDBFields: MCDBField[] = [
     '--' + basicFlow[0].name + '--'
   ),
   new MCDBField(
+    6,
     'createdT',
     'Created at',
     MCFieldType.MCFTdate,
-    MCObject.getObjid (10,1),
+    MCObject.getObjid(10, 1),
     true,
     'ro',
     90,
@@ -363,10 +380,11 @@ export var TaskDBFields: MCDBField[] = [
     //    NewRecordCaption: formatDate(new Date(), 'yyyy/MM/dd', 'en')
   ),
   new MCDBField(
+    7,
     'resolvedT',
     'Resolved at',
     MCFieldType.MCFTdate,
-    MCObject.getObjid (10,1),
+    MCObject.getObjid(10, 1),
     true,
     'ro',
     90,
@@ -376,10 +394,11 @@ export var TaskDBFields: MCDBField[] = [
     ''
   ),
   new MCDBField(
+    8,
     'DueDate',
     'Due by',
     MCFieldType.MCFTdate,
-    MCObject.getObjid (10,1),
+    MCObject.getObjid(10, 1),
     true,
     'rw',
     125,
@@ -389,10 +408,11 @@ export var TaskDBFields: MCDBField[] = [
     ''
   ),
   new MCDBField(
+    9,
     'closedT',
     'Closed at',
     MCFieldType.MCFTdate,
-    MCObject.getObjid (10,1),
+    MCObject.getObjid(10, 1),
     false,
     'ro',
     90,
@@ -402,10 +422,11 @@ export var TaskDBFields: MCDBField[] = [
     ''
   ),
   new MCDBField(
+    10,
     'description',
     'Description',
     MCFieldType.MCFTstring,
-    MCObject.getObjid (10,1),
+    MCObject.getObjid(10, 1),
     true,
     'rw',
     280,

@@ -15,7 +15,7 @@ import { TabObj } from './app.component';
 import { NCobjectS } from './NCobject.service';
 
 
-export class MCDBField extends MCObject implements MCField {
+export class MCDBField extends MCUXObject implements MCField {
 //export interface MCDBField extends MCField {
   ParentView: string;
   Show: boolean;
@@ -26,9 +26,9 @@ export class MCDBField extends MCObject implements MCField {
   Default: any;
   FOptionality: "optional" | "mandatory";
 
-  constructor (name: string, description: string, type: MCFieldType, parentView: string, show: boolean, access: 'ro' | 'rw', width: number, Default: any, foptionality: "optional" | "mandatory", minwidth: number, newRecCaption: string) {
+  constructor (oid: number, name: string, description: string, type: MCFieldType, parentView: string, show: boolean, access: 'ro' | 'rw', width: number, Default: any, foptionality: "optional" | "mandatory", minwidth: number, newRecCaption: string) {
   
-    super( 11, type, name, currentUser, description, 0 );
+    super( 11, oid, type, name, currentUser, description, 0, {} );
     this.ParentView = parentView;
     this.Show = show;
     this.Access = access;
@@ -271,7 +271,7 @@ export class TaskList_comp implements OnInit {
   }
 
   createNewRecordTemplate() {
-    this.newRec = new MCUXObject(this.Parameters["RecClassId"],0, '', this.Parameters['currentUser'], '', 0);
+    this.newRec = new MCUXObject(this.Parameters["RecClassId"],0, 0, '', this.Parameters['currentUser'], '', 0, {});
   }
 
 
@@ -470,8 +470,8 @@ export class TaskList_comp implements OnInit {
 export class DBViewObject extends MCObject {
 
     constructor (o: MCObject) {
-      super(o.nid, o.type, o.name, o.owner, o.description, o.status);
-      this._XFields = o._XFields;
+      super(o.getFieldValue("class#"), o.nid, o.type, o.name, o.owner, o.description, o.status, o._XFields);
+//      this._XFields = o._XFields;
 
       /*
       this.showHeaders = o.getXField ("showHeaders");
