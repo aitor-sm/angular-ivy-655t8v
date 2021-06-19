@@ -17,14 +17,96 @@ import { NCobjectS } from './NCobject.service';
 
 export class MCDBField extends MCUXObject implements MCField {
 //export interface MCDBField extends MCField {
-  ParentView: string;
-  Show: boolean;
-  Access: 'ro' | 'rw';
-  Width: number;
-  MinWidth: number;
-  NewRecordCaption: string;
-  Default: any;
-  FOptionality: "optional" | "mandatory";
+//  ParentView: string;
+//  Show: boolean;
+//  Access: 'ro' | 'rw';
+//  Width: number;
+//  MinWidth: number;
+//  NewRecordCaption: string;
+//  Default: any;
+//  FOptionality: "optional" | "mandatory";
+
+/*
+  _ParentView: string;
+  _Show: boolean;
+  _Access: 'ro' | 'rw';
+  _Width: number;
+  _MinWidth: number;
+  _NewRecordCaption: string;
+  _Default: any;
+  _FOptionality: "optional" | "mandatory";
+*/
+
+  public get ParentView () : string {
+    return this.getXField ("ParentView");
+  }
+
+  public set ParentView (s: string) {
+    this.setXField ("ParentView", s);
+  }
+
+  public get Show () : boolean {
+    return this.getXField ("Show");
+  }
+
+  public set Show (s: boolean) {
+    this.setXField ("Show", s);
+  }
+
+  public get Access () : 'ro' | 'rw' {
+    return this.getXField ("Access");
+  }
+
+  public set Access (s: 'ro' | 'rw') {
+    this.setXField ("Access", s);
+  }
+
+  public get Width () : number {
+    return this.getXField ("Width");
+  }
+
+  public set Width (s: number) {
+    this.setXField ("Width", s);
+  }
+
+  public get MinWidth () : number {
+    return this.getXField ("MinWidth");
+  }
+
+  public set MinWidth (s: number) {
+    this.setXField ("MinWidth",  s);
+  }
+
+  public get NewRecordCaption () : string {
+    return this.getXField ("NewRecordCaption");
+  }
+
+  public set NewRecordCaption (s: string) {
+    this.setXField ("NewRecordCaption", s);
+  }
+
+  public get Default () : any {
+    return this.getXField ("Default");
+  }
+
+  public set Default (s: any) {
+    this.setXField ("Default",  s);
+  }
+
+  public get FOptionality () : "optional" | "mandatory" {
+    return this.getXField ("FOptionality");
+  }
+
+  public set FOptionality (s: "optional" | "mandatory") {
+    this.setXField ("FOptionality",  s);
+  }
+
+
+
+
+
+
+
 
   constructor (oid: number, name: string, description: string, type: MCFieldType, parentView: string, show: boolean, access: 'ro' | 'rw', width: number, Default: any, foptionality: "optional" | "mandatory", minwidth: number, newRecCaption: string) {
   
@@ -53,7 +135,6 @@ export class MCDBField extends MCUXObject implements MCField {
     NewRecordCaption: ''
 */
 }
-
 const ToolbarTABS: TabObj[] = [
   { id: '10', divname: 'DBProps', caption: 'Database' },
   { id: '11', divname: 'DBRecProps', caption: 'Record' },
