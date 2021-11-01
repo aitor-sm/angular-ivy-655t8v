@@ -460,8 +460,17 @@ export class TaskList_comp implements OnInit {
         if (s.size > 1) this.op_description = '';
         else this.op_description = s.entries().next().value[0];
 
-        this.op_resolvedT = null;
-        this.op_closedT = null;
+        s = l.reduce((p, c) => p.add(c.resolvedT), new Set());
+        if (s.size > 1) this.op_resolvedT = null;
+        else this.op_resolvedT = s.entries().next().value[0];
+
+        s = l.reduce((p, c) => p.add(c.closedT), new Set());
+        if (s.size > 1) this.op_closedT = null;
+        else this.op_closedT = s.entries().next().value[0];
+
+        /*
+          PENDING: actor who resolved, actor who closed
+        */
 
       }
     }
