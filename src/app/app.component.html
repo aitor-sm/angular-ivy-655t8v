@@ -1,122 +1,126 @@
 <!--------- TABLA PRINCIPAL DEL SISTEMA   -->
 
-<div id="sysbar" >
-<table class="mainbar"> <tr>
- <!--  <td onclick="alert('TASKs ver 0.0.2\n\n- Ticket flow status, inlined change buttons\n- Resolution and closing time\n- Status bar\n- Several fixes\n\nTASKs ver 0.0.3\n- Component tasklist gets an object as parameter\n- Tidy up code\n- Warning on delete modal')">--> 
-  <td> 
-   &nbsp;&nbsp;
-  <b>{{MainAppName}}</b> - {{MainViewName}}</td>
-  <!--  <td [width]="100">
+<div id="sysbar">
+  <table class="mainbar">
+    <tr>
+      <!--  <td onclick="alert('TASKs ver 0.0.2\n\n- Ticket flow status, inlined change buttons\n- Resolution and closing time\n- Status bar\n- Several fixes\n\nTASKs ver 0.0.3\n- Component tasklist gets an object as parameter\n- Tidy up code\n- Warning on delete modal')">-->
+      <td>
+        &nbsp;&nbsp;
+        <b>{{ MainAppName }}</b> - {{ MainViewName }}
+      </td>
+      <!--  <td [width]="100">
     <div ng-controller='TimeCtrl'>
       <p>{{ clock  | date:'medium'}}</p>
     </div>
     </td> -->
-  </tr></table>
+    </tr>
+  </table>
 </div>
 
-<!--------- BARRA DE APLICACIONES   -->
+<!--------- BARRA DE APLICACIONES   --->
 
 <div class="appsbar">
-
-    <button class="tablinks" (click)="openTab($event, '100')">T</button>
-    <button class="tablinks" (click)="openTab($event, '110')" id="defaultOpen">All</button>
-    <button class="tablinks" (click)="openTab($event, '101')" >CFG</button>
-
+  <button class="tablinks" (click)="openTab($event, '100')">T</button>
+  <button class="tablinks" (click)="openTab($event, '110')" id="defaultOpen">
+    All
+  </button>
+  <button class="tablinks" (click)="openTab($event, '101')">CFG</button>
 </div>
-
 
 <!--------- RESTO DEL CONTENIDO   -->
 
 <div id="Task-All" class="tabcontent" style="display:block">
-
-      <div class="vbox">
-
-      <div class="row content">
-
-
-      <tasklist_comp #MainTaskView [Parameters]="TaskAppParams"  [fields]="Fields" (FinishRender)="onFinishRender($event)" (RecPropOutput)="changeDueDateOnSelectedTasks2($event)" (AddRecordCallBack)="addTask($event)" (DeleteRecordCallBack)="deleteTasks($event)" [currentView]="curView"></tasklist_comp>
+  <div class="vbox">
+    <div class="row content">
+      <tasklist_comp
+        #MainTaskView
+        [Parameters]="TaskAppParams"
+        [fields]="Fields"
+        (FinishRender)="onFinishRender($event)"
+        (RecPropOutput)="changeDueDateOnSelectedTasks2($event)"
+        (AddRecordCallBack)="addTask($event)"
+        (DeleteRecordCallBack)="deleteTasks($event)"
+        [currentView]="curView"
+      ></tasklist_comp>
       <!--
       <tasklist_comp name="{{ name }}"  owner="aitor" desc="Descripción" initSelect="4,5"></tasklist_comp>
       -->
+    </div>
 
-      </div>
+    <!--------- STATUS BAR  ---->
 
-  <!--------- STATUS BAR  ---->
+    <div class="row footer">
+      <table class="statusbar" height="20px">
+        <tr>
+          <td>
+            {{ taskStatusBarMessage() }}
 
-  <div class="row footer">
-
-    <table class=statusbar  height=20px>
-      <tr>
-        <td>
-            {{taskStatusBarMessage()}}
-
-<!--          Total: {{TL.countIf (this.applyFilter)}} tasks, ({{numSelected()}} selected),
+            <!--          Total: {{TL.countIf (this.applyFilter)}} tasks, ({{numSelected()}} selected),
           {{numDueTasks()}} are due <!--,  {{selectedSum()["ClassName"]}} name-->
-        </td>
-      </tr>
-    </table>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
-
-
-      </div>
 </div>
 
-<div id="TASKS-App" class="tabcontent"  style="display:none">
-<table style="padding:20px" ><tr><td >
-      <h3>TASKS application</h3> 
-      Welcome to the tasks management application.<br>
-      Current version is: {{TaskVersion}}.<br><br>
-      
-      <h4>TASKs ver 0.0.4</h4>
-      - TaskObj comes to live as class<br>
-      - User list and current user coming as global parameters<br>
-      - MCObjects<br>
-      - TaskObjs are now MCObjects<br>
-      - Removed the "filter" field (becomes a function)<br>
-      - New generic TaskList object, scrapped off the visual object<br>
-      - New generic Object List<br>
-      - Toolbar with tabs<br>
-      - Fully featured Properties bar<br>
-      - On View: filter on/off finished tasks<br>
-      - List of visible fields fully configurable (code)<br>
-      - View properties to show header or grid<br><br>
+<div id="TASKS-App" class="tabcontent" style="display:none">
+  <table style="padding:20px">
+    <tr>
+      <td>
+        <h3>TASKS application</h3>
+        Welcome to the tasks management application.<br />
+        Current version is: {{ TaskVersion }}.<br /><br />
 
+        <h4>TASKs ver 0.0.4</h4>
+        - TaskObj comes to live as class<br />
+        - User list and current user coming as global parameters<br />
+        - MCObjects<br />
+        - TaskObjs are now MCObjects<br />
+        - Removed the "filter" field (becomes a function)<br />
+        - New generic TaskList object, scrapped off the visual object<br />
+        - New generic Object List<br />
+        - Toolbar with tabs<br />
+        - Fully featured Properties bar<br />
+        - On View: filter on/off finished tasks<br />
+        - List of visible fields fully configurable (code)<br />
+        - View properties to show header or grid<br /><br />
 
-      <h4>TASKs ver 0.0.3</h4>
-      - Component tasklist gets an object as parameter<br>
-      - Tidy up code<br>
-      - Warning on delete modal<br>
-      - Main apps vertical bar<br>
-      - About page for tasks<br>
-      - Configuration page for tasks<br>
-      <h4>TASKs ver 0.0.2</h4>
-      - Ticket flow status, inlined change buttons<br>
-      - Resolution and closing time<br>
-      - Status bar<br>
-      - Several fixes<br><br>
-</td></tr></table>
+        <h4>TASKs ver 0.0.3</h4>
+        - Component tasklist gets an object as parameter<br />
+        - Tidy up code<br />
+        - Warning on delete modal<br />
+        - Main apps vertical bar<br />
+        - About page for tasks<br />
+        - Configuration page for tasks<br />
+        <h4>TASKs ver 0.0.2</h4>
+        - Ticket flow status, inlined change buttons<br />
+        - Resolution and closing time<br />
+        - Status bar<br />
+        - Several fixes<br /><br />
+      </td>
+    </tr>
+  </table>
 </div>
 
+<div id="TASKS-Cfg" class="tabcontent" style="display:none">
+  <table style="padding:20px">
+    <tr>
+      <td>
+        <h3>TASKS Settings</h3>
 
-<div id="TASKS-Cfg" class="tabcontent"  style="display:none">
-<table style="padding:20px" ><tr><td >
-
-      <h3>TASKS Settings</h3>
-      
-      <ng-container *ngFor="let cfgItem of cfg;let i=index">
-
-        <ng-container *ngIf="typeStr(cfgItem.type)=='boolean'">
-          <input type="checkbox" id="name-{{i}}" [(ngModel)]="cfgItem.FValue">
-          <label for="name-{{i}}">{{cfgItem.description}}</label><br>
+        <ng-container *ngFor="let cfgItem of cfg; let i = index">
+          <ng-container *ngIf="typeStr(cfgItem.type) == 'boolean'">
+            <input
+              type="checkbox"
+              id="name-{{ i }}"
+              [(ngModel)]="cfgItem.FValue"
+            />
+            <label for="name-{{ i }}">{{ cfgItem.description }}</label
+            ><br />
+          </ng-container>
         </ng-container>
-           
-      </ng-container>
-</td></tr></table>
-
+      </td>
+    </tr>
+  </table>
 </div>
-
-
-
-
-
-
